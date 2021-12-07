@@ -1,4 +1,4 @@
-package telegram.bot;
+package telegram;
 
 import exception.BadInputException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
