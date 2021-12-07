@@ -3,7 +3,6 @@ package telegram.bot;
 import exception.BadInputException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.UpdateHandler;
@@ -30,7 +29,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             message = updateHandler.processUpdate(update);
             sendMessage.setText(message);
         } catch (BadInputException e) {
-            sendMessage.setText(BadInputException.badInputMessage());
+            sendMessage.setText(e.getMessage());
         }
         try {
             execute(sendMessage);

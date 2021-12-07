@@ -12,7 +12,9 @@ public class UpdateHandler {
                     "\n" +
                     "چه کاری برات انجام بدم؟";
         } else {
-            throw new BadInputException("BadInputException!");
+            throw new BadInputException("متوجه نشدم :/\n" +
+                    "\n" +
+                    "چه کاری برات انجام بدم؟");
         }
     }
 }
