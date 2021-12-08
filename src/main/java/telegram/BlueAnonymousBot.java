@@ -7,11 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import telegram.UpdateHandler;
-
-/**
- * the BluAnonymousBot class
- */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,15 +55,10 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         keyboardFirstRow.add("fuck it");
         keyboardFirstRow.add("fuck life");
-//        KeyboardRow keyboardSecondRow = new KeyboardRow();
-//        keyboardSecondRow.add(getSettingsCommand(language));
-//        keyboardSecondRow.add(getRateCommand(language));
         keyboard.add(keyboardFirstRow);
-//        keyboard.add(keyboardSecondRow);
         replyKeyboardMarkup.setKeyboard(keyboard);
 
         return replyKeyboardMarkup;
     }
-
 
 }
