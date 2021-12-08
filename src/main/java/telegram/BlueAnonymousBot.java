@@ -2,17 +2,13 @@ package telegram;
 
 import exception.BadInputException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import telegram.UpdateHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class  BlueAnonymousBot extends TelegramLongPollingBot {
+/**
+ * the BlueAnonymousBot class
+ */
+public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final UpdateHandler updateHandler = new UpdateHandler();
 
     @Override
@@ -33,7 +29,7 @@ public class  BlueAnonymousBot extends TelegramLongPollingBot {
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         String message;
         try {
-            message = updateHandler.processUpdate(update);
+            message = this.updateHandler.processUpdate(update);
             sendMessage.setText(message);
         } catch (BadInputException e) {
             sendMessage.setText(e.getMessage());
@@ -44,8 +40,6 @@ public class  BlueAnonymousBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
-
 
 
 }
