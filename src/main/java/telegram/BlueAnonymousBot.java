@@ -5,8 +5,10 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import telegram.UpdateHandler;
 
+/**
+ * the BluAnonymousBot class
+ */
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final UpdateHandler updateHandler = new UpdateHandler();
 
@@ -26,7 +28,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         String message;
         try {
-            message = updateHandler.processUpdate(update);
+            message = this.updateHandler.processUpdate(update);
             sendMessage.setText(message);
         } catch (BadInputException e) {
             sendMessage.setText(e.getMessage());
