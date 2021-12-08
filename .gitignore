@@ -1,6 +1,4 @@
 # Default ignored files
-/.idea
-/.idea/*
-/.target
-/.target/*
-/.BlueAnonymousBot.iml
+.idea
+target
+BlueAnonymousBot.iml
