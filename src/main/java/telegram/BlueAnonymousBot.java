@@ -7,10 +7,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import telegram.UpdateHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlueAnonymousBot extends TelegramLongPollingBot {
+public class  BlueAnonymousBot extends TelegramLongPollingBot {
     private final UpdateHandler updateHandler = new UpdateHandler();
 
     @Override
@@ -26,14 +28,12 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     @Override
 
     public void onUpdateReceived(Update update) {
-        getMainMenuKeyboard();
-        SendMessage sendMessage = new SendMessage();
+        MainMenu sendMessage = new MainMenu();
         sendMessage.enableMarkdown(true);
-        sendMessage.setReplyMarkup(getMainMenuKeyboard());
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         String message;
         try {
-            message = this.updateHandler.processUpdate(update);
+            message = updateHandler.processUpdate(update);
             sendMessage.setText(message);
         } catch (BadInputException e) {
             sendMessage.setText(e.getMessage());
@@ -45,20 +45,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         }
     }
 
-    private static ReplyKeyboardMarkup getMainMenuKeyboard() {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add("fuck it");
-        keyboardFirstRow.add("fuck life");
-        keyboard.add(keyboardFirstRow);
-        replyKeyboardMarkup.setKeyboard(keyboard);
 
-        return replyKeyboardMarkup;
-    }
 
 }
