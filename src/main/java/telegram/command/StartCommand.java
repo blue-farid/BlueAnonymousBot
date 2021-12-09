@@ -1,12 +1,15 @@
 package telegram.command;
 
-public class StartCommand extends Command {
-    private final String message = "حله!\n" +
-            "\n" +
-            "چه کاری برات انجام بدم؟";
+import telegram.MainMenu;
 
-    @Override
-    public String execute() {
-        return message;
+public class StartCommand extends Command {
+    public StartCommand(){
+        this.setReplyMarkup(new MainMenu().getReplyMarkup());
+        this.enableMarkdown(true);
+        String message = "حله!\n" +
+                "\n" +
+                "چه کاری برات انجام بدم؟";
+        setText(message);
     }
+
 }
