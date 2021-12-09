@@ -1,15 +1,18 @@
 package telegram;
 
+import db.dao.UserDao;
 import exception.BadInputException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import telegram.handler.UpdateHandler;
 
 /**
  * the BlueAnonymousBot class
  */
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final UpdateHandler updateHandler = new UpdateHandler();
+    private final UserDao userDao = new UserDao();
 
     @Override
     public String getBotUsername() {
@@ -23,6 +26,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        userDao.addUser(update.getMessage().getFrom());
         log.Console.printNewRequestInfo(update);
         MainMenu sendMessage = new MainMenu();
         sendMessage.enableMarkdown(true);

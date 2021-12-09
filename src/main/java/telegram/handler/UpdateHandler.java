@@ -1,4 +1,4 @@
-package telegram;
+package telegram.handler;
 
 import exception.BadInputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
