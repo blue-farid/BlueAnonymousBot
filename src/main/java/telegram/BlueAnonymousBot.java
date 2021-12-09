@@ -22,7 +22,6 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     }
 
     @Override
-
     public void onUpdateReceived(Update update) {
         log.Console.printNewRequestInfo(update);
         MainMenu sendMessage = new MainMenu();
