@@ -22,12 +22,12 @@ public class MainMenu extends SendMessage {
         KeyboardRow keyboardRow2 = new KeyboardRow();
         KeyboardRow keyboardRow3 = new KeyboardRow();
         KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardFirstRow.add("\uD83D\uDD17 به یه ناشناس وصلم کن!");
-        keyboardRow2.add("\uD83D\uDC8C به مخاطب خاصم وصلم کن!");
-        keyboardRow3.add("لینک ناشناس من\uD83D\uDCEC");
-        keyboardRow3.add("\uD83D\uDC65 پیام ناشناس به گروه");
-        keyboardRow4.add("راهنما");
-        keyboardRow4.add("\uD83C\uDFC6 افزایش امتیاز");
+        keyboardFirstRow.add(Command.ANONYMOUS_CONNECTION.getValue());
+        keyboardRow2.add(Command.SPECIFIC_CONNECTION.getValue());
+        keyboardRow3.add(Command.ANONYMOUS_LINK.getValue());
+        keyboardRow3.add(Command.ANONYMOUS_TO_GROUP.getValue());
+        keyboardRow4.add(Command.HELP.getValue());
+        keyboardRow4.add(Command.SCORE.getValue());
 
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
