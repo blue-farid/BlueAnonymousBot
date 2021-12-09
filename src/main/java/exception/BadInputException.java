@@ -1,6 +1,6 @@
 package exception;
 
-public class BadInputException extends Exception {
+public class BadInputException extends IllegalArgumentException {
     public BadInputException(String message) {
         super(message);
     }
