@@ -30,6 +30,9 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         String message;
         try {
             message = this.updateHandler.processUpdate(update);
+            if (message == null) {
+                return;
+            }
             sendMessage.setText(message);
         } catch (BadInputException e) {
             sendMessage.setText(e.getMessage());

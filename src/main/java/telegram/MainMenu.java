@@ -3,6 +3,7 @@ package telegram;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import telegram.command.Command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,12 @@ public class MainMenu extends SendMessage {
         KeyboardRow keyboardRow2 = new KeyboardRow();
         KeyboardRow keyboardRow3 = new KeyboardRow();
         KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardFirstRow.add(Command.ANONYMOUS_CONNECTION.getValue());
-        keyboardRow2.add(Command.SPECIFIC_CONNECTION.getValue());
-        keyboardRow3.add(Command.ANONYMOUS_LINK.getValue());
-        keyboardRow3.add(Command.ANONYMOUS_TO_GROUP.getValue());
-        keyboardRow4.add(Command.HELP.getValue());
-        keyboardRow4.add(Command.SCORE.getValue());
+        keyboardFirstRow.add(Command.getAnonymousConnection());
+        keyboardRow2.add(Command.getSpecificConnection());
+        keyboardRow3.add(Command.getAnonymousLink());
+        keyboardRow3.add(Command.getAnonymousToGroup());
+        keyboardRow4.add(Command.getHELP());
+        keyboardRow4.add(Command.getSCORE());
 
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
