@@ -24,6 +24,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     @Override
 
     public void onUpdateReceived(Update update) {
+        log.Console.printNewRequestInfo(update);
         MainMenu sendMessage = new MainMenu();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
@@ -31,7 +32,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         try {
             message = this.updateHandler.processUpdate(update);
             if (message == null) {
-                return;
+                message = "I'M NOT DONE YET!";
             }
             sendMessage.setText(message);
         } catch (BadInputException e) {
@@ -43,6 +44,5 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
 
 }
