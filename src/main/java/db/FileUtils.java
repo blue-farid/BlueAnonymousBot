@@ -3,10 +3,15 @@ package db;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the FilePath enum
+ * all of the file paths should be defined here
+ */
 enum FilePath {
-    TELEGRAM_USERS("\\files\\db\\telegram_users.bin");
+    TELEGRAM_USERS("files\\db\\telegram_users.bin");
 
     private final String value;
 
@@ -19,8 +24,11 @@ enum FilePath {
     }
 }
 
+/**
+ * the FileUtils singleton class
+ */
 public class FileUtils {
-    private File telegramUsersFile;
+    private final File telegramUsersFile = new File(FilePath.TELEGRAM_USERS.getValue());
     private static FileUtils instance;
 
     private FileUtils() {
@@ -34,7 +42,7 @@ public class FileUtils {
     }
 
     public void writeTelegramUsers(List<User> users) {
-        initializeFile(telegramUsersFile, FilePath.TELEGRAM_USERS.getValue());
+        initializeFile(telegramUsersFile);
         ObjectOutputStream out = getObjectOutputStream(telegramUsersFile);
         try {
             assert out != null;
@@ -45,22 +53,18 @@ public class FileUtils {
     }
 
     public List<User> readTelegramUsers() {
-        initializeFile(telegramUsersFile, FilePath.TELEGRAM_USERS.getValue());
+        initializeFile(telegramUsersFile);
         ObjectInputStream in = getObjectInputStream(telegramUsersFile);
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
-            assert in != null;
             users = (List<User>) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | NullPointerException e) {
             e.printStackTrace();
         }
         return users;
     }
 
-    private void initializeFile(File file, String path) {
-        if (file == null) {
-            file = new File(path);
-        }
+    private void initializeFile(File file) {
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -73,7 +77,7 @@ public class FileUtils {
     private ObjectOutputStream getObjectOutputStream(File file) {
         OutputStream out;
         try {
-            out = new BufferedOutputStream(new FileOutputStream(file));
+            out = new FileOutputStream(file);
             return new ObjectOutputStream(out);
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,7 +88,7 @@ public class FileUtils {
     private ObjectInputStream getObjectInputStream(File file) {
         InputStream in;
         try {
-            in = new BufferedInputStream(new FileInputStream(telegramUsersFile));
+            in = new FileInputStream(file);
             return new ObjectInputStream(in);
         } catch (IOException e) {
             e.printStackTrace();

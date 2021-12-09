@@ -12,7 +12,6 @@ import telegram.handler.UpdateHandler;
  */
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final UpdateHandler updateHandler = new UpdateHandler();
-    private final UserDao userDao = new UserDao();
 
     @Override
     public String getBotUsername() {
@@ -26,7 +25,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        userDao.addUser(update.getMessage().getFrom());
+        UserDao.getInstance().addUser(update.getMessage().getFrom());
         log.Console.printNewRequestInfo(update);
         MainMenu sendMessage = new MainMenu();
         sendMessage.enableMarkdown(true);

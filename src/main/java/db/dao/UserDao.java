@@ -5,11 +5,21 @@ import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
 
+/**
+ * the UserDao class
+ */
 public class UserDao {
+    private static UserDao instance;
     private final List<User> users;
 
-    public UserDao() {
+    private UserDao() {
         users = FileUtils.getInstance().readTelegramUsers();
+    }
+
+    public static UserDao getInstance() {
+        if (instance == null)
+            instance = new UserDao();
+        return instance;
     }
 
     public List<User> getUsers() {
