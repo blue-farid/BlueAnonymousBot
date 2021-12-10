@@ -25,8 +25,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        UserDao.getInstance().addUser(update.getMessage().getFrom());
-        log.Console.printNewRequestInfo(update);
+        newRequestReceived(update);
         MainMenu sendMessage = new MainMenu();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
@@ -45,6 +44,11 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    public void newRequestReceived(Update update) {
+        UserDao.getInstance().addUser(update.getMessage().getFrom());
+        log.Console.printNewRequestInfo(update);
     }
 
 }
