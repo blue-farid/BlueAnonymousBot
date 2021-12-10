@@ -1,5 +1,6 @@
 package db;
 
+import model.Client;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.io.*;
@@ -11,7 +12,7 @@ import java.util.List;
  * all of the file paths should be defined here
  */
 enum FilePath {
-    TELEGRAM_USERS("files\\db\\telegram_users.bin");
+    BOT_CLIENTS("files\\db\\bot_clients.bin");
 
     private final String value;
 
@@ -28,7 +29,7 @@ enum FilePath {
  * the FileUtils singleton class
  */
 public class FileUtils {
-    private final File telegramUsersFile = new File(FilePath.TELEGRAM_USERS.getValue());
+    private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
     private static FileUtils instance;
 
     private FileUtils() {
@@ -41,27 +42,27 @@ public class FileUtils {
         return instance;
     }
 
-    public void writeTelegramUsers(List<User> users) {
-        initializeFile(telegramUsersFile);
-        ObjectOutputStream out = getObjectOutputStream(telegramUsersFile);
+    public void writeTelegramUsers(List<Client> clients) {
+        initializeFile(botClientsFile);
+        ObjectOutputStream out = getObjectOutputStream(botClientsFile);
         try {
             assert out != null;
-            out.writeObject(users);
+            out.writeObject(clients);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public List<User> readTelegramUsers() {
-        initializeFile(telegramUsersFile);
-        ObjectInputStream in = getObjectInputStream(telegramUsersFile);
-        List<User> users = new ArrayList<>();
+    public List<Client> readTelegramUsers() {
+        initializeFile(botClientsFile);
+        ObjectInputStream in = getObjectInputStream(botClientsFile);
+        List<Client> clients = new ArrayList<>();
         try {
-            users = (List<User>) in.readObject();
+            clients = (List<Client>) in.readObject();
         } catch (IOException | ClassNotFoundException | NullPointerException e) {
             e.printStackTrace();
         }
-        return users;
+        return clients;
     }
 
     private void initializeFile(File file) {

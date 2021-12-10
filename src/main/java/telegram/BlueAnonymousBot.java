@@ -1,6 +1,6 @@
 package telegram;
 
-import db.dao.UserDao;
+import db.dao.ClientDao;
 import exception.BadInputException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -47,7 +47,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     }
 
     public void newRequestReceived(Update update) {
-        UserDao.getInstance().addUser(update.getMessage().getFrom());
+        ClientDao.getInstance().addUser(update.getMessage().getFrom());
         log.Console.printNewRequestInfo(update);
     }
 

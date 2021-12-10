@@ -1,7 +1,6 @@
 package log;
 
-import db.FileUtils;
-import db.dao.UserDao;
+import db.dao.ClientDao;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -26,7 +25,7 @@ public class Console {
      * print all of the users that use the bot on console
      */
     public static void printAllUsers() {
-        List<User> users = UserDao.getInstance().getUsers();
+        List<User> users = ClientDao.getInstance().getClients();
         for (User user: users) {
             System.out.println(user);
         }
