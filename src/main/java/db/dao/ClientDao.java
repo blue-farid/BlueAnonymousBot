@@ -27,7 +27,7 @@ public class ClientDao {
         return clients;
     }
 
-    public int addUser(Client client) {
+    public int addClient(Client client) {
         if (clients.contains(client)) {
             return 1;
         }
