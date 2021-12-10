@@ -20,7 +20,7 @@ public class RandomUtils {
         String string = "";
 
         for (int i = 0; i < len; i++) {
-            int randNum = random.nextInt();
+            int randNum = random.nextInt(10);
             string += randNum;
         }
         return string;

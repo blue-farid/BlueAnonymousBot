@@ -1,8 +1,11 @@
 package model;
 
+import db.dao.ClientDao;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-public class Client {
+import java.io.Serializable;
+
+public class Client implements Serializable {
     private final User telegramUser;
     private String deepLink;
 
@@ -21,6 +24,7 @@ public class Client {
 
     public void setDeepLink(String deepLink) {
         this.deepLink = deepLink;
+        ClientDao.getInstance().rewriteClients();
     }
 
     public boolean hasDeepLink() {

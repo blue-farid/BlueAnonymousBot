@@ -8,7 +8,6 @@ import telegram.command.Command;
 public class UpdateHandler {
 
     public String processUpdate(Update update) throws BadInputException {
-        Message message = update.getMessage();
         Command command;
 
         try {

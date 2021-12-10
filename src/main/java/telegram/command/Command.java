@@ -65,31 +65,31 @@ public abstract class Command {
     }
 
     public static Command valueOf(Update update) {
-        String[] values = update.getMessage().getText().split(" ");
-        String caseValue = values[0];
-        switch (caseValue) {
-            case START:
-                try {
-                    return new StartCommand(values[1]);
-                } catch (IndexOutOfBoundsException e) {
-                    return new StartCommand();
-                }
-            case RESTART:
-                return new RestartCommand();
-            case ANONYMOUS_LINK:
-                return new AnonymousLinkCommand(new Client(update.getMessage().getFrom()));
-            case ANONYMOUS_CONNECTION:
-                return new AnonymousConnectionCommand();
-            case ANONYMOUS_TO_GROUP:
-                return new AnonymousToGroupCommand();
-            case SPECIFIC_CONNECTION:
-                return new SpecificConnectionCommand();
-            case SCORE:
-                return new ScoreCommand();
-            case HELP:
-                return new HelpCommand();
-            default:
-                throw new IllegalArgumentException();
+        String caseValue = update.getMessage().getText();
+
+        if (caseValue.contains(START)) {
+            String[] values = caseValue.split(" ");
+            if (values[0].equals(START) && values.length > 1) {
+                return new StartCommand(values[1]);
+            } else {
+                return new StartCommand();
+            }
+        } else if (caseValue.equals(RESTART)) {
+            return new RestartCommand();
+        } else if (caseValue.equals(ANONYMOUS_CONNECTION)) {
+            return new AnonymousConnectionCommand();
+        } else if (caseValue.equals(ANONYMOUS_TO_GROUP)) {
+            return new AnonymousToGroupCommand();
+        } else if (caseValue.equals(ANONYMOUS_LINK)) {
+            return new AnonymousLinkCommand(new Client(update.getMessage().getFrom()));
+        } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
+            return new SpecificConnectionCommand();
+        } else if (caseValue.equals(HELP)) {
+            return new HelpCommand();
+        } else if (caseValue.equals(SCORE)) {
+            return new ScoreCommand();
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 

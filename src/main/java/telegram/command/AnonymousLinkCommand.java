@@ -31,10 +31,11 @@ public class AnonymousLinkCommand extends Command {
     }
 
     public String generateAnonymousLink() {
-        String anonymousLink = "";
-        anonymousLink += RandomUtils.getInstance().generateRandomString(2);
+        String anonymousLink = "https://t.me/BChaatt_Bot?start=sc";
+        anonymousLink += "-";
         anonymousLink += RandomUtils.getInstance().generateRandomNumber(5);
-        anonymousLink += RandomUtils.getInstance().generateRandomString(7);
+        anonymousLink += "-";
+        anonymousLink += RandomUtils.getInstance().generateRandomString(8);
         return anonymousLink;
     }
 

@@ -52,4 +52,8 @@ public class ClientDao {
         }
         return null;
     }
+
+    public void rewriteClients() {
+        FileUtils.getInstance().writeTelegramUsers(clients);
+    }
 }
