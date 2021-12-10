@@ -18,7 +18,7 @@ public class StartCommand extends Command {
         if (optionalCommand.isEmpty())
             return this.message;
         else {
-            return optionalCommand.get();
+            return null;
         }
     }
 
