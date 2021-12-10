@@ -22,4 +22,8 @@ public class Client {
     public void setDeepLink(String deepLink) {
         this.deepLink = deepLink;
     }
+
+    public boolean hasDeepLink() {
+        return deepLink != null;
+    }
 }

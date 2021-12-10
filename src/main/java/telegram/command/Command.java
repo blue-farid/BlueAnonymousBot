@@ -1,5 +1,8 @@
 package telegram.command;
 
+import model.Client;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
 import java.util.Optional;
 
 public abstract class Command {
@@ -61,8 +64,8 @@ public abstract class Command {
         return SCORE;
     }
 
-    public static Command valueOf(String value) {
-        String[] values = value.split(" ");
+    public static Command valueOf(Update update) {
+        String[] values = update.getMessage().getText().split(" ");
         String caseValue = values[0];
         switch (caseValue) {
             case START:
@@ -74,7 +77,7 @@ public abstract class Command {
             case RESTART:
                 return new RestartCommand();
             case ANONYMOUS_LINK:
-                return new AnonymousLinkCommand();
+                return new AnonymousLinkCommand(new Client(update.getMessage().getFrom()));
             case ANONYMOUS_CONNECTION:
                 return new AnonymousConnectionCommand();
             case ANONYMOUS_TO_GROUP:

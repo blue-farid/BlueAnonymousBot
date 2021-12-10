@@ -12,7 +12,7 @@ public class UpdateHandler {
         Command command;
 
         try {
-            command = Command.valueOf(message.getText());
+            command = Command.valueOf(update);
         } catch (IllegalArgumentException e) {
             // handle bad inputs.
             throw new BadInputException(telegram.Message.BAD_INPUT.getValue());
