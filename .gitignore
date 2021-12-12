@@ -3,3 +3,5 @@
 target
 BlueAnonymousBot.iml
 files
+Dockerfile
+.dockerignore
