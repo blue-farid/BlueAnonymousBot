@@ -13,10 +13,11 @@ public class BadInputException extends IllegalArgumentException {
      *
      * @param message the message
      */
-    public BadInputException(String message) {
+    public BadInputException(String message, String chatId) {
         super(message);
         sendMessage = new SendMessage();
         sendMessage.setText(message);
+        sendMessage.setChatId(chatId);
     }
 
     public SendMessage getSendMessage() {

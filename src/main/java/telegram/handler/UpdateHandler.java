@@ -13,7 +13,8 @@ public class UpdateHandler {
             command = Command.valueOf(update);
         } catch (IllegalArgumentException e) {
             // handle bad inputs.
-            throw new BadInputException(telegram.Message.BAD_INPUT.getValue());
+            throw new BadInputException(telegram.Message.BAD_INPUT.getValue(),
+                    update.getMessage().getChatId().toString());
         }
         command.execute();
     }

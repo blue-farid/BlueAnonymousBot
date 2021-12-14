@@ -1,7 +1,6 @@
 package telegram.command;
 
 import model.Client;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.BlueAnonymousBot;
 import utils.RandomUtils;
 
@@ -17,9 +16,8 @@ public class AnonymousLinkCommand extends Command {
 
     private final Client client;
 
-    public AnonymousLinkCommand(Client client) {
-        super(localMessage.replace("?name",
-                client.getTelegramUser().getFirstName()));
+    public AnonymousLinkCommand(String chatId, Client client) {
+        super(chatId);
         this.client = client;
     }
 
@@ -27,13 +25,15 @@ public class AnonymousLinkCommand extends Command {
     public void execute() {
         if (!client.hasDeepLink()) {
             String deepLink = generateAnonymousLink();
-            client.setDeepLink(deepLink);
+            client.setLongDeepLink(deepLink);
         }
-        this.sendMessage.setText(this.sendMessage.getText().concat(client.getDeepLink()));
+        this.sendMessage.setText(localMessage.replace("?name",
+                client.getTelegramUser().getFirstName())
+                .concat(client.getLongDeepLink()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
     }
 
-    public String generateAnonymousLink() {
+    private String generateAnonymousLink() {
         String anonymousLink = "https://t.me/BChaatt_Bot?start=sc";
         anonymousLink += "-";
         anonymousLink += RandomUtils.getInstance().generateRandomNumber(5);

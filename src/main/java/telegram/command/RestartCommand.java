@@ -5,8 +5,8 @@ public class RestartCommand extends Command {
             "\n" +
             "چه کاری برات انجام بدم؟";
 
-    public RestartCommand() {
-        super(message);
+    public RestartCommand(String chatId) {
+        super(chatId);
     }
 
     @Override

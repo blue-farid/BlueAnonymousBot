@@ -1,5 +1,6 @@
 package telegram.command;
 
+import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -74,19 +75,21 @@ public abstract class Command {
                 return new StartCommand(chatId);
             }
         } else if (caseValue.equals(RESTART)) {
-            return new RestartCommand();
+            return new RestartCommand(chatId);
         } else if (caseValue.equals(ANONYMOUS_CONNECTION)) {
-            return new AnonymousConnectionCommand();
+            return new AnonymousConnectionCommand(chatId);
         } else if (caseValue.equals(ANONYMOUS_TO_GROUP)) {
-            return new AnonymousToGroupCommand();
+            return new AnonymousToGroupCommand(chatId);
         } else if (caseValue.equals(ANONYMOUS_LINK)) {
-            return new AnonymousLinkCommand(new Client(update.getMessage().getFrom()));
+            return new AnonymousLinkCommand(chatId,
+                    ClientDao.getInstance().searchById(
+                            update.getMessage().getFrom().getId()));
         } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
             return new SpecificConnectionCommand(chatId);
         } else if (caseValue.equals(HELP)) {
-            return new HelpCommand();
+            return new HelpCommand(chatId);
         } else if (caseValue.equals(SCORE)) {
-            return new ScoreCommand();
+            return new ScoreCommand(chatId);
         } else {
             throw new IllegalArgumentException();
         }

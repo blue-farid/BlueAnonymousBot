@@ -1,6 +1,7 @@
 package telegram;
 
 import dao.ClientDao;
+import exception.BadInputException;
 import model.Client;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,6 +15,8 @@ import telegram.handler.UpdateHandler;
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private static BlueAnonymousBot instance;
     private final UpdateHandler updateHandler = new UpdateHandler();
+    private boolean readyForGetMessage = false;
+    private String savedMessage;
 
     private BlueAnonymousBot() {
     }
@@ -36,13 +39,23 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        newRequestReceived(update);
-        updateHandler.processUpdate(update);
+        if (!isReadyForGetMessage()) {
+            newRequestReceived(update);
+            try {
+                updateHandler.processUpdate(update);
+            } catch (BadInputException e) {
+                executeSendMessage(e.getSendMessage());
+            }
+        } else {
+            this.savedMessage = update.getMessage().getText();
+            setReadyForGetMessage(false);
+        }
     }
 
     public void newRequestReceived(Update update) {
-        ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom()));
-        log.Console.printNewRequestInfo(update);
+        ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom(),
+                update.getMessage().getChatId()));
+        log.Console.printAllUsers();
     }
 
     public void executeSendMessage(SendMessage sendMessage) {
@@ -53,4 +66,19 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         }
     }
 
+    public void setReadyForGetMessage(boolean readyForGetMessage) {
+        this.readyForGetMessage = readyForGetMessage;
+    }
+
+    public boolean isReadyForGetMessage() {
+        return readyForGetMessage;
+    }
+
+    public String getSavedMessage() {
+        try {
+            return savedMessage;
+        } finally {
+            savedMessage = null;
+        }
+    }
 }

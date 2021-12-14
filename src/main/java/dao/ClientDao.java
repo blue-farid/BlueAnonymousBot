@@ -52,6 +52,15 @@ public class ClientDao {
         return null;
     }
 
+    public Client searchByDeepLink(String deepLink) {
+        for (Client client: clients) {
+            System.out.println(client.getLongDeepLink() + " " + deepLink);
+            if (client.hasDeepLink() && client.getShortDeepLink().equals(deepLink))
+                return client;
+        }
+        return null;
+    }
+
     public void rewriteClients() {
         FileUtils.getInstance().writeTelegramUsers(clients);
     }
