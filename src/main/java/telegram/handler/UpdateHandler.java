@@ -1,7 +1,6 @@
 package telegram.handler;
 
 import exception.BadInputException;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.command.Command;
 
