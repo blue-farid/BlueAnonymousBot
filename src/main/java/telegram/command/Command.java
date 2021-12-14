@@ -1,7 +1,6 @@
 package telegram.command;
 
 import dao.ClientDao;
-import model.Client;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -17,9 +16,8 @@ public abstract class Command {
     private static final String ANONYMOUS_TO_GROUP = "\uD83D\uDC65 پیام ناشناس به گروه";
     private static final String HELP = "راهنما";
     private static final String SCORE = "\uD83C\uDFC6 افزایش امتیاز";
-
-    protected SendMessage sendMessage;
     protected final Optional<String> optionalCommand;
+    protected SendMessage sendMessage;
 
     public Command(String chatId) {
         sendMessage = new SendMessage();
@@ -95,7 +93,6 @@ public abstract class Command {
             return new HelpCommand(chatId);
         } else if (caseValue.equals(SCORE)) {
             return new ScoreCommand(chatId);
-            return new ScoreCommand();
         } else if (caseValue.equals(CANCEL)) {
             return new CancelCommand(chatId);
         } else {
