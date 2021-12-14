@@ -1,6 +1,6 @@
 package telegram;
 
-import db.dao.ClientDao;
+import dao.ClientDao;
 import exception.BadInputException;
 import model.Client;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;

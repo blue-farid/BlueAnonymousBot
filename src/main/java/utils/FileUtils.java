@@ -1,7 +1,6 @@
-package db;
+package utils;
 
 import model.Client;
-import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package model;
 
-import db.dao.ClientDao;
+import dao.ClientDao;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.io.Serializable;

@@ -1,9 +1,8 @@
 package log;
 
-import db.dao.ClientDao;
+import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
 
