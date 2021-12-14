@@ -1,6 +1,7 @@
 package telegram.command;
 
 import model.Client;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import utils.RandomUtils;
 
 public class AnonymousLinkCommand extends Command {
@@ -22,12 +23,13 @@ public class AnonymousLinkCommand extends Command {
     }
 
     @Override
-    public String execute() {
-        if (client.hasDeepLink())
-            return this.message + client.getDeepLink();
-        String deepLink = generateAnonymousLink();
-        client.setDeepLink(deepLink);
-        return this.message + client.getDeepLink();
+    public SendMessage execute() {
+        if (!client.hasDeepLink()) {
+            String deepLink = generateAnonymousLink();
+            client.setDeepLink(deepLink);
+        }
+        this.sendMessage.setText(this.sendMessage.getText().concat(client.getDeepLink()));
+        return this.sendMessage;
     }
 
     public String generateAnonymousLink() {

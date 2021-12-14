@@ -1,6 +1,7 @@
 package telegram.command;
 
 import model.Client;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Optional;
@@ -15,20 +16,21 @@ public abstract class Command {
     private static final String HELP = "راهنما";
     private static final String SCORE = "\uD83C\uDFC6 افزایش امتیاز";
 
-    protected final String message;
+    protected SendMessage sendMessage;
     protected final Optional<String> optionalCommand;
 
     public Command() {
-        this.message = null;
         optionalCommand = Optional.empty();
     }
     public Command(String message) {
-        this.message = message;
+        this.sendMessage = new SendMessage();
+        this.sendMessage.setText(message);
         this.optionalCommand = Optional.empty();
     }
 
     public Command(String message, String optionalCommand) {
-        this.message = message;
+        this.sendMessage = new SendMessage();
+        this.sendMessage.setText(message);
         this.optionalCommand = Optional.of(optionalCommand);
     }
 
@@ -93,9 +95,5 @@ public abstract class Command {
         }
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public abstract String execute();
+    public abstract SendMessage execute();
 }

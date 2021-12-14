@@ -4,6 +4,7 @@ import dao.ClientDao;
 import exception.BadInputException;
 import model.Client;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.handler.UpdateHandler;
@@ -27,18 +28,11 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         newRequestReceived(update);
-        MainMenu sendMessage = new MainMenu();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
-        String message;
+        SendMessage sendMessage;
         try {
-            message = this.updateHandler.processUpdate(update);
-            if (message == null) {
-                message = "I'M NOT DONE YET!";
-            }
-            sendMessage.setText(message);
+            sendMessage = this.updateHandler.processUpdate(update);
         } catch (BadInputException e) {
-            sendMessage.setText(e.getMessage());
+            sendMessage = e.getSendMessage();
         }
         try {
             execute(sendMessage);

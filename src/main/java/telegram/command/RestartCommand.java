@@ -1,12 +1,18 @@
 package telegram.command;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
 public class RestartCommand extends Command {
-    private final String message = "حله!\n" +
+    private static final String message = "حله!\n" +
             "\n" +
             "چه کاری برات انجام بدم؟";
 
+    public RestartCommand() {
+        super(message);
+    }
+
     @Override
-    public String execute() {
-        return message;
+    public SendMessage execute() {
+        return this.sendMessage;
     }
 }

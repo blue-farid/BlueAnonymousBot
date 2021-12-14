@@ -1,5 +1,7 @@
 package telegram.command;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
 public class StartCommand extends Command {
     private static final String localMessage = "حله!\n" +
             "\n" +
@@ -14,9 +16,9 @@ public class StartCommand extends Command {
     }
 
     @Override
-    public String execute() {
+    public SendMessage execute() {
         if (optionalCommand.isEmpty())
-            return this.message;
+            return this.sendMessage;
         else {
             return null;
         }
