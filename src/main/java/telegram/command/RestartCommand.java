@@ -5,5 +5,8 @@ public class RestartCommand extends Command {
             "\n" +
             "چه کاری برات انجام بدم؟";
 
-
+    @Override
+    public String execute() {
+        return message;
+    }
 }

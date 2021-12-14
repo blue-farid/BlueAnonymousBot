@@ -17,7 +17,6 @@ public class MainMenu extends SendMessage {
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(false);
-
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         KeyboardRow keyboardRow2 = new KeyboardRow();

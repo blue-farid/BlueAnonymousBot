@@ -1,14 +1,11 @@
 package telegram.command;
 
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import model.Client;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-public abstract class Command extends SendMessage {
+public abstract class Command {
     private static final String START = "/start";
     private static final String RESTART = "/restart";
     private static final String ANONYMOUS_CONNECTION = "\uD83D\uDD17 به یه ناشناس وصلم کن!";
@@ -17,7 +14,23 @@ public abstract class Command extends SendMessage {
     private static final String ANONYMOUS_TO_GROUP = "\uD83D\uDC65 پیام ناشناس به گروه";
     private static final String HELP = "راهنما";
     private static final String SCORE = "\uD83C\uDFC6 افزایش امتیاز";
-    private static final String CANCEL = "انصراف";
+
+    protected final String message;
+    protected final Optional<String> optionalCommand;
+
+    public Command() {
+        this.message = null;
+        optionalCommand = Optional.empty();
+    }
+    public Command(String message) {
+        this.message = message;
+        this.optionalCommand = Optional.empty();
+    }
+
+    public Command(String message, String optionalCommand) {
+        this.message = message;
+        this.optionalCommand = Optional.of(optionalCommand);
+    }
 
     public static String getSTART() {
         return START;
@@ -51,29 +64,38 @@ public abstract class Command extends SendMessage {
         return SCORE;
     }
 
-    public static Command valueOf(String value, User user) {
-        return switch (value) {
-            case START, CANCEL,RESTART -> new StartCommand();
-            case ANONYMOUS_CONNECTION -> new AnonymousConnectionCommand();
-            case SPECIFIC_CONNECTION -> new SpecificConnectionCommand();
-            case ANONYMOUS_LINK -> new AnonymousLinkCommand(user.getFirstName());
-            case ANONYMOUS_TO_GROUP -> new AnonymousToGroupCommand();
-            case HELP -> new HelpCommand();
-            case SCORE -> new ScoreCommand();
-            default -> throw new IllegalArgumentException();
-        };
-    }
-   public ReplyKeyboardMarkup cancelMenu(){
-       ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-       replyKeyboardMarkup.setSelective(true);
-       replyKeyboardMarkup.setResizeKeyboard(true);
-       replyKeyboardMarkup.setOneTimeKeyboard(false);
+    public static Command valueOf(Update update) {
+        String caseValue = update.getMessage().getText();
 
-       List<KeyboardRow> keyboard = new ArrayList<>();
-       KeyboardRow keyboardFirstRow = new KeyboardRow();
-       keyboardFirstRow.add("انصراف");
-       keyboard.add(keyboardFirstRow);
-       replyKeyboardMarkup.setKeyboard(keyboard);
-       return replyKeyboardMarkup;
-   }
+        if (caseValue.contains(START)) {
+            String[] values = caseValue.split(" ");
+            if (values[0].equals(START) && values.length > 1) {
+                return new StartCommand(values[1]);
+            } else {
+                return new StartCommand();
+            }
+        } else if (caseValue.equals(RESTART)) {
+            return new RestartCommand();
+        } else if (caseValue.equals(ANONYMOUS_CONNECTION)) {
+            return new AnonymousConnectionCommand();
+        } else if (caseValue.equals(ANONYMOUS_TO_GROUP)) {
+            return new AnonymousToGroupCommand();
+        } else if (caseValue.equals(ANONYMOUS_LINK)) {
+            return new AnonymousLinkCommand(new Client(update.getMessage().getFrom()));
+        } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
+            return new SpecificConnectionCommand();
+        } else if (caseValue.equals(HELP)) {
+            return new HelpCommand();
+        } else if (caseValue.equals(SCORE)) {
+            return new ScoreCommand();
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public abstract String execute();
 }

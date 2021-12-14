@@ -5,15 +5,16 @@ import telegram.BlueAnonymousBot;
 
 /**
  * The BlueAnonymousBot Project
- * This is Fake-Copy of a persian telegram ChatBot called 'برنامه ناشناس'
- * Written by two Student, Farid Masjedi and Negar Anabestani
+ * This is a Fake-Copy of a persian telegram ChatBot called 'برنامه ناشناس'
+ * Written by two CE Student, Farid Masjedi and Negar Anabestani
  * @ AUT (AmirKabir University of Technology)
  *
- * @author blue-farid
- * @author negar-anabestani
+ * @author Farid Masjedi
+ * @author Negar Anabestani
  * @since 2021/8
  * @version 1.0
  *
+ * Telegram_id: @blue_farid
  * github: https://github.com/blue-farid
  *
  */

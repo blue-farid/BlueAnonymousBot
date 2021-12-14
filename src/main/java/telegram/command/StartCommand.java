@@ -1,15 +1,25 @@
 package telegram.command;
 
-import telegram.MainMenu;
-
 public class StartCommand extends Command {
-    public StartCommand(){
-        this.setReplyMarkup(new MainMenu().getReplyMarkup());
-        this.enableMarkdown(true);
-        String message = "حله!\n" +
-                "\n" +
-                "چه کاری برات انجام بدم؟";
-        setText(message);
+    private static final String localMessage = "حله!\n" +
+            "\n" +
+            "چه کاری برات انجام بدم؟";
+
+    public StartCommand() {
+        super(localMessage);
+    }
+
+    public StartCommand(String optionalCommand) {
+        super(localMessage, optionalCommand);
+    }
+
+    @Override
+    public String execute() {
+        if (optionalCommand.isEmpty())
+            return this.message;
+        else {
+            return null;
+        }
     }
 
 }
