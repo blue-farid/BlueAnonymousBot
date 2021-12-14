@@ -95,5 +95,5 @@ public abstract class Command {
         }
     }
 
-    public abstract SendMessage execute();
+    public abstract void execute();
 }

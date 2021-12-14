@@ -1,6 +1,6 @@
 package telegram.command;
 
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import telegram.BlueAnonymousBot;
 
 public class StartCommand extends Command {
     private static final String localMessage = "حله!\n" +
@@ -16,12 +16,10 @@ public class StartCommand extends Command {
     }
 
     @Override
-    public SendMessage execute() {
+    public void execute() {
         if (optionalCommand.isEmpty())
-            return this.sendMessage;
-        else {
-            return null;
-        }
+            BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+
     }
 
 }

@@ -14,6 +14,15 @@ import telegram.handler.UpdateHandler;
  */
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final UpdateHandler updateHandler = new UpdateHandler();
+    private static BlueAnonymousBot instance;
+
+    private BlueAnonymousBot() {}
+
+    public static BlueAnonymousBot getInstance() {
+        if (instance == null)
+            instance = new BlueAnonymousBot();
+        return instance;
+    }
 
     @Override
     public String getBotUsername() {
@@ -28,22 +37,20 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         newRequestReceived(update);
-        SendMessage sendMessage;
-        try {
-            sendMessage = this.updateHandler.processUpdate(update);
-        } catch (BadInputException e) {
-            sendMessage = e.getSendMessage();
-        }
-        try {
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        updateHandler.processUpdate(update);
     }
 
     public void newRequestReceived(Update update) {
         ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom()));
         log.Console.printNewRequestInfo(update);
+    }
+
+    public void executeSendMessage(SendMessage sendMessage) {
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
 }
