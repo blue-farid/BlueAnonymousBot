@@ -3,6 +3,7 @@ package log;
 import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import telegram.command.Command;
 
 import java.util.List;
 
@@ -16,7 +17,15 @@ public class Console {
      * @param update
      */
     public static void printNewRequestInfo(Update update) {
-        System.out.println("- new Request:" +
+        System.out.println("- new Request: " +
+
+                "\n" + "\t" + "from: " +
+                update.getMessage().getFrom().getUserName());
+    }
+
+    public static void printNewRequestInfo(Update update, Command command) {
+        System.out.println("- new Request: " +
+                command.getClass().getSimpleName() +
                 "\n" + "\t" + "from: " +
                 update.getMessage().getFrom().getUserName());
     }

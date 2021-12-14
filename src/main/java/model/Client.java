@@ -11,10 +11,13 @@ public class Client implements Serializable {
     private String longDeepLink;
     private String shortDeepLink;
     private final Long chatId;
+    private ClientState clientState;
+    private Client Contact;
 
     public Client(User user, Long chatId) {
         this.telegramUser = user;
         this.chatId = chatId;
+        this.clientState = ClientState.NORMAL;
     }
 
     public User getTelegramUser() {
@@ -45,6 +48,22 @@ public class Client implements Serializable {
         return chatId;
     }
 
+    public ClientState getClientState() {
+        return clientState;
+    }
+
+    public void setClientState(ClientState clientState) {
+        this.clientState = clientState;
+    }
+
+    public void setContact(Client contact) {
+        Contact = contact;
+    }
+
+    public Client getContact() {
+        return Contact;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,3 +81,4 @@ public class Client implements Serializable {
         return longDeepLink != null;
     }
 }
+

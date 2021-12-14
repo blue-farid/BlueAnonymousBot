@@ -54,7 +54,6 @@ public class ClientDao {
 
     public Client searchByDeepLink(String deepLink) {
         for (Client client: clients) {
-            System.out.println(client.getLongDeepLink() + " " + deepLink);
             if (client.hasDeepLink() && client.getShortDeepLink().equals(deepLink))
                 return client;
         }

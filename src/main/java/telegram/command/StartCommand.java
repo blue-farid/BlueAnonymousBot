@@ -3,6 +3,7 @@ package telegram.command;
 import dao.ClientDao;
 import model.Client;
 import menu.MainMenu;
+import model.ClientState;
 import telegram.BlueAnonymousBot;
 
 public class StartCommand extends Command {
@@ -15,12 +16,16 @@ public class StartCommand extends Command {
             "\n" +
             "می\u200Cتونی هر حرف یا انتقادی که تو دلت هست رو بگی چون پیامت به صورت کاملا ناشناس ارسال می\u200Cشه!";
 
+    private final Client client;
+
     public StartCommand(String chatId) {
         super(chatId);
+        this.client = null;
     }
 
-    public StartCommand(String chatId, String optionalCommand) {
+    public StartCommand(String chatId, String optionalCommand, Client client) {
         super(chatId, optionalCommand);
+        this.client = client;
     }
 
     @Override
@@ -30,23 +35,16 @@ public class StartCommand extends Command {
             this.sendMessage.setText(localMessage);
             this.sendMessage.setReplyMarkup(MainMenu.getInstance());
             BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
-            System.out.println(sendMessage.getChatId());
             return;
         }
         // second state
         String deepLink = optionalCommand.get();
-        Client client = ClientDao.getInstance().searchByDeepLink(deepLink);
+        Client contact = ClientDao.getInstance().searchByDeepLink(deepLink);
         sendMessage.setText(localMessage2.replace("?name",
-                client.getTelegramUser().getFirstName()));
+                contact.getTelegramUser().getFirstName()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-        BlueAnonymousBot.getInstance().setReadyForGetMessage(true);
-        sendMessage.setChatId(client.getChatId().toString());
-        sendMessage.setText(BlueAnonymousBot.getInstance().getSavedMessage());
-        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-        sendMessage.setText("پیام شما ارسال شد \uD83D\uDE0A\n" +
-                "\n" +
-                "چه کاری برات انجام بدم؟");
-        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
+        client.setContact(contact);
     }
 
 }

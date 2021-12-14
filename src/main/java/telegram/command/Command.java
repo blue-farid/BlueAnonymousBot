@@ -1,6 +1,8 @@
 package telegram.command;
 
 import dao.ClientDao;
+import model.Client;
+import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -70,31 +72,40 @@ public abstract class Command {
     public static Command valueOf(Update update) {
         String caseValue = update.getMessage().getText();
         String chatId = update.getMessage().getChatId().toString();
-        if (caseValue.contains(START)) {
-            String[] values = caseValue.split(" ");
-            if (values[0].equals(START) && values.length > 1) {
-                return new StartCommand(chatId, values[1]);
+        Client client = ClientDao.getInstance().searchById(
+                update.getMessage().getFrom().getId());
+        if (client.getClientState() == ClientState.NORMAL) {
+            if (caseValue.contains(START)) {
+                String[] values = caseValue.split(" ");
+                if (values[0].equals(START) && values.length > 1) {
+                    return new StartCommand(chatId, values[1], client);
+                } else {
+                    return new StartCommand(chatId);
+                }
+            } else if (caseValue.equals(RESTART)) {
+                return new RestartCommand(chatId);
+            } else if (caseValue.equals(ANONYMOUS_CONNECTION)) {
+                return new AnonymousConnectionCommand(chatId);
+            } else if (caseValue.equals(ANONYMOUS_TO_GROUP)) {
+                return new AnonymousToGroupCommand(chatId);
+            } else if (caseValue.equals(ANONYMOUS_LINK)) {
+                return new AnonymousLinkCommand(chatId,
+                        ClientDao.getInstance().searchById(
+                                update.getMessage().getFrom().getId()));
+            } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
+                return new SpecificConnectionCommand(chatId);
+            } else if (caseValue.equals(HELP)) {
+                return new HelpCommand(chatId);
+            } else if (caseValue.equals(SCORE)) {
+                return new ScoreCommand(chatId);
+            } else if (caseValue.equals(CANCEL)) {
+                return new CancelCommand(chatId);
             } else {
-                return new StartCommand(chatId);
+                throw new IllegalArgumentException();
             }
-        } else if (caseValue.equals(RESTART)) {
-            return new RestartCommand(chatId);
-        } else if (caseValue.equals(ANONYMOUS_CONNECTION)) {
-            return new AnonymousConnectionCommand(chatId);
-        } else if (caseValue.equals(ANONYMOUS_TO_GROUP)) {
-            return new AnonymousToGroupCommand(chatId);
-        } else if (caseValue.equals(ANONYMOUS_LINK)) {
-            return new AnonymousLinkCommand(chatId,
-                    ClientDao.getInstance().searchById(
-                            update.getMessage().getFrom().getId()));
-        } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
-            return new SpecificConnectionCommand(chatId);
-        } else if (caseValue.equals(HELP)) {
-            return new HelpCommand(chatId);
-        } else if (caseValue.equals(SCORE)) {
-            return new ScoreCommand(chatId);
-        } else if (caseValue.equals(CANCEL)) {
-            return new CancelCommand(chatId);
+        } else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
+            return new SendMessageWithDeepLinkCommand(chatId, client,
+                    update.getMessage().getText());
         } else {
             throw new IllegalArgumentException();
         }
