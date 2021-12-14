@@ -2,6 +2,7 @@ package telegram.command;
 
 import dao.ClientDao;
 import model.Client;
+import menu.MainMenu;
 import telegram.BlueAnonymousBot;
 
 public class StartCommand extends Command {
@@ -27,6 +28,7 @@ public class StartCommand extends Command {
         if (optionalCommand.isEmpty()) {
             // first state
             this.sendMessage.setText(localMessage);
+            this.sendMessage.setReplyMarkup(MainMenu.getInstance());
             BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
             System.out.println(sendMessage.getChatId());
             return;
