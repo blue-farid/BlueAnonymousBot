@@ -3,13 +3,16 @@ package telegram.command;
 import menu.MainMenu;
 import telegram.BlueAnonymousBot;
 
-public class RestartCommand extends Command {
+public class CancelCommand extends Command{
     private static final String localMessage = "حله!\n" +
             "\n" +
             "چه کاری برات انجام بدم؟";
+    public CancelCommand(String chatId) {
+        super(chatId);
+    }
 
-    public RestartCommand() {
-        super(localMessage);
+    public CancelCommand(String chatId, String optionalCommand) {
+        super(chatId, optionalCommand);
     }
 
     @Override

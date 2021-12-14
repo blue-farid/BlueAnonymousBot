@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public abstract class Command {
     private static final String START = "/start";
+    private static final String CANCEL = "انصراف";
     private static final String RESTART = "/restart";
     private static final String ANONYMOUS_CONNECTION = "\uD83D\uDD17 به یه ناشناس وصلم کن!";
     private static final String SPECIFIC_CONNECTION = "\uD83D\uDC8C به مخاطب خاصم وصلم کن!";
@@ -63,6 +64,10 @@ public abstract class Command {
         return SCORE;
     }
 
+    public static String getCANCEL() {
+        return CANCEL;
+    }
+
     public static Command valueOf(Update update) {
         String caseValue = update.getMessage().getText();
         String chatId = update.getMessage().getChatId().toString();
@@ -87,6 +92,8 @@ public abstract class Command {
             return new HelpCommand();
         } else if (caseValue.equals(SCORE)) {
             return new ScoreCommand();
+        } else if (caseValue.equals(CANCEL)) {
+            return new CancelCommand(chatId);
         } else {
             throw new IllegalArgumentException();
         }

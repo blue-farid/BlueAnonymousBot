@@ -1,5 +1,6 @@
 package telegram.command;
 
+import menu.MainMenu;
 import telegram.BlueAnonymousBot;
 
 public class StartCommand extends Command {
@@ -19,8 +20,8 @@ public class StartCommand extends Command {
     public void execute() {
         if (optionalCommand.isEmpty()) {
             this.sendMessage.setText(localMessage);
+            this.sendMessage.setReplyMarkup(MainMenu.getInstance());
             BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
-            return;
         }
 
     }
