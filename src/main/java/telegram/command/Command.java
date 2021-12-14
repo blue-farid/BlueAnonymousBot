@@ -19,18 +19,15 @@ public abstract class Command {
     protected SendMessage sendMessage;
     protected final Optional<String> optionalCommand;
 
-    public Command() {
+    public Command(String chatId) {
+        sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
         optionalCommand = Optional.empty();
     }
-    public Command(String message) {
-        this.sendMessage = new SendMessage();
-        this.sendMessage.setText(message);
-        this.optionalCommand = Optional.empty();
-    }
 
-    public Command(String message, String optionalCommand) {
-        this.sendMessage = new SendMessage();
-        this.sendMessage.setText(message);
+    public Command(String chatId, String optionalCommand) {
+        sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
         this.optionalCommand = Optional.of(optionalCommand);
     }
 
@@ -68,13 +65,13 @@ public abstract class Command {
 
     public static Command valueOf(Update update) {
         String caseValue = update.getMessage().getText();
-
+        String chatId = update.getMessage().getChatId().toString();
         if (caseValue.contains(START)) {
             String[] values = caseValue.split(" ");
             if (values[0].equals(START) && values.length > 1) {
-                return new StartCommand(values[1]);
+                return new StartCommand(chatId, values[1]);
             } else {
-                return new StartCommand();
+                return new StartCommand(chatId);
             }
         } else if (caseValue.equals(RESTART)) {
             return new RestartCommand();
@@ -85,7 +82,7 @@ public abstract class Command {
         } else if (caseValue.equals(ANONYMOUS_LINK)) {
             return new AnonymousLinkCommand(new Client(update.getMessage().getFrom()));
         } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
-            return new SpecificConnectionCommand();
+            return new SpecificConnectionCommand(chatId);
         } else if (caseValue.equals(HELP)) {
             return new HelpCommand();
         } else if (caseValue.equals(SCORE)) {

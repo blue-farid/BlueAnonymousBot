@@ -7,18 +7,21 @@ public class StartCommand extends Command {
             "\n" +
             "چه کاری برات انجام بدم؟";
 
-    public StartCommand() {
-        super(localMessage);
+    public StartCommand(String chatId) {
+        super(chatId);
     }
 
-    public StartCommand(String optionalCommand) {
-        super(localMessage, optionalCommand);
+    public StartCommand(String chatId, String optionalCommand) {
+        super(chatId, optionalCommand);
     }
 
     @Override
     public void execute() {
-        if (optionalCommand.isEmpty())
-            BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        if (optionalCommand.isEmpty()) {
+            this.sendMessage.setText(localMessage);
+            BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
+            return;
+        }
 
     }
 
