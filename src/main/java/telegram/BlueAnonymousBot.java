@@ -1,7 +1,6 @@
 package telegram;
 
 import dao.ClientDao;
-import exception.BadInputException;
 import model.Client;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,10 +12,11 @@ import telegram.handler.UpdateHandler;
  * the BlueAnonymousBot class
  */
 public class BlueAnonymousBot extends TelegramLongPollingBot {
-    private final UpdateHandler updateHandler = new UpdateHandler();
     private static BlueAnonymousBot instance;
+    private final UpdateHandler updateHandler = new UpdateHandler();
 
-    private BlueAnonymousBot() {}
+    private BlueAnonymousBot() {
+    }
 
     public static BlueAnonymousBot getInstance() {
         if (instance == null)
