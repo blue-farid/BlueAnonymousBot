@@ -41,7 +41,7 @@ public class FileUtils {
         return instance;
     }
 
-    public void writeTelegramUsers(List<Client> clients) {
+    public synchronized void writeTelegramUsers(List<Client> clients) {
         initializeFile(botClientsFile);
         ObjectOutputStream out = getObjectOutputStream(botClientsFile);
         try {
