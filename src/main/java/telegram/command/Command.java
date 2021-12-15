@@ -88,55 +88,57 @@ public abstract class Command {
             chatId = message.getChatId().toString();
             client = ClientDao.getInstance().searchById(
                     message.getFrom().getId());
-        } else   {
+        } else if (update.hasCallbackQuery()) {
             System.out.println(update.getCallbackQuery().getData());
             client = ClientDao.getInstance().searchById(
                     update.getCallbackQuery().getFrom().getId());
             chatId=client.getChatId().toString();
             callBackValues=update.getCallbackQuery().getData().split(" ");
             caseValue=callBackValues[0];
+        } else {
+            // nobody cares
         }
 
 
 
-            if (client.getClientState() == ClientState.NORMAL) {
-                if (caseValue.contains(START)) {
-                    String[] values = caseValue.split(" ");
-                    if (values[0].equals(START) && values.length > 1) {
-                        return new StartCommand(chatId, values[1], client);
-                    } else {
-                        return new StartCommand(chatId);
-                    }
-                } else if (caseValue.equals(RESTART)) {
-                    return new RestartCommand(chatId);
-                } else if (caseValue.equals(ANONYMOUS_CONNECTION)) {
-                    return new AnonymousConnectionCommand(chatId);
-                } else if (caseValue.equals(ANONYMOUS_TO_GROUP)) {
-                    return new AnonymousToGroupCommand(chatId);
-                } else if (caseValue.equals(ANONYMOUS_LINK)) {
-                    return new AnonymousLinkCommand(chatId,
-                            ClientDao.getInstance().searchById(
-                                    update.getMessage().getFrom().getId()));
-                } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
-                    return new SpecificConnectionCommand(chatId);
-                } else if (caseValue.equals(HELP)) {
-                    return new HelpCommand(chatId);
-                } else if (caseValue.equals(SCORE)) {
-                    return new ScoreCommand(chatId);
-                } else if (caseValue.equals(CANCEL)) {
-                    return new CancelCommand(chatId);
-                } else if (caseValue.equals(ANSWER)){
-                    return new AnswerCommand(chatId,client,callBackValues[1]);
-                }else {
-                    throw new IllegalArgumentException();
+        if (client.getClientState() == ClientState.NORMAL) {
+            if (caseValue.contains(START)) {
+                String[] values = caseValue.split(" ");
+                if (values[0].equals(START) && values.length > 1) {
+                    return new StartCommand(chatId, values[1], client);
+                } else {
+                    return new StartCommand(chatId);
                 }
-            }
-            else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
-                return new SendMessageWithDeepLinkCommand(chatId, client,
-                        update.getMessage().getText());
-            } else {
+            } else if (caseValue.equals(RESTART)) {
+                return new RestartCommand(chatId);
+            } else if (caseValue.equals(ANONYMOUS_CONNECTION)) {
+                return new AnonymousConnectionCommand(chatId);
+            } else if (caseValue.equals(ANONYMOUS_TO_GROUP)) {
+                return new AnonymousToGroupCommand(chatId);
+            } else if (caseValue.equals(ANONYMOUS_LINK)) {
+                return new AnonymousLinkCommand(chatId,
+                        ClientDao.getInstance().searchById(
+                                update.getMessage().getFrom().getId()));
+            } else if (caseValue.equals(SPECIFIC_CONNECTION)) {
+                return new SpecificConnectionCommand(chatId);
+            } else if (caseValue.equals(HELP)) {
+                return new HelpCommand(chatId);
+            } else if (caseValue.equals(SCORE)) {
+                return new ScoreCommand(chatId);
+            } else if (caseValue.equals(CANCEL)) {
+                return new CancelCommand(chatId);
+            } else if (caseValue.equals(ANSWER)){
+                return new AnswerCommand(chatId,client,callBackValues[1]);
+            }else {
                 throw new IllegalArgumentException();
             }
+        }
+        else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
+            return new SendMessageWithDeepLinkCommand(chatId, client,
+                    update.getMessage().getText());
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public abstract void execute();
