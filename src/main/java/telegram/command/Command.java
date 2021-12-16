@@ -76,11 +76,11 @@ public abstract class Command {
         return CANCEL;
     }
 
-    public static Command valueOf(Update update) {
-        Message message = null;
-        String caseValue=null;
-        String chatId=null;
-        Client client=null;
+    public static Command valueOf(Update update)  {
+        Message message ;
+        String caseValue;
+        String chatId;
+        Client client;
         String[] callBackValues=new String[2];
         if (update.hasMessage()) {
             message = update.getMessage();
@@ -88,19 +88,16 @@ public abstract class Command {
             chatId = message.getChatId().toString();
             client = ClientDao.getInstance().searchById(
                     message.getFrom().getId());
-        } else if (update.hasCallbackQuery()) {
-            System.out.println(update.getCallbackQuery().getData());
-            client = ClientDao.getInstance().searchById(
+        }
+        else if (update.hasCallbackQuery()) {
+             client = ClientDao.getInstance().searchById(
                     update.getCallbackQuery().getFrom().getId());
             chatId=client.getChatId().toString();
             callBackValues=update.getCallbackQuery().getData().split(" ");
             caseValue=callBackValues[0];
         } else {
-            // nobody cares
+            throw new IllegalArgumentException();
         }
-
-
-
         if (client.getClientState() == ClientState.NORMAL) {
             if (caseValue.contains(START)) {
                 String[] values = caseValue.split(" ");
@@ -139,7 +136,10 @@ public abstract class Command {
         } else {
             throw new IllegalArgumentException();
         }
+
+
     }
+
 
     public abstract void execute();
 }
