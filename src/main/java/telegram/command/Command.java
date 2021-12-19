@@ -4,12 +4,14 @@ import dao.ClientDao;
 import model.Client;
 import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Optional;
 
 public abstract class Command {
     private static final String START = "/start";
+    private static final String ANSWER = "answer";
     private static final String CANCEL = "انصراف";
     private static final String RESTART = "/restart";
     private static final String ANONYMOUS_CONNECTION = "\uD83D\uDD17 به یه ناشناس وصلم کن!";
@@ -41,9 +43,14 @@ public abstract class Command {
         return RESTART;
     }
 
+    public static String getANSWER() {
+        return ANSWER;
+    }
+
     public static String getAnonymousConnection() {
         return ANONYMOUS_CONNECTION;
     }
+
 
     public static String getSpecificConnection() {
         return SPECIFIC_CONNECTION;
@@ -69,11 +76,28 @@ public abstract class Command {
         return CANCEL;
     }
 
-    public static Command valueOf(Update update) {
-        String caseValue = update.getMessage().getText();
-        String chatId = update.getMessage().getChatId().toString();
-        Client client = ClientDao.getInstance().searchById(
-                update.getMessage().getFrom().getId());
+    public static Command valueOf(Update update)  {
+        Message message ;
+        String caseValue;
+        String chatId;
+        Client client;
+        String[] callBackValues=new String[2];
+        if (update.hasMessage()) {
+            message = update.getMessage();
+            caseValue = message.getText();
+            chatId = message.getChatId().toString();
+            client = ClientDao.getInstance().searchById(
+                    message.getFrom().getId());
+        }
+        else if (update.hasCallbackQuery()) {
+             client = ClientDao.getInstance().searchById(
+                    update.getCallbackQuery().getFrom().getId());
+            chatId=client.getChatId().toString();
+            callBackValues=update.getCallbackQuery().getData().split(" ");
+            caseValue=callBackValues[0];
+        } else {
+            throw new IllegalArgumentException();
+        }
         if (client.getClientState() == ClientState.NORMAL) {
             if (caseValue.contains(START)) {
                 String[] values = caseValue.split(" ");
@@ -100,16 +124,22 @@ public abstract class Command {
                 return new ScoreCommand(chatId);
             } else if (caseValue.equals(CANCEL)) {
                 return new CancelCommand(chatId);
-            } else {
+            } else if (caseValue.equals(ANSWER)){
+                return new AnswerCommand(chatId,client,callBackValues[1]);
+            }else {
                 throw new IllegalArgumentException();
             }
-        } else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
+        }
+        else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
             return new SendMessageWithDeepLinkCommand(chatId, client,
                     update.getMessage().getText());
         } else {
             throw new IllegalArgumentException();
         }
+
+
     }
+
 
     public abstract void execute();
 }

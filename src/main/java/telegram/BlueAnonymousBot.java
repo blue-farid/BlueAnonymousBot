@@ -37,16 +37,19 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        newRequestReceived(update);
-        try {
-            updateHandler.processUpdate(update);
-        } catch (BadInputException e) {
-            executeSendMessage(e.getSendMessage());
+        if (update.hasMessage()) {
+            newRequestReceived(update);
         }
+            try {
+                updateHandler.processUpdate(update);
+            } catch (BadInputException e) {
+                executeSendMessage(e.getSendMessage());
+            }
+
     }
 
     public void newRequestReceived(Update update) {
-        ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom(),
+        ClientDao.getInstance().addClient(new Client( update.getMessage().getFrom(),
                 update.getMessage().getChatId()));
     }
 

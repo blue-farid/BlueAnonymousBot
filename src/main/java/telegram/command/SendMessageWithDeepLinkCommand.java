@@ -1,7 +1,9 @@
 package telegram.command;
 
+import inlineMenu.InlineAMB;
 import model.Client;
 import model.ClientState;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import telegram.BlueAnonymousBot;
 
 public class SendMessageWithDeepLinkCommand extends Command {
@@ -16,9 +18,11 @@ public class SendMessageWithDeepLinkCommand extends Command {
 
     @Override
     public void execute() {
-        sendMessage.setChatId(client.getContact().getChatId().toString());
-        sendMessage.setText(message);
-        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        SendMessage sendMessage1=new SendMessage();
+        sendMessage1.setChatId(client.getContact().getChatId().toString());
+        sendMessage1.setText(message);
+        sendMessage1.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage1 );
         sendMessage.setChatId(client.getChatId().toString());
         sendMessage.setText("پیام شما ارسال شد \uD83D\uDE0A\n" +
                 "\n" +
