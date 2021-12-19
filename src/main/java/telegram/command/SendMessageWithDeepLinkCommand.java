@@ -18,11 +18,11 @@ public class SendMessageWithDeepLinkCommand extends Command {
 
     @Override
     public void execute() {
-        SendMessage sendMessage1=new SendMessage();
-        sendMessage1.setChatId(client.getContact().getChatId().toString());
-        sendMessage1.setText(message);
-        sendMessage1.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
-        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage1 );
+        SendMessage contactSendMessage = new SendMessage();
+        contactSendMessage.setChatId(client.getContact().getChatId().toString());
+        contactSendMessage.setText("⚠️ پیام ناشناس جدید! ⚠️\n\n" + this.message);
+        contactSendMessage.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+        BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);
         sendMessage.setChatId(client.getChatId().toString());
         sendMessage.setText("پیام شما ارسال شد \uD83D\uDE0A\n" +
                 "\n" +
