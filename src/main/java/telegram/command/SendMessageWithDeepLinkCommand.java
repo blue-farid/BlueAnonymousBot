@@ -20,7 +20,7 @@ public class SendMessageWithDeepLinkCommand extends Command {
     public void execute() {
         SendMessage contactSendMessage = new SendMessage();
         contactSendMessage.setChatId(client.getContact().getChatId().toString());
-        contactSendMessage.setText("⚠️ پیام ناشناس جدید! ⚠️\n\n" + this.message);
+        contactSendMessage.setText("\uD83D\uDCEC شما یک پیام ناشناس جدید دارید !" + "\n\n" + this.message);
         if (client.getContact().isAdmin()) {
             contactSendMessage.setText(contactSendMessage.getText() + "\n" +
                     "username: " + client.getTelegramUser().getUserName()
