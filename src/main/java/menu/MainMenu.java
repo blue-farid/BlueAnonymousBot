@@ -1,17 +1,15 @@
 package menu;
 
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import telegram.command.Command;
-import utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends Menu {
     public static MainMenu instance;
-    private MainMenu(){
+
+    private MainMenu() {
         this.setSelective(true);
         this.setResizeKeyboard(true);
         this.setOneTimeKeyboard(false);

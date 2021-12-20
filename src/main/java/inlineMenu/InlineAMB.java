@@ -8,17 +8,18 @@ import java.util.List;
 
 public class InlineAMB extends InlineKeyboardMarkup {
 
-    public InlineAMB(String senderDeepLink){
+    public InlineAMB(String senderDeepLink) {
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(creatButton("⛔️بلاک","block"));
-        rowInline.add(creatButton("پاسخ","answer " + senderDeepLink));
+        rowInline.add(creatButton("⛔️بلاک", "block"));
+        rowInline.add(creatButton("پاسخ", "answer " + senderDeepLink));
         // Set the keyboard to the markup
         rowsInline.add(rowInline);
         // Add it to the message
         this.setKeyboard(rowsInline);
     }
-    private InlineKeyboardButton creatButton(String text,String callBack){
+
+    private InlineKeyboardButton creatButton(String text, String callBack) {
         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
         inlineKeyboardButton.setText(text);
         inlineKeyboardButton.setCallbackData(callBack);

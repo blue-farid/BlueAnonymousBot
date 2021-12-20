@@ -9,12 +9,11 @@ import telegram.BlueAnonymousBot;
  *
  * @author Farid Masjedi
  * @author Negar Anabestani
- * @since 2021/8
  * @version 1.0
- *
+ * <p>
  * Telegram_id: @blue_farid
  * github: https://github.com/blue-farid
- *
+ * @since 2021/8
  */
 public class Main {
     public static void main(String[] args) {

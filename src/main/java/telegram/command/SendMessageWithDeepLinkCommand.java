@@ -1,6 +1,5 @@
 package telegram.command;
 
-import com.sun.tools.javac.Main;
 import inlineMenu.InlineAMB;
 import menu.MainMenu;
 import model.Client;
@@ -12,6 +11,7 @@ public class SendMessageWithDeepLinkCommand extends Command {
 
     private final Client client;
     private final String message;
+
     public SendMessageWithDeepLinkCommand(String chatId, Client client, String message) {
         super(chatId);
         this.client = client;
@@ -26,8 +26,8 @@ public class SendMessageWithDeepLinkCommand extends Command {
         if (client.getContact().isAdmin()) {
             contactSendMessage.setText(contactSendMessage.getText() + "\n" +
                     "username: " + client.getTelegramUser().getUserName()
-            + "\nfirstname: " + client.getTelegramUser().getFirstName()
-            + "\nlastname: " + client.getTelegramUser().getLastName());
+                    + "\nfirstname: " + client.getTelegramUser().getFirstName()
+                    + "\nlastname: " + client.getTelegramUser().getLastName());
         }
         contactSendMessage.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
         BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);

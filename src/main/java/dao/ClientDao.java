@@ -1,7 +1,7 @@
 package dao;
 
-import utils.FileUtils;
 import model.Client;
+import utils.FileUtils;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class ClientDao {
     }
 
     public Client searchByDeepLink(String deepLink) {
-        for (Client client: clients) {
+        for (Client client : clients) {
             if (client.hasDeepLink() && client.getShortDeepLink().equals(deepLink))
                 return client;
         }

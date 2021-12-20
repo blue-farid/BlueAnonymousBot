@@ -28,8 +28,8 @@ enum FilePath {
  * the FileUtils singleton class
  */
 public class FileUtils {
-    private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
     private static FileUtils instance;
+    private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
 
     private FileUtils() {
     }

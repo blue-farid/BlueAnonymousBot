@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
  */
 public class BadInputException extends IllegalArgumentException {
     private SendMessage sendMessage;
+
     /**
      * Instantiates a new Bad input exception.
      *
