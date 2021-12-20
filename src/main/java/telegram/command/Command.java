@@ -12,6 +12,7 @@ import java.util.Optional;
 public abstract class Command {
     private static final String START = "/start";
     private static final String ANSWER = "answer";
+    private static final String BLOCK = "block";
     private static final String CANCEL = "انصراف";
     private static final String RESTART = "/restart";
     private static final String ANONYMOUS_CONNECTION = "\uD83D\uDD17 به یه ناشناس وصلم کن!";
@@ -126,6 +127,8 @@ public abstract class Command {
                 return new CancelCommand(chatId,client);
             } else if (caseValue.equals(ANSWER)){
                 return new AnswerCommand(chatId,client,callBackValues[1]);
+            }else if (caseValue.equals(BLOCK)){
+                return new BlockCommand(chatId);
             }else {
                 throw new IllegalArgumentException();
             }
