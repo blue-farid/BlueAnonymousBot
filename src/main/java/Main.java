@@ -6,8 +6,6 @@ import telegram.BlueAnonymousBot;
 /**
  * The BlueAnonymousBot Project
  * This is a Fake-Copy of a persian telegram ChatBot called 'برنامه ناشناس'
- * Written by two CE Student, Farid Masjedi and Negar Anabestani
- * @ AUT (AmirKabir University of Technology)
  *
  * @author Farid Masjedi
  * @author Negar Anabestani
