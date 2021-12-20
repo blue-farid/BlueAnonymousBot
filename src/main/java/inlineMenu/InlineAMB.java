@@ -12,14 +12,14 @@ public class InlineAMB extends InlineKeyboardMarkup {
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
         rowInline.add(creatButton("⛔️بلاک","block"));
-        rowInline.add(creatButton("پاسخ","answer "+senderDeepLink));
+        rowInline.add(creatButton("پاسخ","answer " + senderDeepLink));
         // Set the keyboard to the markup
         rowsInline.add(rowInline);
         // Add it to the message
         this.setKeyboard(rowsInline);
     }
     private InlineKeyboardButton creatButton(String text,String callBack){
-        InlineKeyboardButton inlineKeyboardButton=new InlineKeyboardButton();
+        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
         inlineKeyboardButton.setText(text);
         inlineKeyboardButton.setCallbackData(callBack);
         return inlineKeyboardButton;
