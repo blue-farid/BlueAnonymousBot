@@ -1,18 +1,23 @@
 package telegram.command;
 
 import menu.MainMenu;
+import model.Client;
+import model.ClientState;
 import telegram.BlueAnonymousBot;
 
 public class CancelCommand extends Command{
+    private final Client client;
     private static final String localMessage = "حله!\n" +
             "\n" +
             "چه کاری برات انجام بدم؟";
-    public CancelCommand(String chatId) {
+    public CancelCommand(String chatId, Client client) {
         super(chatId);
+        this.client=client;
     }
 
-    public CancelCommand(String chatId, String optionalCommand) {
+    public CancelCommand(String chatId, String optionalCommand, Client client) {
         super(chatId, optionalCommand);
+        this.client = client;
     }
 
     @Override
@@ -20,5 +25,6 @@ public class CancelCommand extends Command{
         this.sendMessage.setText(localMessage);
         this.sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
+        client.setClientState(ClientState.NORMAL);
     }
 }

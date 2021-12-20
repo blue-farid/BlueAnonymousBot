@@ -98,7 +98,7 @@ public abstract class Command {
         } else {
             throw new IllegalArgumentException();
         }
-        if (client.getClientState() == ClientState.NORMAL) {
+        if (client.getClientState() == ClientState.NORMAL||update.getMessage().getText().equals("انصراف")) {
             if (caseValue.contains(START)) {
                 String[] values = caseValue.split(" ");
                 if (values[0].equals(START) && values.length > 1) {
@@ -123,7 +123,7 @@ public abstract class Command {
             } else if (caseValue.equals(SCORE)) {
                 return new ScoreCommand(chatId);
             } else if (caseValue.equals(CANCEL)) {
-                return new CancelCommand(chatId);
+                return new CancelCommand(chatId,client);
             } else if (caseValue.equals(ANSWER)){
                 return new AnswerCommand(chatId,client,callBackValues[1]);
             }else {
