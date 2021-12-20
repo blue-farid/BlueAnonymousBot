@@ -27,12 +27,9 @@ public class AnswerCommand extends Command{
 
     @Override
     public void execute() {
-        System.out.println(client.getTelegramUser().getUserName());
-        System.out.println(deepLink);
+
         Client contact = ClientDao.getInstance().searchByDeepLink(deepLink);
-        System.out.println(contact);
         client.setContact(contact);
-        System.out.println(client.getContact().getTelegramUser().getUserName());
         sendMessage.setText(localMessage);
         sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
