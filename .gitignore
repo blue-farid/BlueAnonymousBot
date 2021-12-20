@@ -5,3 +5,5 @@ BlueAnonymousBot.iml
 files
 Dockerfile
 .dockerignore
+BlueAnonymousBot.jar
+.gitignore
