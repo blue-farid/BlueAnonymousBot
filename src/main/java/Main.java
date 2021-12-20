@@ -4,8 +4,13 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.BlueAnonymousBot;
 
 /**
- * The BlueAnonymousBot Project
+ *     ! The BlueAnonymousBot Project !
+ *
  * This is a Fake-Copy of a persian telegram ChatBot called 'برنامه ناشناس'
+ * The original idea for the robot came about
+ * when we wanted to know who was sending us anonymous messages
+ * using 'برنامه ناشناس' bot.
+ * SO WE WROTE OUR OWN COPY!
  *
  * @author Farid Masjedi
  * @author Negar Anabestani
