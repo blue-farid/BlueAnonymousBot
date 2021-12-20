@@ -1,6 +1,8 @@
 package telegram.command;
 
+import com.sun.tools.javac.Main;
 import inlineMenu.InlineAMB;
+import menu.MainMenu;
 import model.Client;
 import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -33,6 +35,7 @@ public class SendMessageWithDeepLinkCommand extends Command {
         sendMessage.setText("پیام شما ارسال شد \uD83D\uDE0A\n" +
                 "\n" +
                 "چه کاری برات انجام بدم؟");
+        sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         client.setClientState(ClientState.NORMAL);
     }
