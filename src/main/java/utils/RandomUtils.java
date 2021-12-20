@@ -2,6 +2,10 @@ package utils;
 
 import java.util.Random;
 
+/**
+ * The RandomUtils Singleton class.
+ * this class is used for all of the random operations.
+ */
 public class RandomUtils {
     private static RandomUtils instance;
     private final Random random;

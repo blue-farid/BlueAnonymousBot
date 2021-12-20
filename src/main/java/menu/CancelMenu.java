@@ -6,20 +6,23 @@ import telegram.command.Command;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CancelMenu extends Menu{
+public class CancelMenu extends Menu {
     public static CancelMenu instance;
+
+    private CancelMenu() {
+        this.setSelective(true);
+        this.setResizeKeyboard(true);
+        this.setOneTimeKeyboard(false);
+        this.setKeyboard(creatKeyBoard());
+    }
+
     public static CancelMenu getInstance() {
         if (instance == null) {
             instance = new CancelMenu();
         }
         return instance;
     }
-    private CancelMenu(){
-        this.setSelective(true);
-        this.setResizeKeyboard(true);
-        this.setOneTimeKeyboard(false);
-        this.setKeyboard(creatKeyBoard());
-    }
+
     @Override
     protected List<KeyboardRow> creatKeyBoard() {
         List<KeyboardRow> keyboard = new ArrayList<>();

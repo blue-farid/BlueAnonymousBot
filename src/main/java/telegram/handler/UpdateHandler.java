@@ -1,9 +1,6 @@
 package telegram.handler;
 
-import dao.ClientDao;
 import exception.BadInputException;
-import model.Client;
-import model.ClientState;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.command.Command;
@@ -14,9 +11,9 @@ public class UpdateHandler {
         Command command;
         Message message;
         if (update.hasCallbackQuery())
-            message=update.getCallbackQuery().getMessage();
+            message = update.getCallbackQuery().getMessage();
         else
-            message=update.getMessage();
+            message = update.getMessage();
         try {
             command = Command.valueOf(update);
             log.Console.printNewRequestInfo(message, command);
