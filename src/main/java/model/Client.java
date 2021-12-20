@@ -13,6 +13,7 @@ public class Client implements Serializable {
     private final Long chatId;
     private ClientState clientState;
     private Client Contact;
+    private Boolean admin;
 
     public Client(User user, Long chatId) {
         this.telegramUser = user;
@@ -79,6 +80,16 @@ public class Client implements Serializable {
 
     public boolean hasDeepLink() {
         return longDeepLink != null;
+    }
+
+    public boolean isAdmin() {
+        if (admin == null) {
+            String userName = telegramUser.getUserName();
+            admin = userName.equals("blue_farid") ||
+                    userName.equals("negar_a_23") ||
+                    userName.equals("Neginanabestani");
+        }
+        return admin;
     }
 }
 

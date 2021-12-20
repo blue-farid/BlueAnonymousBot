@@ -12,7 +12,7 @@ public class UpdateHandler {
 
     public void processUpdate(Update update) throws BadInputException {
         Command command;
-        Message message=null;
+        Message message;
         if (update.hasCallbackQuery())
             message=update.getCallbackQuery().getMessage();
         else

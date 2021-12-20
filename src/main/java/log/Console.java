@@ -3,7 +3,6 @@ package log;
 import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.command.Command;
 
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.List;
 public class Console {
     /**
      * print request info on console
+     *
      * @param message
      */
     public static void printNewRequestInfo(Message message) {
@@ -36,7 +36,7 @@ public class Console {
      */
     public static void printAllUsers() {
         List<Client> clients = ClientDao.getInstance().getClients();
-        for (Client client: clients) {
+        for (Client client : clients) {
             System.out.println(client.getTelegramUser());
         }
     }
