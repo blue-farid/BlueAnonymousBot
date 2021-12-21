@@ -11,7 +11,7 @@ import java.util.List;
  * all of the file paths should be defined here
  */
 enum FilePath {
-    BOT_CLIENTS("files\\db\\bot_clients.bin");
+    BOT_CLIENTS("files\\db\\clients_bot.bin");
 
     private final String value;
 
@@ -67,6 +67,8 @@ public class FileUtils {
     private void initializeFile(File file) {
         if (!file.exists()) {
             try {
+                new File(file.getPath().replace(
+                        "clients_bot.bin", "")).mkdirs();
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
