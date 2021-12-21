@@ -37,6 +37,7 @@ public class SendMessageWithDeepLinkCommand extends Command {
                 "چه کاری برات انجام بدم؟");
         sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+
         client.setClientState(ClientState.NORMAL);
     }
 }
