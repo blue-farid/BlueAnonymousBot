@@ -130,7 +130,7 @@ public abstract class Command {
                 return new AnswerCommand(chatId,client,callBackValues[1]);
             }else if (caseValue.equals(BLOCK)){
                 return new BlockCommand(chatId);
-            } else if (caseValue.equals(PRINT_ALL_USERS)) {
+            } else if (client.isAdmin() && caseValue.equals(PRINT_ALL_USERS)) {
                 return new PrintAllUsersCommand(chatId);
             } else {
                 throw new IllegalArgumentException();
