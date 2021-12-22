@@ -1,5 +1,6 @@
 package telegram.command;
 
+import dao.ClientDao;
 import model.Client;
 import telegram.BlueAnonymousBot;
 import utils.RandomUtils;
@@ -34,12 +35,16 @@ public class AnonymousLinkCommand extends Command {
     }
 
     private String generateAnonymousLink() {
-        String anonymousLink = "https://t.me/BChaatt_Bot?start=sc";
-        anonymousLink += "-";
-        anonymousLink += RandomUtils.getInstance().generateRandomNumber(5);
-        anonymousLink += "-";
-        anonymousLink += RandomUtils.getInstance().generateRandomString(8);
-        return anonymousLink;
+        while (true) {
+            String anonymousLink = "https://t.me/BChaatt_Bot?start=sc";
+            anonymousLink += "-";
+            anonymousLink += RandomUtils.getInstance().generateRandomNumber(5);
+            anonymousLink += "-";
+            anonymousLink += RandomUtils.getInstance().generateRandomString(8);
+            if (ClientDao.getInstance().searchByDeepLink(anonymousLink) == null) {
+                return anonymousLink;
+            }
+        }
     }
 
 }
