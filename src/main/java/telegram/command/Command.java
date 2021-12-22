@@ -21,6 +21,7 @@ public abstract class Command {
     private static final String ANONYMOUS_TO_GROUP = "\uD83D\uDC65 پیام ناشناس به گروه";
     private static final String HELP = "راهنما";
     private static final String SCORE = "\uD83C\uDFC6 افزایش امتیاز";
+    private static final String PRINT_ALL_USERS = "printAllUsers";
     protected final Optional<String> optionalCommand;
     protected SendMessage sendMessage;
 
@@ -129,7 +130,9 @@ public abstract class Command {
                 return new AnswerCommand(chatId,client,callBackValues[1]);
             }else if (caseValue.equals(BLOCK)){
                 return new BlockCommand(chatId);
-            }else {
+            } else if (caseValue.equals(PRINT_ALL_USERS)) {
+                return new PrintAllUsersCommand(chatId);
+            } else {
                 throw new IllegalArgumentException();
             }
         }

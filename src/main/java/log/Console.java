@@ -40,4 +40,8 @@ public class Console {
             System.out.println(client.getTelegramUser());
         }
     }
+
+    public static void printUser(Client client) {
+        System.out.println(client.getTelegramUser());
+    }
 }
