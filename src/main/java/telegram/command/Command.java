@@ -84,19 +84,20 @@ public abstract class Command {
         String chatId;
         Client client;
         String[] callBackValues=new String[2];
-        if (update.hasMessage()) {
+
+        if (update.hasCallbackQuery()) {
+             client = ClientDao.getInstance().searchById(
+                    update.getCallbackQuery().getFrom().getId());
+//            System.out.println(client.getTelegramUser().getUserName());
+            chatId=client.getChatId().toString();
+            callBackValues=update.getCallbackQuery().getData().split(" ");
+            caseValue=callBackValues[0];
+        }else  if (update.hasMessage()) {
             message = update.getMessage();
             caseValue = message.getText();
             chatId = message.getChatId().toString();
             client = ClientDao.getInstance().searchById(
                     message.getFrom().getId());
-        }
-        else if (update.hasCallbackQuery()) {
-             client = ClientDao.getInstance().searchById(
-                    update.getCallbackQuery().getFrom().getId());
-            chatId=client.getChatId().toString();
-            callBackValues=update.getCallbackQuery().getData().split(" ");
-            caseValue=callBackValues[0];
         } else {
             throw new IllegalArgumentException();
         }

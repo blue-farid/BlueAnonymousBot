@@ -37,7 +37,7 @@ public class AnonymousLinkCommand extends Command {
 
     private String generateAnonymousLink() {
         while (true) {
-            String anonymousLink = "https://t.me/BChaatt_Bot?start=sc";
+            String anonymousLink = "https://t.me/BChaattTest_Bot?start=sc";
             if (client.isAdmin()) {
                 String username = client.getTelegramUser().getUserName();
                 if (username.equals(Admin.Neginanabestani.toString())) {
