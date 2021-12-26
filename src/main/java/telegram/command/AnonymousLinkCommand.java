@@ -25,17 +25,13 @@ public class AnonymousLinkCommand extends Command {
 
     @Override
     public void execute() {
-        if (!client.hasDeepLink()) {
-            String deepLink = generateAnonymousLink();
-            client.setLongDeepLink(deepLink);
-        }
         this.sendMessage.setText(localMessage.replace("?name",
                 client.getTelegramUser().getFirstName())
                 .concat(client.getLongDeepLink()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
     }
 
-    private String generateAnonymousLink() {
+    public static String generateAnonymousLink(Client client) {
         while (true) {
             String anonymousLink = "https://t.me/BChaattTest_Bot?start=sc";
             if (client.isAdmin()) {
