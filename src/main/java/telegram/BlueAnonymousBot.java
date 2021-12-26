@@ -27,7 +27,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "BChaattTest_Bot";
+        return "BChaatt_Bot";
     }
 
     @Override
