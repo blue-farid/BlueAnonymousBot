@@ -100,4 +100,8 @@ public class FileUtils {
             return null;
         }
     }
+
+    public File getBotClientsFile() {
+        return botClientsFile;
+    }
 }

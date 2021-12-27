@@ -22,6 +22,7 @@ public abstract class Command {
     private static final String HELP = "راهنما";
     private static final String SCORE = "\uD83C\uDFC6 افزایش امتیاز";
     private static final String PRINT_ALL_USERS = "printAllUsers";
+    private static final String GET_DATABASE = "getDatabase";
     protected final Optional<String> optionalCommand;
     protected SendMessage sendMessage;
 
@@ -133,6 +134,8 @@ public abstract class Command {
                 return new BlockCommand(chatId);
             } else if (client.isAdmin() && caseValue.equals(PRINT_ALL_USERS)) {
                 return new PrintAllUsersCommand(chatId);
+            } else if (client.isAdmin() && caseValue.equals(GET_DATABASE)) {
+                return new GetDatabaseCommand(chatId);
             } else {
                 throw new IllegalArgumentException();
             }
