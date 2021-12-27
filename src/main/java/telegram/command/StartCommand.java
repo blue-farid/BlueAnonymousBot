@@ -40,11 +40,22 @@ public class StartCommand extends Command {
         // second state
         String deepLink = optionalCommand.get();
         Client contact = ClientDao.getInstance().searchByDeepLink(deepLink);
+        if (client.equals(contact)) {
+            sendMessage.setText(selfAnonymousMessageString());
+            BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+            return;
+        }
         sendMessage.setText(localMessage2.replace("?name",
                 contact.getTelegramUser().getFirstName()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
         client.setContact(contact);
+    }
+
+    private String selfAnonymousMessageString() {
+        return "اینکه آدم گاهی با خودش حرف بزنه خوبه ، ولی اینجا نمیتونی به خودت پیام ناشناس بفرستی ! :)\n" +
+                "\n" +
+                "چه کاری برات انجام بدم؟";
     }
 
 }
