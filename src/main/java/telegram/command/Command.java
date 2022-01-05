@@ -21,6 +21,7 @@ public abstract class Command {
     private static final String ANONYMOUS_TO_GROUP = "\uD83D\uDC65 پیام ناشناس به گروه";
     private static final String HELP = "راهنما";
     private static final String SCORE = "\uD83C\uDFC6 افزایش امتیاز";
+    private static final String PRINT_ALL_USERS = "printAllUsers";
     protected final Optional<String> optionalCommand;
     protected SendMessage sendMessage;
 
@@ -83,19 +84,20 @@ public abstract class Command {
         String chatId;
         Client client;
         String[] callBackValues=new String[2];
-        if (update.hasMessage()) {
+
+        if (update.hasCallbackQuery()) {
+             client = ClientDao.getInstance().searchById(
+                    update.getCallbackQuery().getFrom().getId());
+//            System.out.println(client.getTelegramUser().getUserName());
+            chatId=client.getChatId().toString();
+            callBackValues=update.getCallbackQuery().getData().split(" ");
+            caseValue=callBackValues[0];
+        }else  if (update.hasMessage()) {
             message = update.getMessage();
             caseValue = message.getText();
             chatId = message.getChatId().toString();
             client = ClientDao.getInstance().searchById(
                     message.getFrom().getId());
-        }
-        else if (update.hasCallbackQuery()) {
-             client = ClientDao.getInstance().searchById(
-                    update.getCallbackQuery().getFrom().getId());
-            chatId=client.getChatId().toString();
-            callBackValues=update.getCallbackQuery().getData().split(" ");
-            caseValue=callBackValues[0];
         } else {
             throw new IllegalArgumentException();
         }
@@ -129,7 +131,9 @@ public abstract class Command {
                 return new AnswerCommand(chatId,client,callBackValues[1]);
             }else if (caseValue.equals(BLOCK)){
                 return new BlockCommand(chatId);
-            }else {
+            } else if (client.isAdmin() && caseValue.equals(PRINT_ALL_USERS)) {
+                return new PrintAllUsersCommand(chatId);
+            } else {
                 throw new IllegalArgumentException();
             }
         }

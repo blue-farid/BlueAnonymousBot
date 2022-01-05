@@ -45,8 +45,10 @@ public class FileUtils {
         initializeFile(botClientsFile);
         ObjectOutputStream out = getObjectOutputStream(botClientsFile);
         try {
-            assert out != null;
+            if (out == null)
+                return;
             out.writeObject(clients);
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,6 +60,7 @@ public class FileUtils {
         List<Client> clients = new ArrayList<>();
         try {
             clients = (List<Client>) in.readObject();
+            in.close();
         } catch (IOException | ClassNotFoundException | NullPointerException e) {
             e.printStackTrace();
         }

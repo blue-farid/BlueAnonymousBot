@@ -12,7 +12,7 @@ public class InlineAMB extends InlineKeyboardMarkup {
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
         rowInline.add(creatButton("⛔️بلاک", "block"));
-        rowInline.add(creatButton("پاسخ", "answer " + senderDeepLink));
+        rowInline.add(creatButton("✍\uD83C\uDFFB پاسخ", "answer " + senderDeepLink));
         // Set the keyboard to the markup
         rowsInline.add(rowInline);
         // Add it to the message

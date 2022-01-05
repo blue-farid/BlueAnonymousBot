@@ -45,13 +45,11 @@ public class Client implements Serializable {
 
     private void setShortDeepLink(String shortDeepLink) {
         this.shortDeepLink = shortDeepLink;
+        ClientDao.getInstance().rewriteClients();
     }
 
     public void setLongDeepLink(String longDeepLink) {
         this.longDeepLink = longDeepLink;
-        this.setShortDeepLink(longDeepLink.substring(
-                longDeepLink.indexOf("=") + 1
-        ));
         ClientDao.getInstance().rewriteClients();
     }
 
@@ -77,10 +75,10 @@ public class Client implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return telegramUser.equals(client.telegramUser);
+        return (this == o) ||
+                ((o instanceof Client) &&
+                        ((Client) o).telegramUser.getId().equals(
+                                this.telegramUser.getId()));
     }
 
     @Override
