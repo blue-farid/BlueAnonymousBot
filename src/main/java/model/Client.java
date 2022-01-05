@@ -2,6 +2,7 @@ package model;
 
 import dao.ClientDao;
 import org.telegram.telegrambots.meta.api.objects.User;
+import telegram.command.AnonymousLinkCommand;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -26,12 +27,21 @@ public class Client implements Serializable {
     }
 
     public String getLongDeepLink() {
+        if (longDeepLink == null) {
+            setLongDeepLink(AnonymousLinkCommand.
+                    generateAnonymousLink(this));
+        }
         return longDeepLink;
     }
 
     public String getShortDeepLink() {
+        if (shortDeepLink == null) {
+            setShortDeepLink(getLongDeepLink().substring(
+                    getLongDeepLink().indexOf("=") + 1));
+        }
         return shortDeepLink;
     }
+
 
     private void setShortDeepLink(String shortDeepLink) {
         this.shortDeepLink = shortDeepLink;
