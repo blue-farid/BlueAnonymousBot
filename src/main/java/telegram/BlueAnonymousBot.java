@@ -37,9 +37,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage()) {
-            newRequestReceived(update);
-        }
+        newRequestReceived(update);
             try {
                 updateHandler.processUpdate(update);
             } catch (BadInputException e) {
