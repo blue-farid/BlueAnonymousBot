@@ -36,8 +36,8 @@ public class Client implements Serializable {
 
     public String getShortDeepLink() {
         if (shortDeepLink == null) {
-            setShortDeepLink(longDeepLink.substring(
-                    longDeepLink.indexOf("=") + 1));
+            setShortDeepLink(getLongDeepLink().substring(
+                    getLongDeepLink().indexOf("=") + 1));
         }
         return shortDeepLink;
     }
