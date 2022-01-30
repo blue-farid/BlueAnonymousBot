@@ -4,7 +4,8 @@ import dao.ClientDao;
 import model.Client;
 import telegram.BlueAnonymousBot;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class PrintAllUsersCommand extends Command {
 
@@ -15,8 +16,9 @@ public class PrintAllUsersCommand extends Command {
     @Override
     public void execute() {
         String result = "";
-        List<Client> clients = ClientDao.getInstance().getClients();
-        for (Client client : clients) {
+        HashMap<Long, Client> clients = ClientDao.getInstance().getClients();
+        Collection<Client> clientsCollection = clients.values();
+        for (Client client: clientsCollection) {
             log.Console.printUser(client);
             result = result.concat(client.getTelegramUser().toString().concat("\n"));
         }

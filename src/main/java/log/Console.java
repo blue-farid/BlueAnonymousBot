@@ -5,7 +5,8 @@ import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import telegram.command.Command;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Console class
@@ -35,8 +36,9 @@ public class Console {
      * print all of the users that use the bot on console
      */
     public static void printAllUsers() {
-        List<Client> clients = ClientDao.getInstance().getClients();
-        for (Client client : clients) {
+        HashMap<Long, Client> clients = ClientDao.getInstance().getClients();
+        Collection<Client> clientsCollection = clients.values();
+        for (Client client: clientsCollection) {
             System.out.println(client.getTelegramUser());
         }
     }
