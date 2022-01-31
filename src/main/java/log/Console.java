@@ -52,4 +52,12 @@ public class Console {
     public static void print(Object opj) {
         System.out.print(opj);
     }
+
+    public static void initMessage() {
+        System.out.println("- the bot runs successfully!".concat(
+                "- OS: ".concat(
+                        utils.Common.getInstance().getOsName()
+                )
+        ));
+    }
 }
