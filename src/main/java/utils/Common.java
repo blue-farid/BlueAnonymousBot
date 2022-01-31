@@ -1,5 +1,10 @@
 package utils;
 
+/**
+ * The common utils
+ * the usage methods that are not belong in any specific class, are here.
+ * @author Farid Masjedi
+ */
 public class Common {
     private static Common instance;
 
