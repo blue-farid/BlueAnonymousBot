@@ -15,7 +15,7 @@ import telegram.BlueAnonymousBot;
  * @author Farid Masjedi
  * @author Negar Anabestani
  * @author Alireza Jabbari
- * @version 1.0
+ * @version 1.1
  * <p>
  * Telegram_id: @blue_farid
  * github: https://github.com/blue-farid
