@@ -29,6 +29,7 @@ public class SpecificConnectionCommand extends Command {
         SendMessage jcSendMessage=new SendMessage();
         jcSendMessage.setText(joinChannelMessage);
         jcSendMessage.setReplyMarkup(new InlineJoinChannelKeyBoard());
+        jcSendMessage.setChatId(chatId);
         BlueAnonymousBot.getInstance().executeSendMessage(jcSendMessage);
         this.sendMessage.setText(localMessage);
         this.sendMessage.setReplyMarkup(CancelMenu.getInstance());

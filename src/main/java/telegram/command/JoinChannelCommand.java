@@ -1,4 +1,4 @@
 package telegram.command;
 
-public class JoinChannelCommand git{
+public class JoinChannelCommand{
 }

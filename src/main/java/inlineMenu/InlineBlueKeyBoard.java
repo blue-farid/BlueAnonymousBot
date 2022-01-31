@@ -21,7 +21,7 @@ public class InlineBlueKeyBoard extends InlineKeyboardMarkup {
      ArrayList<List<InlineKeyboardButton>> rows=new ArrayList<>();
      for (int h:keyboardInfo.keySet()){
          List<InlineKeyboardButton>currentRow;
-         if (h>= keyboardInfo.size()){
+         if (h>= rows.size()){
              currentRow=new ArrayList<>();
              rows.add(currentRow);
          }else {

@@ -25,11 +25,13 @@ public abstract class Command {
     private static final String GET_DATABASE = "getDatabase";
     protected final Optional<String> optionalCommand;
     protected SendMessage sendMessage;
+    protected String chatId;
 
     public Command(String chatId) {
         sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         optionalCommand = Optional.empty();
+        this.chatId=chatId;
     }
 
     public Command(String chatId, String optionalCommand) {
