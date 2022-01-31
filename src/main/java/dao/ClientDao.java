@@ -3,14 +3,15 @@ package dao;
 import model.Client;
 import utils.FileUtils;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * the UserDao class
  */
 public class ClientDao {
     private static ClientDao instance;
-    private final List<Client> clients;
+    private final HashMap<Long, Client> clients;
 
     private ClientDao() {
         clients = FileUtils.getInstance().readTelegramUsers();
@@ -22,30 +23,27 @@ public class ClientDao {
         return instance;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public Collection<Client> getClients() {
+        return clients.values();
     }
 
     public int addClient(Client client) {
-        if (clients.contains(client)) {
+        if (clients.containsValue(client)) {
             return 1;
         }
 
-        clients.add(client);
+        clients.put(client.getTelegramUser().getId(), client);
         FileUtils.getInstance().writeTelegramUsers(clients);
         return 0;
     }
 
     public Client searchById(long id) {
-        for (Client client : clients) {
-            if (client.getTelegramUser().getId().equals(id))
-                return client;
-        }
-        return null;
+        return clients.get(id);
     }
 
     public Client searchByUsername(String username) {
-        for (Client client : clients) {
+        Collection<Client> clientsCollection = clients.values();
+        for (Client client: clientsCollection) {
             if (client.getTelegramUser().getUserName().equals(username))
                 return client;
         }
@@ -53,7 +51,8 @@ public class ClientDao {
     }
 
     public Client searchByDeepLink(String deepLink) {
-        for (Client client : clients) {
+        Collection<Client> clientsCollection = clients.values();
+        for (Client client: clientsCollection) {
             if (client.hasDeepLink() && client.getShortDeepLink().equals(deepLink))
                 return client;
         }

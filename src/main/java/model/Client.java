@@ -95,7 +95,8 @@ public class Client implements Serializable {
             String userName = telegramUser.getUserName();
             admin = userName.equals("blue_farid") ||
                     userName.equals("negar_a_23") ||
-                    userName.equals("Neginanabestani");
+                    userName.equals("Neginanabestani") ||
+                    userName.equals("Stamford11");
         }
         return admin;
     }

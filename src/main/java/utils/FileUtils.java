@@ -3,8 +3,7 @@ package utils;
 import model.Client;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * the FilePath enum
@@ -41,7 +40,7 @@ public class FileUtils {
         return instance;
     }
 
-    public synchronized void writeTelegramUsers(List<Client> clients) {
+    public synchronized void writeTelegramUsers(HashMap<Long, Client> clients) {
         initializeFile(botClientsFile);
         ObjectOutputStream out = getObjectOutputStream(botClientsFile);
         try {
@@ -54,12 +53,12 @@ public class FileUtils {
         }
     }
 
-    public List<Client> readTelegramUsers() {
+    public HashMap<Long, Client> readTelegramUsers() {
         initializeFile(botClientsFile);
         ObjectInputStream in = getObjectInputStream(botClientsFile);
-        List<Client> clients = new ArrayList<>();
+        HashMap<Long, Client> clients = new HashMap<>();
         try {
-            clients = (List<Client>) in.readObject();
+            clients = (HashMap<Long, Client>) in.readObject();
             in.close();
         } catch (IOException | ClassNotFoundException | NullPointerException e) {
             e.printStackTrace();
