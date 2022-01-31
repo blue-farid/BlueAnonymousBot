@@ -44,4 +44,20 @@ public class Console {
     public static void printUser(Client client) {
         System.out.println(client.getTelegramUser());
     }
+
+    public static void println(Object obj) {
+        System.out.println(obj);
+    }
+
+    public static void print(Object opj) {
+        System.out.print(opj);
+    }
+
+    public static void initMessage() {
+        System.out.println("- the bot runs successfully!\n".concat(
+                "- OS: ".concat(
+                        utils.Common.getInstance().getOsName()
+                )
+        ));
+    }
 }
