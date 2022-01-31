@@ -42,7 +42,10 @@ public class AnonymousLinkCommand extends Command {
                     anonymousLink += "-23707-HGBEoDzl";
                 } else if (username.equals(Admin.blue_farid.toString())) {
                     anonymousLink += "-73734-cwtxQtVz";
-                } else {
+                } else if (username.equals(Admin.Stamford11.toString())) {
+                    anonymousLink += "-62273-MxoiDtVf";
+                }
+                else {
                     new Exception("WTF!").printStackTrace();
                 }
                 return anonymousLink;
