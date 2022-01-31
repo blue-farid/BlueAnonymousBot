@@ -23,8 +23,8 @@ public class ClientDao {
         return instance;
     }
 
-    public HashMap<Long, Client> getClients() {
-        return clients;
+    public Collection<Client> getClients() {
+        return clients.values();
     }
 
     public int addClient(Client client) {
