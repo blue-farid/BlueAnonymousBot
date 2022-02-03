@@ -7,10 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 import java.util.Optional;
 
 public abstract class Command {
@@ -157,6 +154,7 @@ public abstract class Command {
     public abstract void execute();
 }
 
+@Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 @interface Admin {
