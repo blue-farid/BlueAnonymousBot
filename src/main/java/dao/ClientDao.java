@@ -33,7 +33,7 @@ public class ClientDao {
         }
 
         clients.put(client.getTelegramUser().getId(), client);
-        FileUtils.getInstance().writeTelegramUsers(clients);
+        this.rewriteClients();
         return 0;
     }
 
