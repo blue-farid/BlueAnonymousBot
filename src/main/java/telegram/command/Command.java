@@ -158,6 +158,6 @@ public abstract class Command {
 }
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @interface Admin {
 }

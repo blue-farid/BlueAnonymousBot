@@ -6,6 +6,7 @@ import telegram.BlueAnonymousBot;
 
 import java.util.Collection;
 
+@Admin
 public class PrintAllUsersCommand extends Command {
 
     public PrintAllUsersCommand(String chatId) {
