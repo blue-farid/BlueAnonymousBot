@@ -19,7 +19,6 @@ public class Console {
      */
     public static void printNewRequestInfo(Message message) {
         System.out.println("- new Request: " +
-
                 "\n" + "\t" + "from: " +
                 message.getFrom().getUserName());
     }
