@@ -37,7 +37,9 @@ public class Console {
     public static void printAllUsers() {
         Collection<Client> clientsCollection = ClientDao.getInstance().getClients();
         for (Client client: clientsCollection) {
+            System.out.println("##############\n");
             System.out.println(client.getTelegramUser());
+            System.out.println("\n##############");
         }
     }
 
