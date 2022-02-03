@@ -4,6 +4,7 @@ import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import telegram.command.Command;
+import utils.TimeUtils;
 
 import java.util.Collection;
 
@@ -17,18 +18,28 @@ public class Console {
      *
      * @param message
      */
-    public static void printNewRequestInfo(Message message) {
-        System.out.println("- new Request: " +
-
+    public static void printNewRequestInfo(Message message, boolean printTime) {
+        System.out.print("- new Request: " +
                 "\n" + "\t" + "from: " +
                 message.getFrom().getUserName());
+        if (printTime) {
+            System.out.println("\t" + TimeUtils.getInstance().getCurrentDateAndTimeString());
+        } else {
+            System.out.println();
+        }
     }
 
-    public static void printNewRequestInfo(Message message, Command command) {
-        System.out.println("- new Request: " +
+    public static void printNewRequestInfo(Message message, Command command
+            , boolean printTime) {
+        System.out.print("- new Request: " +
                 command.getClass().getSimpleName() +
                 "\n" + "\t" + "from: " +
                 message.getFrom().getUserName());
+        if (printTime) {
+            System.out.println("\t" + TimeUtils.getInstance().getCurrentDateAndTimeString());
+        } else {
+            System.out.println();
+        }
     }
 
     /**
