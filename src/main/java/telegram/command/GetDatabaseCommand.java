@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.BlueAnonymousBot;
 import utils.FileUtils;
 
+@Admin
 public class GetDatabaseCommand extends Command {
 
     public GetDatabaseCommand(String chatId) {
