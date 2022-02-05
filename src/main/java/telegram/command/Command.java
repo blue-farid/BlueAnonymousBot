@@ -150,6 +150,10 @@ public abstract class Command {
 
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 
     public abstract void execute();
 }
