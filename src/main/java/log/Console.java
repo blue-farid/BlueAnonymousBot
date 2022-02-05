@@ -32,7 +32,7 @@ public class Console {
     public static void printNewRequestInfo(Message message, Command command
             , boolean printTime) {
         System.out.print("- new Request: " +
-                command.getClass().getSimpleName() +
+                command +
                 "\n" + "\t" + "from: " +
                 message.getFrom().getUserName());
         if (printTime) {
