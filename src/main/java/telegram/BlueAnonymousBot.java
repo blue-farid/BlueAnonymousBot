@@ -27,12 +27,12 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "Bchaatt_bot";
+        return "BchaattTest_bot";
     }
 
     @Override
     public String getBotToken() {
-        return "5054557221:AAGCrXNySIyvbyHyaa6JHwrk7UX1_I_7ObI";
+        return "5001404747:AAEYKdlb4ucNvyPnOn8pbPX4FMeGOYWqI5w";
     }
 
     @Override
