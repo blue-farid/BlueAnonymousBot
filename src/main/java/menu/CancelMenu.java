@@ -27,7 +27,7 @@ public class CancelMenu extends Menu {
     protected List<KeyboardRow> creatKeyBoard() {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(Command.getCANCEL());
+        keyboardFirstRow.add("command.cancel");
         keyboard.add(keyboardFirstRow);
         return keyboard;
     }
