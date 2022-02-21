@@ -27,7 +27,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "BchaattTest_bot";
+        return "Bchaatt_bot";
     }
 
     @Override
@@ -49,7 +49,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     }
 
     public void newRequestReceived(Update update) {
-        ClientDao.getInstance().addClient(new Client( update.getMessage().getFrom(),
+        ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom(),
                 update.getMessage().getChatId()));
     }
 

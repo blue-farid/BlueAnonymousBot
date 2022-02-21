@@ -50,6 +50,7 @@ public class StartCommand extends Command {
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
         client.setContact(contact);
+        log.Console.println("- " + this.client + " trying to message to " + contact + "!");
     }
 
     private String selfAnonymousMessageString() {

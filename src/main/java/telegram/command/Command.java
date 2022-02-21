@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.lang.annotation.*;
 import java.util.Optional;
 
 public abstract class Command {
@@ -91,10 +92,9 @@ public abstract class Command {
         if (update.hasCallbackQuery()) {
             client = ClientDao.getInstance().searchById(
                     update.getCallbackQuery().getFrom().getId());
-//            System.out.println(client.getTelegramUser().getUserName());
-            chatId = client.getChatId().toString();
-            callBackValues = update.getCallbackQuery().getData().split(" ");
-            caseValue = callBackValues[0];
+            chatId=client.getChatId().toString();
+            callBackValues=update.getCallbackQuery().getData().split(" ");
+            caseValue=callBackValues[0];
         } else if (update.hasMessage()) {
             message = update.getMessage();
             caseValue = message.getText();
@@ -153,6 +153,16 @@ public abstract class Command {
 
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 
     public abstract void execute();
+}
+
+@Documented
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+@interface Admin {
 }

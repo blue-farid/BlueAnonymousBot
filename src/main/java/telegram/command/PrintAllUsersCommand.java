@@ -6,6 +6,7 @@ import telegram.BlueAnonymousBot;
 
 import java.util.Collection;
 
+@Admin
 public class PrintAllUsersCommand extends Command {
 
     public PrintAllUsersCommand(String chatId) {
@@ -18,7 +19,8 @@ public class PrintAllUsersCommand extends Command {
         Collection<Client> clientsCollection = ClientDao.getInstance().getClients();
         for (Client client: clientsCollection) {
             log.Console.printUser(client);
-            result = result.concat(client.getTelegramUser().toString().concat("\n"));
+            result = result.concat("\n".concat(client.
+                    getTelegramUser().toString().concat("\n")));
         }
         sendMessage.setText(result);
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);

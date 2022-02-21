@@ -100,5 +100,10 @@ public class Client implements Serializable {
         }
         return admin;
     }
+
+    @Override
+    public String toString() {
+        return telegramUser.getUserName();
+    }
 }
 

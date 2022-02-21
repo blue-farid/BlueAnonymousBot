@@ -14,7 +14,8 @@ import telegram.BlueAnonymousBot;
  *
  * @author Farid Masjedi
  * @author Negar Anabestani
- * @version 1.0
+ * @author Alireza Jabbari
+ * @version 1.4
  * <p>
  * Telegram_id: @blue_farid
  * github: https://github.com/blue-farid
@@ -25,6 +26,7 @@ public class Main {
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(BlueAnonymousBot.getInstance());
+            log.Console.initMessage();
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
