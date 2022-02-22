@@ -8,6 +8,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.handler.UpdateHandler;
+import utils.FileUtils;
+
+import java.util.Properties;
 
 /**
  * the BlueAnonymousBot class
@@ -15,8 +18,11 @@ import telegram.handler.UpdateHandler;
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private static BlueAnonymousBot instance;
     private final UpdateHandler updateHandler = new UpdateHandler();
+    private Properties properties;
 
     private BlueAnonymousBot() {
+        this.properties = FileUtils.getInstance().
+                loadProperties(FileUtils.FilePath.BOT_CLIENTS);
     }
 
     public static BlueAnonymousBot getInstance() {
@@ -59,5 +65,9 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    public Properties getProperties() {
+        return properties;
     }
 }
