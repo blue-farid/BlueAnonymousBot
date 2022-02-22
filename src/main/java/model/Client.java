@@ -14,12 +14,13 @@ public class Client implements Serializable {
     private final Long chatId;
     private ClientState clientState;
     private Client Contact;
-    private Boolean admin;
+    private boolean admin;
 
     public Client(User user, Long chatId) {
         this.telegramUser = user;
         this.chatId = chatId;
         this.clientState = ClientState.NORMAL;
+        this.admin = false;
     }
 
     public User getTelegramUser() {
@@ -29,7 +30,7 @@ public class Client implements Serializable {
     public String getLongDeepLink() {
         if (longDeepLink == null) {
             setLongDeepLink(AnonymousLinkCommand.
-                    generateAnonymousLink(this));
+                    generateAnonymousLink());
         }
         return longDeepLink;
     }
@@ -91,14 +92,11 @@ public class Client implements Serializable {
     }
 
     public boolean isAdmin() {
-        if (admin == null) {
-            String userName = telegramUser.getUserName();
-            admin = userName.equals("blue_farid") ||
-                    userName.equals("negar_a_23") ||
-                    userName.equals("Neginanabestani") ||
-                    userName.equals("Stamford11");
-        }
         return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     @Override
