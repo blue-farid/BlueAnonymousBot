@@ -31,14 +31,15 @@ public class ConsoleReader implements Runnable {
                 System.exit(0);
             } else if (commands[0].equals("sleep")) {
                 return 0;
-            }
-            if (commands[0].equals("set")) {
+            } else if (commands[0].equals("set")) {
                 if (commands[1].equals("admin")) {
                     int id = Integer.parseInt(commands[2]);
                     boolean b = Boolean.parseBoolean(commands[3]);
                     Client client = ClientDao.getInstance().searchById(id);
                     client.setAdmin(b);
                 }
+            } else {
+                throw new Exception();
             }
         } catch (Exception e) {
             log.Console.println("- ConsoleReader: bad input!");
