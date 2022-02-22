@@ -1,7 +1,7 @@
 package menu;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import telegram.command.Command;
+import telegram.BlueAnonymousBot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +30,18 @@ public class MainMenu extends Menu {
         KeyboardRow keyboardRow2 = new KeyboardRow();
         KeyboardRow keyboardRow3 = new KeyboardRow();
         KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardFirstRow.add(Command.getAnonymousConnection());
-        keyboardRow2.add(Command.getSpecificConnection());
-        keyboardRow3.add(Command.getAnonymousLink());
-        keyboardRow3.add(Command.getAnonymousToGroup());
-        keyboardRow4.add(Command.getHELP());
-        keyboardRow4.add(Command.getSCORE());
+        keyboardFirstRow.add(BlueAnonymousBot.getInstance().
+                getProperties().getProperty("command.anonymous_connection"));
+        keyboardRow2.add(BlueAnonymousBot.getInstance().
+                getProperties().getProperty("command.specific_connection"));
+        keyboardRow3.add(BlueAnonymousBot.getInstance().
+                getProperties().getProperty("command.anonymous_link"));
+        keyboardRow3.add(BlueAnonymousBot.getInstance().
+                getProperties().getProperty("command.anonymous_to_group"));
+        keyboardRow4.add(BlueAnonymousBot.getInstance().
+                getProperties().getProperty("command.help"));
+        keyboardRow4.add(BlueAnonymousBot.getInstance().
+                getProperties().getProperty("command.score"));
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
         keyboard.add(keyboardRow3);

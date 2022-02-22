@@ -3,32 +3,9 @@ package utils;
 import model.Client;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/**
- * the FilePath enum
- * all of the file paths should be defined here
- */
-enum FilePath {
-    BOT_CLIENTS("files\\db\\clients_bot.bin");
-
-    private final String value;
-
-    FilePath(String value) {
-        if (Common.getInstance().getOsName().contains("Windows")) {
-            this.value = value;
-        } else {
-            this.value = value.replace("\\", "/");
-        }
-    }
-
-    public String getValue() {
-        return value;
-    }
-}
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * the FileUtils singleton class
@@ -126,5 +103,41 @@ public class FileUtils {
             map.put(client.getTelegramUser().getId(), client);
         }
         return map;
+    }
+
+    public Properties loadProperties(FilePath filePath) {
+        Properties properties = new Properties();
+        try (InputStream in = ClassLoader
+                .getSystemResourceAsStream(filePath.getValue())) {
+            assert in != null;
+            properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
+            return properties;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * the FilePath enum
+     * all of the file paths should be defined here
+     */
+    public enum FilePath {
+        BOT_CLIENTS("files\\db\\clients_bot.bin"),
+        BOT_PROPERTIES("blue_anonymous_bot.properties");
+
+        private final String value;
+
+        FilePath(String value) {
+            if (Common.getInstance().getOsName().contains("Windows")) {
+                this.value = value;
+            } else {
+                this.value = value.replace("\\", "/");
+            }
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 }
