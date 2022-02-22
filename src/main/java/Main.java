@@ -2,6 +2,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.BlueAnonymousBot;
+import utils.ConsoleReader;
 
 /**
  *     ! The BlueAnonymousBot Project !
@@ -26,6 +27,7 @@ public class Main {
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(BlueAnonymousBot.getInstance());
+            new Thread(new ConsoleReader()).start();
             log.Console.initMessage();
         } catch (TelegramApiException e) {
             e.printStackTrace();
