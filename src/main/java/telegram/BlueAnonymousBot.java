@@ -19,6 +19,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     private static BlueAnonymousBot instance;
     private final UpdateHandler updateHandler = new UpdateHandler();
     private final Properties properties;
+    private String botUsername;
+    private String botToken;
 
     private BlueAnonymousBot() {
         this.properties = FileUtils.getInstance().
@@ -33,12 +35,12 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "Bchaatt_bot";
+        return this.botUsername;
     }
 
     @Override
     public String getBotToken() {
-        return "5054557221:AAGCrXNySIyvbyHyaa6JHwrk7UX1_I_7ObI";
+        return this.botToken;
     }
 
     @Override
@@ -69,5 +71,13 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     public Properties getProperties() {
         return properties;
+    }
+
+    public void setBotToken(String botToken) {
+        this.botToken = botToken;
+    }
+
+    public void setBotUsername(String botUsername) {
+        this.botUsername = botUsername;
     }
 }
