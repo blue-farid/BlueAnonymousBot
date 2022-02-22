@@ -5,3 +5,5 @@ BlueAnonymousBot.iml
 files
 Dockerfile
 .dockerignore
+src/main/java/resources/original_config.properties
+src/main/java/resources/test_config.properties
