@@ -31,6 +31,7 @@ public abstract class Command {
     }
   
     public static Command valueOf(Update update) {
+        Message message = null;
         String caseValue;
         String chatId;
         Client client;
@@ -80,17 +81,12 @@ public abstract class Command {
                                 update.getMessage().getFrom().getId()));
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperties().getProperty("command.specific_connection"))) {
-                return new SpecificConnectionCommand(chatId);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.help"))) {
+                return new SpecificConnectionCommand(chatId, client);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperties().getProperty("command.anonymous_link")) || caseValue.equals("/link")) {
                 return new AnonymousLinkCommand(chatId,
                         ClientDao.getInstance().searchById(
                                 update.getMessage().getFrom().getId()));
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.specific_connection"))) {
-                return new SpecificConnectionCommand(chatId, client);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperties().getProperty("command.help"))) {
                 return new HelpCommand(chatId);
@@ -123,8 +119,6 @@ public abstract class Command {
         } else {
             throw new IllegalArgumentException();
         }
-
-
     }
 
     @Override
