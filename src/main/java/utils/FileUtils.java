@@ -3,6 +3,8 @@ package utils;
 import model.Client;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -106,8 +108,9 @@ public class FileUtils {
     public Properties loadProperties(FilePath filePath) {
         Properties properties = new Properties();
         try (InputStream in = ClassLoader
-                .getSystemResourceAsStream(FilePath.BOT_PROPERTIES.getValue())) {
-            properties.load(in);
+                .getSystemResourceAsStream(filePath.getValue())) {
+            assert in != null;
+            properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
             return properties;
         } catch (IOException e) {
             e.printStackTrace();

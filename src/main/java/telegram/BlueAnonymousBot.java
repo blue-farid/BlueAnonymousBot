@@ -18,11 +18,11 @@ import java.util.Properties;
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private static BlueAnonymousBot instance;
     private final UpdateHandler updateHandler = new UpdateHandler();
-    private Properties properties;
+    private final Properties properties;
 
     private BlueAnonymousBot() {
         this.properties = FileUtils.getInstance().
-                loadProperties(FileUtils.FilePath.BOT_CLIENTS);
+                loadProperties(FileUtils.FilePath.BOT_PROPERTIES);
     }
 
     public static BlueAnonymousBot getInstance() {
