@@ -1,5 +1,3 @@
-package utils;
-
 import dao.ClientDao;
 import model.Client;
 
