@@ -15,11 +15,13 @@ import java.util.Properties;
 public abstract class Command {
     protected final Optional<String> optionalCommand;
     protected SendMessage sendMessage;
+    protected String chatId;
 
     public Command(String chatId) {
         sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         optionalCommand = Optional.empty();
+        this.chatId=chatId;
     }
 
     public Command(String chatId, String optionalCommand) {
@@ -27,21 +29,20 @@ public abstract class Command {
         sendMessage.setChatId(chatId);
         this.optionalCommand = Optional.of(optionalCommand);
     }
-
-    public static Command valueOf(Update update)  {
-        Message message ;
+  
+    public static Command valueOf(Update update) {
         String caseValue;
         String chatId;
         Client client;
-        String[] callBackValues=new String[2];
+        String[] callBackValues = new String[2];
 
         if (update.hasCallbackQuery()) {
-             client = ClientDao.getInstance().searchById(
+            client = ClientDao.getInstance().searchById(
                     update.getCallbackQuery().getFrom().getId());
             chatId=client.getChatId().toString();
             callBackValues=update.getCallbackQuery().getData().split(" ");
             caseValue=callBackValues[0];
-        }else  if (update.hasMessage()) {
+        } else if (update.hasMessage()) {
             message = update.getMessage();
             caseValue = message.getText();
             chatId = message.getChatId().toString();
@@ -50,9 +51,7 @@ public abstract class Command {
         } else {
             throw new IllegalArgumentException();
         }
-
-        System.out.println(BlueAnonymousBot.getInstance().getProperties().getProperty("command.start"));
-        System.out.println(caseValue);
+      
         if (client.getClientState() == ClientState.NORMAL||
                 update.getMessage().getText().equals(BlueAnonymousBot.getInstance().
                         getProperties().getProperty("command.cancel"))) {
@@ -84,6 +83,16 @@ public abstract class Command {
                 return new SpecificConnectionCommand(chatId);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperties().getProperty("command.help"))) {
+            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
+                    getProperties().getProperty("command.anonymous_link")) || caseValue.equals("/link")) {
+                return new AnonymousLinkCommand(chatId,
+                        ClientDao.getInstance().searchById(
+                                update.getMessage().getFrom().getId()));
+            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
+                    getProperties().getProperty("command.specific_connection"))) {
+                return new SpecificConnectionCommand(chatId, client);
+            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
+                    getProperties().getProperty("command.help"))) {
                 return new HelpCommand(chatId);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperties().getProperty("command.score"))) {
@@ -95,7 +104,7 @@ public abstract class Command {
                     getProperties().getProperty("command.answer"))){
                 return new AnswerCommand(chatId,client,callBackValues[1]);
             }else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.block"))){
+                    getProperties().getProperty("command.block"))) {
                 return new BlockCommand(chatId);
             } else if (client.isAdmin() && caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperties().getProperty("command.print_all_users"))) {
@@ -106,10 +115,11 @@ public abstract class Command {
             } else {
                 throw new IllegalArgumentException();
             }
-        }
-        else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
+        } else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
             return new SendMessageWithDeepLinkCommand(chatId, client,
                     update.getMessage().getText());
+        } else if (client.getClientState() == ClientState.SENDING_CONTACT_INFO) {
+            return new FindContactCommand(chatId, client, message);
         } else {
             throw new IllegalArgumentException();
         }
