@@ -1,11 +1,11 @@
-﻿package utils;
+package utils;
 
 import dao.ClientDao;
 import model.Client;
 
 import java.util.Scanner;
 
-public class ConsoleReader implements Runnable{
+public class ConsoleReader implements Runnable {
     @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
