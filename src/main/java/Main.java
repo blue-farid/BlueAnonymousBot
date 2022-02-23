@@ -19,7 +19,7 @@ import java.util.Properties;
  * @author Farid Masjedi
  * @author Negar Anabestani
  * @author Alireza Jabbari
- * @version 3.0
+ * @version 3.1
  * <p>
  * Telegram_id: @blue_farid
  * github: https://github.com/blue-farid
