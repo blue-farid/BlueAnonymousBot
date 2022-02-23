@@ -97,6 +97,7 @@ public class Client implements Serializable {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+        ClientDao.getInstance().rewriteClients();
     }
 
     @Override
