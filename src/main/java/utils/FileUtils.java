@@ -113,7 +113,7 @@ public class FileUtils {
         private final String value;
 
         FilePath(String value) {
-            if (Common.getInstance().getOsName().contains("Windows")) {
+            if (utils.Common.getInstance().isBotRunsOnWindows()) {
                 this.value = value;
             } else {
                 this.value = value.replace("\\", "/");

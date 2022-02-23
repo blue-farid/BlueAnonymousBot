@@ -4,8 +4,10 @@ import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import telegram.command.Command;
+import utils.Common;
 import utils.TimeUtils;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -72,5 +74,18 @@ public class Console {
                         utils.Common.getInstance().getOsName()
                 )
         ));
+    }
+
+    public static void clearScreen() {
+        try {
+            if (utils.Common.getInstance().isBotRunsOnWindows()) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }
+            else {
+                System.out.print("\033\143");
+            }
+        } catch (IOException | InterruptedException ignored) {
+
+        }
     }
 }

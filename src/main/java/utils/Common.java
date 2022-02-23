@@ -7,6 +7,7 @@ package utils;
  */
 public class Common {
     private static Common instance;
+    private Boolean botRunsOnWindows;
 
     private Common() {}
 
@@ -19,5 +20,12 @@ public class Common {
 
     public String getOsName() {
         return System.getProperty("os.name");
+    }
+
+    public boolean isBotRunsOnWindows() {
+        if (this.botRunsOnWindows == null) {
+            this.botRunsOnWindows = getOsName().contains("Windows");
+        }
+        return this.botRunsOnWindows;
     }
 }
