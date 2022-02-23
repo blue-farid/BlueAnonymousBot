@@ -51,6 +51,8 @@ public class Client implements Serializable {
 
     public void setLongDeepLink(String longDeepLink) {
         this.longDeepLink = longDeepLink;
+        setShortDeepLink(longDeepLink.substring(
+                longDeepLink.indexOf("=") + 1));
         ClientDao.getInstance().rewriteClients();
     }
 
