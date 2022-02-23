@@ -35,8 +35,11 @@ public class Console {
             , boolean printTime) {
         System.out.print("- new Request: " +
                 command +
-                "\n" + "\t" + "from: " +
-                message.getFrom().getUserName());
+                "\n" + "\t" + "username: " +
+                message.getFrom().getUserName() +
+                "\n" + "\t" + "name: " +
+                message.getFrom().getFirstName() +
+                " " + message.getFrom().getLastName());
         if (printTime) {
             System.out.println("\t" + TimeUtils.getInstance().getCurrentDateAndTimeString());
         } else {
