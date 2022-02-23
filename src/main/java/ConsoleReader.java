@@ -22,6 +22,7 @@ public class ConsoleReader implements Runnable {
      *     sleep -> shuts down the readMode
      *     set admin [client_id] [boolean] -> set admin true or false
      *     clear -> clear the screen
+     *     set deeplink [client_id] [deeplink] -> set deeplink
      * }
      * @param in
      * @return
