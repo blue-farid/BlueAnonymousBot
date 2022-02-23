@@ -44,15 +44,6 @@ public class FileUtils {
         try {
             clients = (HashMap<Long, Client>) in.readObject();
             in.close();
-        } catch (ClassCastException e) {
-            try {
-                in = getObjectInputStream(botClientsFile);
-                clients = (HashMap<Long, Client>)
-                        listToMap((ArrayList<Client>) in.readObject());
-                in.close();
-            } catch (IOException | ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
         } catch (IOException | ClassNotFoundException | NullPointerException e) {
             e.printStackTrace();
         }
@@ -97,13 +88,6 @@ public class FileUtils {
         return botClientsFile;
     }
 
-    private Map<Long, Client> listToMap(List<Client> clientList) {
-        Map<Long, Client> map = new HashMap<>();
-        for (Client client: clientList) {
-            map.put(client.getTelegramUser().getId(), client);
-        }
-        return map;
-    }
 
     public Properties loadProperties(FilePath filePath) {
         Properties properties = new Properties();
