@@ -54,58 +54,58 @@ public abstract class Command {
       
         if (client.getClientState() == ClientState.NORMAL||
                 update.getMessage().getText().equals(BlueAnonymousBot.getInstance().
-                        getProperties().getProperty("command.cancel"))) {
+                        getProperty("command.cancel"))) {
             if (caseValue.contains(BlueAnonymousBot.getInstance()
-                    .getProperties().getProperty("command.start"))) {
+                    .getProperty("command.start"))) {
                 String[] values = caseValue.split(" ");
                 if (values[0].equals(BlueAnonymousBot.getInstance().
-                        getProperties().getProperty("command.start")) && values.length > 1) {
+                        getProperty("command.start")) && values.length > 1) {
                     return new StartCommand(chatId, values[1], client);
                 } else {
                     return new StartCommand(chatId);
                 }
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.restart"))) {
+                    getProperty("command.restart"))) {
                 return new RestartCommand(chatId);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.anonymous_connection"))) {
-                return new AnonymousConnectionCommand(chatId);
+                    getProperty("command.anonymous_connection"))) {
+                return new AnonymousConnectionCommand(chatId, client);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.anonymous_to_group"))) {
+                    getProperty("command.anonymous_to_group"))) {
                 return new AnonymousToGroupCommand(chatId);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.anonymous_link"))) {
+                    getProperty("command.anonymous_link"))) {
                 return new AnonymousLinkCommand(chatId,
                         ClientDao.getInstance().searchById(
                                 update.getMessage().getFrom().getId()));
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.specific_connection"))) {
+                    getProperty("command.specific_connection"))) {
                 return new SpecificConnectionCommand(chatId, client);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.anonymous_link")) || caseValue.equals("/link")) {
+                    getProperty("command.anonymous_link")) || caseValue.equals("/link")) {
                 return new AnonymousLinkCommand(chatId,
                         ClientDao.getInstance().searchById(
                                 update.getMessage().getFrom().getId()));
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.help"))) {
+                    getProperty("command.help"))) {
                 return new HelpCommand(chatId);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.score"))) {
+                    getProperty("command.score"))) {
                 return new ScoreCommand(chatId);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.cancel"))) {
+                    getProperty("command.cancel"))) {
                 return new CancelCommand(chatId,client);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.answer"))){
+                    getProperty("command.answer"))){
                 return new AnswerCommand(chatId,client,callBackValues[1]);
             }else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.block"))) {
+                    getProperty("command.block"))) {
                 return new BlockCommand(chatId);
             } else if (client.isAdmin() && caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.print_all_users"))) {
+                    getProperty("command.print_all_users"))) {
                 return new PrintAllUsersCommand(chatId);
             } else if (client.isAdmin() && caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperties().getProperty("command.get_database"))) {
+                    getProperty("command.get_database"))) {
                 return new GetDatabaseCommand(chatId);
             } else {
                 throw new IllegalArgumentException();
@@ -115,7 +115,10 @@ public abstract class Command {
                     update.getMessage().getText());
         } else if (client.getClientState() == ClientState.SENDING_CONTACT_INFO) {
             return new FindContactCommand(chatId, client, message);
-        } else {
+        } else if (client.getClientState() == ClientState.CHOOSING_CONTACT_SEX) {
+            return new ChooseContactSexCommand(chatId);
+        }
+        else {
             throw new IllegalArgumentException();
         }
     }

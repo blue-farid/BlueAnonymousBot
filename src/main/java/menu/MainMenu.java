@@ -31,17 +31,17 @@ public class MainMenu extends Menu {
         KeyboardRow keyboardRow3 = new KeyboardRow();
         KeyboardRow keyboardRow4 = new KeyboardRow();
         keyboardFirstRow.add(BlueAnonymousBot.getInstance().
-                getProperties().getProperty("command.anonymous_connection"));
+                getProperty("command.anonymous_connection"));
         keyboardRow2.add(BlueAnonymousBot.getInstance().
-                getProperties().getProperty("command.specific_connection"));
+                getProperty("command.specific_connection"));
         keyboardRow3.add(BlueAnonymousBot.getInstance().
-                getProperties().getProperty("command.anonymous_link"));
+                getProperty("command.anonymous_link"));
         keyboardRow3.add(BlueAnonymousBot.getInstance().
-                getProperties().getProperty("command.anonymous_to_group"));
+                getProperty("command.anonymous_to_group"));
         keyboardRow4.add(BlueAnonymousBot.getInstance().
-                getProperties().getProperty("command.help"));
+                getProperty("command.help"));
         keyboardRow4.add(BlueAnonymousBot.getInstance().
-                getProperties().getProperty("command.score"));
+                getProperty("command.score"));
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
         keyboard.add(keyboardRow3);

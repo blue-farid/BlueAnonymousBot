@@ -69,15 +69,15 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         }
     }
 
-    public Properties getProperties() {
-        return properties;
-    }
-
     public void setBotToken(String botToken) {
         this.botToken = botToken;
     }
 
     public void setBotUsername(String botUsername) {
         this.botUsername = botUsername;
+    }
+
+    public String getProperty(String key) {
+        return this.properties.getProperty(key);
     }
 }
