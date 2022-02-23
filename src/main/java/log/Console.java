@@ -69,6 +69,7 @@ public class Console {
     }
 
     public static void initMessage() {
+        clearScreen();
         System.out.println("- the bot runs successfully!\n".concat(
                 "- OS: ".concat(
                         utils.Common.getInstance().getOsName()
