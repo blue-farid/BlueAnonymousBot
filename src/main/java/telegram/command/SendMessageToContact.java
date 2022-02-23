@@ -7,12 +7,12 @@ import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import telegram.BlueAnonymousBot;
 
-public class SendMessageWithDeepLinkCommand extends Command {
+public class SendMessageToContact extends Command {
 
     private final Client client;
     private final String message;
 
-    public SendMessageWithDeepLinkCommand(String chatId, Client client, String message) {
+    public SendMessageToContact(String chatId, Client client, String message) {
         super(chatId);
         this.client = client;
         this.message = message;

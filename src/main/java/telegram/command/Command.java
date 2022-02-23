@@ -10,7 +10,6 @@ import telegram.BlueAnonymousBot;
 
 import java.lang.annotation.*;
 import java.util.Optional;
-import java.util.Properties;
 
 public abstract class Command {
     protected final Optional<String> optionalCommand;
@@ -112,7 +111,7 @@ public abstract class Command {
                 throw new IllegalArgumentException();
             }
         } else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
-            return new SendMessageWithDeepLinkCommand(chatId, client,
+            return new SendMessageToContact(chatId, client,
                     update.getMessage().getText());
         } else if (client.getClientState() == ClientState.SENDING_CONTACT_INFO) {
             return new FindContactCommand(chatId, client, message);
