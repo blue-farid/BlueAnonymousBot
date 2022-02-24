@@ -53,8 +53,8 @@ public abstract class Command {
         }
       
         if (client.getClientState() == ClientState.NORMAL||
-                update.getMessage().getText().equals(BlueAnonymousBot.getInstance().
-                        getProperty("command.cancel"))) {
+                (caseValue.equals(BlueAnonymousBot.getInstance().
+                        getProperty("command.cancel")))) {
             if (caseValue.contains(BlueAnonymousBot.getInstance()
                     .getProperty("command.start"))) {
                 String[] values = caseValue.split(" ");
@@ -112,7 +112,7 @@ public abstract class Command {
             }
         } else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
             return new SendMessageToContact(chatId, client,
-                    update.getMessage().getText());
+                    update.getMessage());
         } else if (client.getClientState() == ClientState.SENDING_CONTACT_INFO) {
             return new FindContactCommand(chatId, client, message);
         } else if (client.getClientState() == ClientState.CHOOSING_CONTACT_SEX) {

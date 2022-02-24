@@ -48,11 +48,13 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             newRequestReceived(update);
         }
+        if (update.hasMessage() || update.hasCallbackQuery()) {
             try {
                 updateHandler.processUpdate(update);
             } catch (BadInputException e) {
                 executeSendMessage(e.getSendMessage());
             }
+        }
 
     }
 
