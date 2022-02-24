@@ -51,9 +51,8 @@ public abstract class Command {
         } else {
             throw new IllegalArgumentException();
         }
-      
         if (client.getClientState() == ClientState.NORMAL||
-                (caseValue != null && caseValue.equals(BlueAnonymousBot.getInstance().
+                (update.getMessage() != null && update.getMessage().getText().equals(BlueAnonymousBot.getInstance().
                         getProperty("command.cancel")))) {
             if (caseValue.contains(BlueAnonymousBot.getInstance()
                     .getProperty("command.start"))) {

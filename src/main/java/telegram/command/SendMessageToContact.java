@@ -22,6 +22,10 @@ public class SendMessageToContact extends Command {
 
     @Override
     public void execute() {
+        if (message == null){
+            client.setClientState(ClientState.NORMAL);
+            return;
+        }
         String contactChatId = client.getContact().getChatId().toString();
         notifyNewMessage();
         if (message.hasText()){
