@@ -4,8 +4,7 @@ import inlineMenu.InlineAMB;
 import menu.MainMenu;
 import model.Client;
 import model.ClientState;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import telegram.BlueAnonymousBot;
@@ -35,10 +34,8 @@ public class SendMessageToContact extends Command {
             BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);
         }
         else if (message.hasSticker()){
-            SendSticker contactSendSticker = new SendSticker();
-            contactSendSticker.setChatId(contactChatId);
-            InputFile sticker = new InputFile(message.getSticker().getFileId().toString());
-            contactSendSticker.setSticker(sticker);
+            InputFile sticker = new InputFile(message.getSticker().getFileId());
+            SendSticker contactSendSticker = new SendSticker(contactChatId, sticker);
             contactSendSticker.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendSticker);
@@ -47,14 +44,71 @@ public class SendMessageToContact extends Command {
                 e.printStackTrace();
             }
         }
-//        else if (message.hasPhoto() || message.hasVideo()){
-//            SendPhoto contactSendPhoto = new SendPhoto();
-//            SendMediaGroup contactSendMedia = new SendMediaGroup();
-//            message.getMed
-//            contactSendPhoto.setChatId(contactChatId);
-//            InputFile photo = new InputFile(message.getPhoto())
-//            contactSendMedia.
-//        }
+        else if (message.hasVoice()){
+            InputFile voice = new InputFile(message.getVoice().getFileId());
+            SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
+            contactSendVoice.setCaption(message.getCaption());
+            contactSendVoice.setCaptionEntities(message.getCaptionEntities());
+            contactSendVoice.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            try {
+                BlueAnonymousBot.getInstance().execute(contactSendVoice);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        else if (message.hasDocument()){
+            InputFile document = new InputFile(message.getDocument().getFileId());
+            SendDocument contactSendDocument = new SendDocument(contactChatId, document);
+            contactSendDocument.setCaption(message.getCaption());
+            contactSendDocument.setCaptionEntities(message.getCaptionEntities());
+            contactSendDocument.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            try {
+                BlueAnonymousBot.getInstance().execute(contactSendDocument);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        else if (message.hasPhoto()){
+            InputFile photo = new InputFile(message.getPhoto().get(0).getFileId());
+            SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
+            contactSendPhoto.setCaption(message.getCaption());
+            contactSendPhoto.setCaptionEntities(message.getCaptionEntities());
+            contactSendPhoto.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            try {
+                BlueAnonymousBot.getInstance().execute(contactSendPhoto);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        else if (message.hasVideo()){
+            InputFile video = new InputFile(message.getVideo().getFileId());
+            SendVideo contactSendVideo = new SendVideo(contactChatId, video);
+            contactSendVideo.setCaption(message.getCaption());
+            contactSendVideo.setCaptionEntities(message.getCaptionEntities());
+            contactSendVideo.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            try {
+                BlueAnonymousBot.getInstance().execute(contactSendVideo);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        else if (message.hasAudio()){
+            InputFile audio = new InputFile(message.getAudio().getFileId());
+            SendAudio contactSendAudio = new SendAudio(contactChatId, audio);
+            contactSendAudio.setCaption(message.getCaption());
+            contactSendAudio.setCaptionEntities(message.getCaptionEntities());
+            contactSendAudio.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            try {
+                BlueAnonymousBot.getInstance().execute(contactSendAudio);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
         if (client.getContact().isAdmin()) {
             SendMessage adminSendMessage = new SendMessage();
