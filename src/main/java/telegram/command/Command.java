@@ -53,7 +53,7 @@ public abstract class Command {
         }
       
         if (client.getClientState() == ClientState.NORMAL||
-                (caseValue.equals(BlueAnonymousBot.getInstance().
+                (caseValue != null && caseValue.equals(BlueAnonymousBot.getInstance().
                         getProperty("command.cancel")))) {
             if (caseValue.contains(BlueAnonymousBot.getInstance()
                     .getProperty("command.start"))) {
