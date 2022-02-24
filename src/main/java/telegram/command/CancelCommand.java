@@ -15,10 +15,6 @@ public class CancelCommand extends Command{
         this.client=client;
     }
 
-    public CancelCommand(String chatId, String optionalCommand, Client client) {
-        super(chatId, optionalCommand);
-        this.client = client;
-    }
 
     @Override
     public void execute() {

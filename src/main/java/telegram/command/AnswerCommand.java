@@ -8,16 +8,9 @@ import telegram.BlueAnonymousBot;
 
 public class AnswerCommand extends Command {
     private static final String localMessage = "☝️ در حال پاسخ دادن به فرستنده این پیام هستی ... ؛ منتظریم بفرستی :)";
-    private Client client;
-    private String deepLink;
+    private final Client client;
+    private final String deepLink;
 
-    public AnswerCommand(String chatId) {
-        super(chatId);
-    }
-
-    public AnswerCommand(String chatId, String optionalCommand) {
-        super(chatId, optionalCommand);
-    }
 
     public AnswerCommand(String chatId, Client client, String deepLink) {
         super(chatId);
@@ -27,11 +20,9 @@ public class AnswerCommand extends Command {
 
     @Override
     public void execute() {
-//        System.out.println(client.getShortDeepLink());
-//        System.out.println(deepLink);
+
         Client contact = ClientDao.getInstance().searchByDeepLink(deepLink);
         client.setContact(contact);
-//        System.out.println("seeker "+client.getTelegramUser().getUserName()+"sender "+contact.getTelegramUser().getUserName());
         sendMessage.setText(localMessage);
         sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
