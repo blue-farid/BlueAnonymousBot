@@ -36,7 +36,7 @@ public class Main {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(BlueAnonymousBot.getInstance());
             new Thread(new ConsoleReader()).start();
-            log.Console.initMessage();
+            log.Console.initMessage("3.65");
         } catch (TelegramApiException e) {
             e.printStackTrace();
             System.exit(-1);

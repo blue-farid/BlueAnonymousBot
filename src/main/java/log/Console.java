@@ -71,11 +71,13 @@ public class Console {
         System.out.print(opj);
     }
 
-    public static void initMessage() {
+    public static void initMessage(String version) {
         clearScreen();
-        System.out.println("- the bot runs successfully!\n".concat(
-                "- OS: ".concat(
+        System.out.println("- the bot is running!\n".concat(
+                "- Version: ".concat(version).concat(
+                 "- OS: ".concat(
                         utils.Common.getInstance().getOsName()
+                )
                 )
         ));
     }
