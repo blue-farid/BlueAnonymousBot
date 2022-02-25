@@ -28,12 +28,6 @@ import java.util.Properties;
  */
 public class Main {
     public static void main(String[] args) {
-//        System.out.println(Property.MESSAGES_P.get( "درحال ارسال پيام ناشناس به " +
-//                "?name" + " هستي.\n"
-//                +
-//                "\n" +
-//                "می\u200Cتونی هر حرف یا انتقادی که تو دلت هست رو بگی چون پیامت به صورت کاملا ناشناس ارسال می\u200Cشه!"
-//));
         try {
             if (args.length > 0 && args[0].equals("test")) {
                loadTestBot();

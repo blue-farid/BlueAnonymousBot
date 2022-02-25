@@ -3,7 +3,13 @@ package inlineMenu;
 import properties.Property;
 
 public class InlineHelpKeyBoard extends InlineBlueKeyBoard{
-   public InlineHelpKeyBoard(){
+    private static InlineHelpKeyBoard inlineHelpKeyBoard;
+    public static InlineHelpKeyBoard getInstance(){
+        if (inlineHelpKeyBoard==null)
+            inlineHelpKeyBoard=new InlineHelpKeyBoard();
+        return inlineHelpKeyBoard;
+    }
+   private InlineHelpKeyBoard(){
        addButtonToList(0,"\uD83D\uDC48این روبات چیه؟ به چه درد میخوره؟"+"::"+ Property.COMMANDS_P.get("help.what_for"));
        addButtonToList(1,"\uD83D\uDC48چطوری به یه ناشناس تصادفی وصل بشم؟"+"::"+ Property.COMMANDS_P.get("help.connect_random_anonymous"));
        addButtonToList(2,"\uD83D\uDC48 چطوری نسخه ی رایگان"+"VIP"+" رو فعال کنم؟"+"::"+ Property.COMMANDS_P.get("help.free_vip"));

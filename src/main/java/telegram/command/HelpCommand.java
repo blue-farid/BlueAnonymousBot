@@ -12,7 +12,7 @@ public class HelpCommand extends Command {
     @Override
     public void execute() {
         sendMessage.setText(Property.MESSAGES_P.get("help"));
-        sendMessage.setReplyMarkup(new InlineHelpKeyBoard());
+        sendMessage.setReplyMarkup(InlineHelpKeyBoard.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
     }
 }
