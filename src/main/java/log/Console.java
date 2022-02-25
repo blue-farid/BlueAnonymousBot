@@ -74,8 +74,8 @@ public class Console {
     public static void initMessage(String version) {
         clearScreen();
         System.out.println("- the bot is running!\n".concat(
-                "- Version: ".concat(version).concat(
-                 "- OS: ".concat(
+                "- Version: ".concat(version.concat("\n")).concat(
+                        "- OS: ".concat(
                         utils.Common.getInstance().getOsName()
                 )
                 )
