@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InlineBlueKeyBoard extends InlineKeyboardMarkup {
-    //List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
     HashMap<Integer,ArrayList<String[]>> keyboardInfo=new HashMap<>();
 
     private InlineKeyboardButton creatButton(String text, String callBack){
