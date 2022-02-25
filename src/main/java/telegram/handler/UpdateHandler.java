@@ -17,7 +17,7 @@ public class UpdateHandler {
         try {
             command = Command.valueOf(update);
             log.Console.printNewRequestInfo(message, command, true);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             // handle bad inputs.
             throw new BadInputException(telegram.Message.BAD_INPUT.getValue(),
                     message.getChatId().toString());

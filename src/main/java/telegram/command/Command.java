@@ -29,7 +29,7 @@ public abstract class Command {
         this.optionalCommand = Optional.of(optionalCommand);
     }
   
-    public static Command valueOf(Update update) {
+    public static Command valueOf(Update update) throws Exception {
         Message message = null;
         String caseValue;
         String chatId;
