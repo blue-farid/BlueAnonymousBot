@@ -1,6 +1,7 @@
 package menu;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 import telegram.command.Command;
 
@@ -28,8 +29,7 @@ public class CancelMenu extends Menu {
     protected List<KeyboardRow> creatKeyBoard() {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(BlueAnonymousBot.getInstance().
-                getProperty("command.cancel"));
+        keyboardFirstRow.add(Property.COMMANDS_P.get("cancel"));
         keyboard.add(keyboardFirstRow);
         return keyboard;
     }

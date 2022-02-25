@@ -7,6 +7,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import properties.Property;
 import telegram.handler.UpdateHandler;
 import utils.FileUtils;
 
@@ -24,7 +25,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     private BlueAnonymousBot() {
         this.properties = FileUtils.getInstance().
-                loadProperties(FileUtils.FilePath.BOT_PROPERTIES);
+                loadProperties(FileUtils.FilePath.COMMAND_PROPERTIES);
     }
 
     public static BlueAnonymousBot getInstance() {
@@ -79,7 +80,4 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         this.botUsername = botUsername;
     }
 
-    public String getProperty(String key) {
-        return this.properties.getProperty(key);
-    }
 }

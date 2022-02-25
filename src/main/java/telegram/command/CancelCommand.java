@@ -3,16 +3,17 @@ package telegram.command;
 import menu.MainMenu;
 import model.Client;
 import model.ClientState;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class CancelCommand extends Command{
     private final Client client;
-    private static final String localMessage = "حله!\n" +
-            "\n" +
-            "چه کاری برات انجام بدم؟";
+    private final String localMessage;
+
     public CancelCommand(String chatId, Client client) {
         super(chatId);
         this.client=client;
+        this.localMessage= Property.MESSAGES_P.get("cancel");
     }
 
 

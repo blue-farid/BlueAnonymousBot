@@ -3,7 +3,6 @@ package utils;
 import model.Client;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -108,7 +107,8 @@ public class FileUtils {
      */
     public enum FilePath {
         BOT_CLIENTS("files\\db\\clients_bot.bin"),
-        BOT_PROPERTIES("blue_anonymous_bot.properties");
+        COMMAND_PROPERTIES("commands.properties"),
+        MESSAGE_PROPERTIES("messages.properties");
 
         private final String value;
 
@@ -118,6 +118,7 @@ public class FileUtils {
             } else {
                 this.value = value.replace("\\", "/");
             }
+
         }
 
         public String getValue() {

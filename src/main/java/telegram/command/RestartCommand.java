@@ -1,15 +1,15 @@
 package telegram.command;
 
 import menu.MainMenu;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class RestartCommand extends Command {
-    private static final String localMessage = "حله!\n" +
-            "\n" +
-            "چه کاری برات انجام بدم؟";
+    private final String localMessage;
 
     public RestartCommand(String chatId) {
         super(chatId);
+        localMessage= Property.MESSAGES_P.get("restart");
     }
 
     @Override

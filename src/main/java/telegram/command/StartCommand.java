@@ -4,28 +4,26 @@ import dao.ClientDao;
 import model.Client;
 import menu.MainMenu;
 import model.ClientState;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class StartCommand extends Command {
-    private static final String localMessage = "حله!\n" +
-            "\n" +
-            "چه کاری برات انجام بدم؟";
-    private static final String localMessage2 = "درحال ارسال پيام ناشناس به " +
-            "?name" + " هستي.\n"
-            +
-            "\n" +
-            "می\u200Cتونی هر حرف یا انتقادی که تو دلت هست رو بگی چون پیامت به صورت کاملا ناشناس ارسال می\u200Cشه!";
-
+    private final String localMessage;
+    private final String localMessage2 ;
     private final Client client;
 
     public StartCommand(String chatId) {
         super(chatId);
         this.client = null;
+        localMessage= Property.MESSAGES_P.get("start_1");
+        localMessage2= Property.MESSAGES_P.get("start_2");
     }
 
     public StartCommand(String chatId, String optionalCommand, Client client) {
         super(chatId, optionalCommand);
         this.client = client;
+        localMessage= Property.MESSAGES_P.get("start_1");
+        localMessage2= Property.MESSAGES_P.get("start_2");
     }
 
     @Override
@@ -54,9 +52,7 @@ public class StartCommand extends Command {
     }
 
     private String selfAnonymousMessageString() {
-        return "اینکه آدم گاهی با خودش حرف بزنه خوبه ، ولی اینجا نمیتونی به خودت پیام ناشناس بفرستی ! :)\n" +
-                "\n" +
-                "چه کاری برات انجام بدم؟";
+        return Property.MESSAGES_P.get("self_anonymous");
     }
 
 }

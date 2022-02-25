@@ -5,23 +5,14 @@ import model.Client;
 import model.ClientState;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 
 public class FindContactCommand extends Command{
 
-    private static final String localMessage = "درحال ارسال پيام ناشناس به " +
-            "?name" + " هستي.\n"
-            +
-            "\n" +
-            "می\u200Cتونی هر حرف یا انتقادی که تو دلت هست رو بگی چون پیامت به صورت کاملا ناشناس ارسال می\u200Cشه!";
-
-    private static final String localMessage2 = "متاسفانه مخاطبت الان عضو ربات نیست!\n" +
-            "\n" +
-            "چطوره یه جوری لینک ربات رو بهش برسونی تا بیاد و عضو بشه؟ مثلا لینک خودت رو بهش بفرستی یا اگه جزء دنبال کننده\u200Cهای اینستاگرامته لینکت رو در اینستاگرامت بذاری.\n" +
-            "\n" +
-            "برای دریافت لینک \uD83D\uDC48 /link";
-
+    private final String localMessage ;
+    private final String localMessage2 ;
     private final Message message;
     private final Client client;
 
@@ -29,6 +20,8 @@ public class FindContactCommand extends Command{
         super(chatId);
         this.message = message;
         this.client = client;
+        this.localMessage= Property.MESSAGES_P.get("find_contact_1");
+        this.localMessage2= Property.MESSAGES_P.get("find_contact_2");
     }
 
     @Override

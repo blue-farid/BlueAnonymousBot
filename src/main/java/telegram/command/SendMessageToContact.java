@@ -7,6 +7,7 @@ import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class SendMessageToContact extends Command {
@@ -125,9 +126,7 @@ public class SendMessageToContact extends Command {
         }
 
         sendMessage.setChatId(client.getChatId().toString());
-        sendMessage.setText("پیام شما ارسال شد \uD83D\uDE0A\n" +
-                "\n" +
-                "چه کاری برات انجام بدم؟");
+        sendMessage.setText(Property.MESSAGES_P.get("send_message_done"));
         sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
 
@@ -138,7 +137,7 @@ public class SendMessageToContact extends Command {
         String contactChatId = client.getContact().getChatId().toString();
         SendMessage contactSendMessage = new SendMessage();
         contactSendMessage.setChatId(contactChatId);
-        contactSendMessage.setText("\uD83D\uDCEC شما یک پیام ناشناس جدید دارید !");
+        contactSendMessage.setText(Property.MESSAGES_P.get("new_anonymous_message"));
         BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);
     }
 }

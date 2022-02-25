@@ -1,6 +1,7 @@
 package telegram.command;
 
 import menu.CancelMenu;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class ChooseContactSexCommand extends Command {
@@ -10,8 +11,7 @@ public class ChooseContactSexCommand extends Command {
 
     @Override
     public void execute() {
-        this.sendMessage.setText(BlueAnonymousBot.getInstance()
-                .getProperty("message.choose_contact_sex"));
+        this.sendMessage.setText(Property.MESSAGES_P.get("choose_contact_sex"));
         this.sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
     }

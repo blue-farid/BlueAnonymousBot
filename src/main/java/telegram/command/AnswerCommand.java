@@ -4,10 +4,11 @@ import dao.ClientDao;
 import menu.CancelMenu;
 import model.Client;
 import model.ClientState;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class AnswerCommand extends Command {
-    private static final String localMessage = "☝️ در حال پاسخ دادن به فرستنده این پیام هستی ... ؛ منتظریم بفرستی :)";
+    private final String localMessage ;
     private final Client client;
     private final String deepLink;
 
@@ -16,6 +17,7 @@ public class AnswerCommand extends Command {
         super(chatId);
         this.client = client;
         this.deepLink = deepLink;
+        this.localMessage= Property.MESSAGES_P.get("answer");
     }
 
     @Override
