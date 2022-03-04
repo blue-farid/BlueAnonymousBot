@@ -22,7 +22,7 @@ public class SendMessageToContact extends Command {
 
     @Override
     public void execute() {
-        if (message == null){
+        if (message == null || client.getContact() == null){
             client.setClientState(ClientState.NORMAL);
             return;
         }
@@ -34,13 +34,15 @@ public class SendMessageToContact extends Command {
             contactSendMessage.setChatId(contactChatId);
             contactSendMessage.setText(text);
             contactSendMessage.setEntities(message.getEntities());
-            contactSendMessage.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            contactSendMessage.setReplyMarkup(new InlineAMB(client.getShortDeepLink(), message.getMessageId()));
+            contactSendMessage.setReplyToMessageId(client.getContactMessageId());
             BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);
         }
         else if (message.hasSticker()){
             InputFile sticker = new InputFile(message.getSticker().getFileId());
             SendSticker contactSendSticker = new SendSticker(contactChatId, sticker);
-            contactSendSticker.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            contactSendSticker.setReplyMarkup(new InlineAMB(client.getShortDeepLink(), message.getMessageId()));
+            contactSendSticker.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendSticker);
             }
@@ -53,7 +55,8 @@ public class SendMessageToContact extends Command {
             SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
             contactSendVoice.setCaption(message.getCaption());
             contactSendVoice.setCaptionEntities(message.getCaptionEntities());
-            contactSendVoice.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            contactSendVoice.setReplyMarkup(new InlineAMB(client.getShortDeepLink(), message.getMessageId()));
+            contactSendVoice.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendVoice);
             }
@@ -66,7 +69,8 @@ public class SendMessageToContact extends Command {
             SendDocument contactSendDocument = new SendDocument(contactChatId, document);
             contactSendDocument.setCaption(message.getCaption());
             contactSendDocument.setCaptionEntities(message.getCaptionEntities());
-            contactSendDocument.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            contactSendDocument.setReplyMarkup(new InlineAMB(client.getShortDeepLink(), message.getMessageId()));
+            contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendDocument);
             }
@@ -79,7 +83,8 @@ public class SendMessageToContact extends Command {
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
             contactSendPhoto.setCaptionEntities(message.getCaptionEntities());
-            contactSendPhoto.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            contactSendPhoto.setReplyMarkup(new InlineAMB(client.getShortDeepLink(), message.getMessageId()));
+            contactSendPhoto.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendPhoto);
             }
@@ -92,7 +97,8 @@ public class SendMessageToContact extends Command {
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
             contactSendVideo.setCaptionEntities(message.getCaptionEntities());
-            contactSendVideo.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            contactSendVideo.setReplyMarkup(new InlineAMB(client.getShortDeepLink(), message.getMessageId()));
+            contactSendVideo.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendVideo);
             }
@@ -105,7 +111,8 @@ public class SendMessageToContact extends Command {
             SendAudio contactSendAudio = new SendAudio(contactChatId, audio);
             contactSendAudio.setCaption(message.getCaption());
             contactSendAudio.setCaptionEntities(message.getCaptionEntities());
-            contactSendAudio.setReplyMarkup(new InlineAMB(client.getShortDeepLink()));
+            contactSendAudio.setReplyMarkup(new InlineAMB(client.getShortDeepLink(), message.getMessageId()));
+            contactSendAudio.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendAudio);
             }
@@ -132,6 +139,8 @@ public class SendMessageToContact extends Command {
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
 
         client.setClientState(ClientState.NORMAL);
+        client.setContactMessageId(null);
+        client.setContact(null);
     }
 
     private void notifyNewMessage(){

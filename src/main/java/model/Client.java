@@ -14,6 +14,7 @@ public class Client implements Serializable {
     private final Long chatId;
     private ClientState clientState;
     private Client Contact;
+    private Integer contactMessageId;
     private boolean admin;
 
     public Client(User user, Long chatId) {
@@ -25,6 +26,14 @@ public class Client implements Serializable {
 
     public User getTelegramUser() {
         return telegramUser;
+    }
+
+    public Integer getContactMessageId() {
+        return contactMessageId;
+    }
+
+    public void setContactMessageId(Integer contactMessageId) {
+        this.contactMessageId = contactMessageId;
     }
 
     public String getLongDeepLink() {

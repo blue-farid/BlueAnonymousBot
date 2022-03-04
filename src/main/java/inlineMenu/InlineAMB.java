@@ -4,10 +4,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 public class InlineAMB extends InlineBlueKeyBoard {
 
-    public InlineAMB(String senderDeepLink) {
+    public InlineAMB(String senderDeepLink, int messageId) {
 
        addButtonToList(0,"⛔️بلاک"+"::"+"block");
-       addButtonToList(0,"✍\uD83C\uDFFB پاسخ"+"::"+ "answer " + senderDeepLink);
+       addButtonToList(0,"✍\uD83C\uDFFB پاسخ"+"::"+ "answer " + senderDeepLink + " " + messageId);
        setInlineBlueKeyBoard();
     }
 

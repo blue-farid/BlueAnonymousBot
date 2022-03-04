@@ -10,12 +10,16 @@ public class AnswerCommand extends Command {
     private static final String localMessage = "☝️ در حال پاسخ دادن به فرستنده این پیام هستی ... ؛ منتظریم بفرستی :)";
     private final Client client;
     private final String deepLink;
+    private final int currentMessageId;
+    private final int contactMessageId;
 
 
-    public AnswerCommand(String chatId, Client client, String deepLink) {
+    public AnswerCommand(String chatId, Client client, String deepLink, int currentMessageId, int contactMessageId) {
         super(chatId);
         this.client = client;
         this.deepLink = deepLink;
+        this.currentMessageId = currentMessageId;
+        this.contactMessageId = contactMessageId;
     }
 
     @Override
@@ -25,8 +29,10 @@ public class AnswerCommand extends Command {
         client.setContact(contact);
         sendMessage.setText(localMessage);
         sendMessage.setReplyMarkup(CancelMenu.getInstance());
+        sendMessage.setReplyToMessageId(currentMessageId);
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
+        client.setContactMessageId(contactMessageId);
 
     }
 }
