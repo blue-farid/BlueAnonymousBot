@@ -14,9 +14,7 @@ public class FileUtils {
     private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
 
     private FileUtils() {
-    }
-/// testinggggggg
-    public static FileUtils getInstance() {
+    }public static FileUtils getInstance() {
         if (instance == null) {
             instance = new FileUtils();
         }
