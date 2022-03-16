@@ -2,6 +2,7 @@ package dao;
 
 import model.Client;
 import utils.FileUtils;
+import utils.SQLiteUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,11 +12,6 @@ import java.util.HashMap;
  */
 public class ClientDao {
     private static ClientDao instance;
-    private final HashMap<Long, Client> clients;
-
-    private ClientDao() {
-        clients = FileUtils.getInstance().readTelegramUsers();
-    }
 
     public static ClientDao getInstance() {
         if (instance == null)
@@ -24,7 +20,7 @@ public class ClientDao {
     }
 
     public Collection<Client> getClients() {
-        return clients.values();
+        return SQLiteUtils.getInstance().selectClients();
     }
 
     public int addClient(Client client) {

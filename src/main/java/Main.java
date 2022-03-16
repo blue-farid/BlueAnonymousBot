@@ -2,6 +2,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.BlueAnonymousBot;
+import utils.SQLiteUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +34,7 @@ public class Main {
             } else {
                 loadOriginalBot();
             }
+            loadDatabase();
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(BlueAnonymousBot.getInstance());
             new Thread(new ConsoleReader()).start();
@@ -62,5 +64,9 @@ public class Main {
         }
         BlueAnonymousBot.getInstance().setBotUsername(pr.getProperty("bot.username"));
         BlueAnonymousBot.getInstance().setBotToken(pr.getProperty("bot.token"));
+    }
+
+    private static void loadDatabase() {
+        SQLiteUtils.getInstance();
     }
 }

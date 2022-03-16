@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Client implements Serializable {
+    private final long id;
     private final User telegramUser;
     private String longDeepLink;
     private String shortDeepLink;
@@ -17,10 +18,21 @@ public class Client implements Serializable {
     private boolean admin;
 
     public Client(User user, Long chatId) {
+        this.id = user.getId();
         this.telegramUser = user;
         this.chatId = chatId;
         this.clientState = ClientState.NORMAL;
         this.admin = false;
+    }
+
+    public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId, ClientState clientState, boolean admin) {
+        this.id = id;
+        this.telegramUser = telegramUser;
+        this.longDeepLink = longDeepLink;
+        this.shortDeepLink = shortDeepLink;
+        this.chatId = chatId;
+        this.clientState = clientState;
+        this.admin = admin;
     }
 
     public User getTelegramUser() {
@@ -105,6 +117,10 @@ public class Client implements Serializable {
     @Override
     public String toString() {
         return telegramUser.getUserName();
+    }
+
+    public long getId() {
+        return id;
     }
 }
 
