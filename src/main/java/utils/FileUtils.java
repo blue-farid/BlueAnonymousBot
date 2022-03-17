@@ -92,6 +92,10 @@ public class FileUtils {
         return botClientsFile;
     }
 
+    public File getDatabaseFile() {
+        return new File(FilePath.DATABASE.getValue());
+    }
+
 
     public Properties loadProperties(FilePath filePath) {
         Properties properties = new Properties();
@@ -112,7 +116,8 @@ public class FileUtils {
      */
     public enum FilePath {
         BOT_CLIENTS("files\\db\\clients_bot.bin"),
-        BOT_PROPERTIES("blue_anonymous_bot.properties");
+        BOT_PROPERTIES("blue_anonymous_bot.properties"),
+        DATABASE("files\\db\\sqlite\\blue-anonymous-bot.db");
 
         private final String value;
 
