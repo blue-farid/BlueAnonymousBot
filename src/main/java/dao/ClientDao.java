@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * the UserDao class
+ * the ClientDao class
  */
 public class ClientDao {
     private static ClientDao instance;
