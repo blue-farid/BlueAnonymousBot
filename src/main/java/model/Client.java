@@ -1,26 +1,38 @@
 package model;
 
-import dao.ClientDao;
 import org.telegram.telegrambots.meta.api.objects.User;
-import telegram.command.AnonymousLinkCommand;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Client implements Serializable {
+    private final long id;
     private final User telegramUser;
     private String longDeepLink;
     private String shortDeepLink;
     private final Long chatId;
     private ClientState clientState;
-    private Client Contact;
+    private long contactId;
     private boolean admin;
 
     public Client(User user, Long chatId) {
+        this.id = user.getId();
         this.telegramUser = user;
         this.chatId = chatId;
         this.clientState = ClientState.NORMAL;
         this.admin = false;
+    }
+
+    public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId,
+                  ClientState clientState, boolean admin, long contactId) {
+        this.id = id;
+        this.telegramUser = telegramUser;
+        this.longDeepLink = longDeepLink;
+        this.shortDeepLink = shortDeepLink;
+        this.chatId = chatId;
+        this.clientState = clientState;
+        this.admin = admin;
+        this.contactId = contactId;
     }
 
     public User getTelegramUser() {
@@ -28,32 +40,21 @@ public class Client implements Serializable {
     }
 
     public String getLongDeepLink() {
-        if (longDeepLink == null) {
-            setLongDeepLink(AnonymousLinkCommand.
-                    generateAnonymousLink());
-        }
         return longDeepLink;
     }
 
-    public String getShortDeepLink() {
-        if (shortDeepLink == null) {
-            setShortDeepLink(getLongDeepLink().substring(
-                    getLongDeepLink().indexOf("=") + 1));
-        }
+    public String geId() {
         return shortDeepLink;
     }
 
 
     private void setShortDeepLink(String shortDeepLink) {
         this.shortDeepLink = shortDeepLink;
-        ClientDao.getInstance().rewriteClients();
     }
 
     public void setLongDeepLink(String longDeepLink) {
         this.longDeepLink = longDeepLink;
-        setShortDeepLink(longDeepLink.substring(
-                longDeepLink.indexOf("=") + 1));
-        ClientDao.getInstance().rewriteClients();
+        setShortDeepLink(longDeepLink.substring(longDeepLink.indexOf("=") + 1));
     }
 
     public Long getChatId() {
@@ -68,20 +69,17 @@ public class Client implements Serializable {
         this.clientState = clientState;
     }
 
-    public void setContact(Client contact) {
-        Contact = contact;
+    public void setContactId(long contactId) {
+        this.contactId = contactId;
     }
 
-    public Client getContact() {
-        return Contact;
+    public long getContactId() {
+        return contactId;
     }
 
     @Override
     public boolean equals(Object o) {
-        return (this == o) ||
-                ((o instanceof Client) &&
-                        ((Client) o).telegramUser.getId().equals(
-                                this.telegramUser.getId()));
+        return (this == o) || ((o instanceof Client) && ((Client) o).telegramUser.getId().equals(this.telegramUser.getId()));
     }
 
     @Override
@@ -99,12 +97,15 @@ public class Client implements Serializable {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
-        ClientDao.getInstance().rewriteClients();
     }
 
     @Override
     public String toString() {
         return telegramUser.getUserName();
+    }
+
+    public long getId() {
+        return id;
     }
 }
 

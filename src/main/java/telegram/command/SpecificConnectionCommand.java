@@ -5,6 +5,7 @@ import menu.CancelMenu;
 import model.Client;
 import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class SpecificConnectionCommand extends Command {
@@ -30,6 +31,6 @@ public class SpecificConnectionCommand extends Command {
         this.sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
 
-        client.setClientState(ClientState.SENDING_CONTACT_INFO);
+        ClientService.getInstance().setClientState(client, ClientState.SENDING_CONTACT_INFO);
     }
 }

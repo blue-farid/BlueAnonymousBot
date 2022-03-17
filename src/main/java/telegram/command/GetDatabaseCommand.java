@@ -18,7 +18,7 @@ public class GetDatabaseCommand extends Command {
         SendDocument sendDocument = new SendDocument();
         sendDocument.setChatId(sendMessage.getChatId());
         InputFile inputFile = new InputFile(
-                FileUtils.getInstance().getBotClientsFile());
+                FileUtils.getInstance().getDatabaseFile());
         sendDocument.setDocument(inputFile);
         try {
             BlueAnonymousBot.getInstance().execute(sendDocument);

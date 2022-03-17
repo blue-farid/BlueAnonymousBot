@@ -3,6 +3,7 @@ package telegram.command;
 import menu.ChooseContactSexMenu;
 import model.Client;
 import model.ClientState;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class AnonymousConnectionCommand extends Command {
@@ -21,7 +22,7 @@ public class AnonymousConnectionCommand extends Command {
                     .getProperty("message.anonymous_connection"));
             this.sendMessage.setReplyMarkup(ChooseContactSexMenu.getInstance());
             BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
-            client.setClientState(ClientState.CHOOSING_CONTACT_SEX);
+            ClientService.getInstance().setClientState(client, ClientState.CHOOSING_CONTACT_SEX);
         }
     }
 }
