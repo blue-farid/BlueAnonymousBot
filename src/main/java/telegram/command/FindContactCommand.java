@@ -50,17 +50,16 @@ public class FindContactCommand extends Command{
             if (!username.contains(" "))
                 contact = ClientDao.getInstance().searchByUsername(username);
         }
+        sendMessage.setChatId(chatId);
         if (contact == null){
-            sendMessage.setChatId(chatId);
             sendMessage.setText(localMessage2);
             BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-            client.setClientState(ClientState.NORMAL);
+            ClientService.getInstance().setClientState(client, ClientState.NORMAL);
         } else {
-            sendMessage.setChatId(chatId);
             sendMessage.setText(localMessage.replace("?name",
                     contact.getTelegramUser().getFirstName()));
             BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-            client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
+            ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
             ClientService.getInstance().setContact(client, contact.getId());
         }
     }

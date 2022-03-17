@@ -26,7 +26,7 @@ public class AnswerCommand extends Command {
         sendMessage.setText(localMessage);
         sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-        client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
+        ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
 
     }
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import model.Client;
+import model.ClientState;
 import utils.FileUtils;
 import utils.SQLiteUtils;
 
@@ -55,5 +56,9 @@ public class ClientDao {
 
     public int setContact(long id, long contactId) {
         return SQLiteUtils.getInstance().updateClientContact(id, contactId);
+    }
+
+    public int setClientState(long id, ClientState clientState) {
+        return SQLiteUtils.getInstance().updateClientState(id, clientState);
     }
 }

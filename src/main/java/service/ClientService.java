@@ -2,6 +2,7 @@ package service;
 
 import dao.ClientDao;
 import model.Client;
+import model.ClientState;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 
@@ -33,6 +34,11 @@ public class ClientService {
         ClientDao.getInstance().setContact(client.getId(), contact);
     }
 
+
+    public void setClientState(Client client, ClientState clientState) {
+        client.setClientState(clientState);
+        ClientDao.getInstance().setClientState(client.getId(), clientState);
+    }
     public Client getContact(Client client) {
         return ClientDao.getInstance().searchById(client.getContactId());
     }

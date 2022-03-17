@@ -149,6 +149,19 @@ public class SQLiteUtils {
         }
     }
 
+    public int updateClientState(long id, ClientState clientState) {
+        try {
+            String q = "UPDATE CLIENT SET ClientState = ? WHERE ID = ?";
+            PreparedStatement ps = this.connection.prepareStatement(q);
+            ps.setString(1, clientState.toString());
+            ps.setLong(2, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     private Client resultSetToClient(ResultSet rs) {
         try {
             long id = rs.getInt(1);

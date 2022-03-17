@@ -24,7 +24,7 @@ public class SendMessageToContact extends Command {
     @Override
     public void execute() {
         if (message == null){
-            client.setClientState(ClientState.NORMAL);
+            ClientService.getInstance().setClientState(client, ClientState.NORMAL);
             return;
         }
         String contactChatId = ClientService.getInstance().getContact(client).getChatId().toString();
@@ -132,7 +132,7 @@ public class SendMessageToContact extends Command {
         sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
 
-        client.setClientState(ClientState.NORMAL);
+        ClientService.getInstance().setClientState(client, ClientState.NORMAL);
     }
 
     private void notifyNewMessage(){
