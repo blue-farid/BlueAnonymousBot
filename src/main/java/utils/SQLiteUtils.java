@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SQLiteUtils {
@@ -92,7 +91,7 @@ public class SQLiteUtils {
 
     public int insertClient(Client client) {
         try {
-            String q = "INSERT INTO CLIENT VALUES(?, ?, ?, ?, ?, ?, ?)";
+            String q = "INSERT INTO CLIENT VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = this.connection.prepareStatement(q);
             ps.setLong(1, client.getId());
             ps.setBlob(2, (Blob) client.getTelegramUser());
@@ -101,6 +100,7 @@ public class SQLiteUtils {
             ps.setLong(5, client.getChatId());
             ps.setString(6, client.getClientState().toString());
             ps.setInt(7, booleanToInt(client.isAdmin()));
+            ps.setLong(8, client.getContactId());
             ps.executeUpdate();
             return 0;
         } catch (SQLException e) {
