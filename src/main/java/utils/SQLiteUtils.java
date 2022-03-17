@@ -33,7 +33,7 @@ public class SQLiteUtils {
 
     public void creatClientTable() {
         try {
-            String q = "CREATE TABLE \"CLIENT\" (\n" +
+            String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (\n" +
                     "\t\"ID\"\tINTEGER UNIQUE NOT NULL,\n" +
                     "\t\"TelegramUser\"\tBLOB NOT NULL UNIQUE,\n" +
                     "\t\"LongDeepLink\"\tTEXT,\n" +
