@@ -67,6 +67,6 @@ public class Main {
     }
 
     private static void loadDatabase() {
-        SQLiteUtils.getInstance();
+        SQLiteUtils.getInstance().creatClientTable();
     }
 }
