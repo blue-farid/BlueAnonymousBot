@@ -3,6 +3,7 @@ package telegram.command;
 import menu.MainMenu;
 import model.Client;
 import model.ClientState;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class CancelCommand extends Command{
@@ -21,6 +22,6 @@ public class CancelCommand extends Command{
         this.sendMessage.setText(localMessage);
         this.sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
-        client.setClientState(ClientState.NORMAL);
+        ClientService.getInstance().setClientState(client, ClientState.NORMAL);
     }
 }

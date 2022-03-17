@@ -97,7 +97,9 @@ public abstract class Command {
                 return new CancelCommand(chatId,client);
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperty("command.answer"))){
-                return new AnswerCommand(chatId,client,callBackValues[1], update.getCallbackQuery().getMessage().getMessageId(), Integer.parseInt(callBackValues[2]));
+                return new AnswerCommand(chatId, client, Integer.parseInt(callBackValues[1]), 
+                                         update.getCallbackQuery().getMessage().getMessageId(), 
+                                         Integer.parseInt(callBackValues[2]));
             }else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperty("command.block"))) {
                 return new BlockCommand(chatId);

@@ -24,6 +24,7 @@ public class FileUtils {
         return instance;
     }
 
+    @Deprecated
     public synchronized void writeTelegramUsers(HashMap<Long, Client> clients) {
         initializeFile(botClientsFile);
         ObjectOutputStream out = getObjectOutputStream(botClientsFile);
@@ -37,6 +38,7 @@ public class FileUtils {
         }
     }
 
+    @Deprecated
     public HashMap<Long, Client> readTelegramUsers() {
         initializeFile(botClientsFile);
         ObjectInputStream in = getObjectInputStream(botClientsFile);
@@ -50,6 +52,7 @@ public class FileUtils {
         return clients;
     }
 
+    @Deprecated
     private void initializeFile(File file) {
         if (!file.exists()) {
             try {
@@ -84,8 +87,13 @@ public class FileUtils {
         }
     }
 
+    @Deprecated
     public File getBotClientsFile() {
         return botClientsFile;
+    }
+
+    public File getDatabaseFile() {
+        return new File(FilePath.DATABASE.getValue());
     }
 
 
@@ -108,7 +116,8 @@ public class FileUtils {
      */
     public enum FilePath {
         BOT_CLIENTS("files\\db\\clients_bot.bin"),
-        BOT_PROPERTIES("blue_anonymous_bot.properties");
+        BOT_PROPERTIES("blue_anonymous_bot.properties"),
+        DATABASE("files\\db\\sqlite\\blue-anonymous-bot.db");
 
         private final String value;
 

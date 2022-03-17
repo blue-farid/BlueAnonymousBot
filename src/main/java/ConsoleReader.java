@@ -1,6 +1,7 @@
 import dao.ClientDao;
 import log.Console;
 import model.Client;
+import service.ClientService;
 
 import java.util.Scanner;
 
@@ -41,7 +42,7 @@ public class ConsoleReader implements Runnable {
                     int id = Integer.parseInt(commands[2]);
                     boolean b = Boolean.parseBoolean(commands[3]);
                     Client client = ClientDao.getInstance().searchById(id);
-                    client.setAdmin(b);
+                    ClientService.getInstance().setAdmin(client, b);
                 } else if (commands[1].equals("deeplink")) {
                     int id = Integer.parseInt(commands[2]);
                     String deeplink = commands[3];
