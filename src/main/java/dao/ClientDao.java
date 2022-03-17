@@ -24,21 +24,16 @@ public class ClientDao {
     }
 
     public int addClient(Client client) {
-        if (clients.containsValue(client)) {
-            return 1;
-        }
-
-        clients.put(client.getTelegramUser().getId(), client);
-        this.rewriteClients();
-        return 0;
+        return SQLiteUtils.getInstance().insertClient(client);
     }
 
     public Client searchById(long id) {
-        return clients.get(id);
+        return SQLiteUtils.getInstance().selectClient(id);
     }
 
+    @Deprecated
     public Client searchByUsername(String username) {
-        Collection<Client> clientsCollection = clients.values();
+        Collection<Client> clientsCollection = SQLiteUtils.getInstance().selectClients();
         for (Client client: clientsCollection) {
             if (client.getTelegramUser().getUserName().equals(username))
                 return client;
@@ -46,16 +41,19 @@ public class ClientDao {
         return null;
     }
 
-    public Client searchByDeepLink(String deepLink) {
-        Collection<Client> clientsCollection = clients.values();
-        for (Client client: clientsCollection) {
-            if (client.hasDeepLink() && client.getShortDeepLink().equals(deepLink))
-                return client;
-        }
-        return null;
+    public Client searchByDeepLink(String shortDeepLink) {
+        return SQLiteUtils.getInstance().selectClient(shortDeepLink);
     }
 
-    public void rewriteClients() {
-        FileUtils.getInstance().writeTelegramUsers(clients);
+    public int setDeepLink(long id, String lDeepLink, String shDeepLink) {
+        return SQLiteUtils.getInstance().updateClientDeepLink(id, lDeepLink, shDeepLink);
+    }
+
+    public int setAdmin(long id, boolean admin) {
+        return SQLiteUtils.getInstance().updateClientAdmin(id, admin);
+    }
+
+    public int setContact(long id, long contactId) {
+        return SQLiteUtils.getInstance().updateClientContact(id, contactId);
     }
 }

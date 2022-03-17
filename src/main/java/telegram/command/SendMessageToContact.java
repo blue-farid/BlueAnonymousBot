@@ -7,6 +7,7 @@ import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class SendMessageToContact extends Command {
@@ -26,7 +27,7 @@ public class SendMessageToContact extends Command {
             client.setClientState(ClientState.NORMAL);
             return;
         }
-        String contactChatId = client.getContact().getChatId().toString();
+        String contactChatId = ClientService.getInstance().getContact(client).getChatId().toString();
         notifyNewMessage();
         if (message.hasText()){
             String text = message.getText();
@@ -114,7 +115,7 @@ public class SendMessageToContact extends Command {
             }
         }
 
-        if (client.getContact().isAdmin()) {
+        if (ClientService.getInstance().getContact(client).isAdmin()) {
             SendMessage adminSendMessage = new SendMessage();
             adminSendMessage.setChatId(contactChatId);
             adminSendMessage.setText("Sender:" + "\n" +
@@ -135,7 +136,7 @@ public class SendMessageToContact extends Command {
     }
 
     private void notifyNewMessage(){
-        String contactChatId = client.getContact().getChatId().toString();
+        String contactChatId = ClientService.getInstance().getContact(client).getChatId().toString();
         SendMessage contactSendMessage = new SendMessage();
         contactSendMessage.setChatId(contactChatId);
         contactSendMessage.setText("\uD83D\uDCEC شما یک پیام ناشناس جدید دارید !");

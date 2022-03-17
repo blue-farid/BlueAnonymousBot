@@ -2,6 +2,7 @@ package model;
 
 import dao.ClientDao;
 import org.telegram.telegrambots.meta.api.objects.User;
+import service.ClientService;
 import telegram.command.AnonymousLinkCommand;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public class Client implements Serializable {
     private String shortDeepLink;
     private final Long chatId;
     private ClientState clientState;
-    private Client Contact;
+    private long contactId;
     private boolean admin;
 
     public Client(User user, Long chatId) {
@@ -40,32 +41,22 @@ public class Client implements Serializable {
     }
 
     public String getLongDeepLink() {
-        if (longDeepLink == null) {
-            setLongDeepLink(AnonymousLinkCommand.
-                    generateAnonymousLink());
-        }
         return longDeepLink;
     }
 
     public String getShortDeepLink() {
-        if (shortDeepLink == null) {
-            setShortDeepLink(getLongDeepLink().substring(
-                    getLongDeepLink().indexOf("=") + 1));
-        }
         return shortDeepLink;
     }
 
 
     private void setShortDeepLink(String shortDeepLink) {
         this.shortDeepLink = shortDeepLink;
-        ClientDao.getInstance().rewriteClients();
     }
 
     public void setLongDeepLink(String longDeepLink) {
         this.longDeepLink = longDeepLink;
         setShortDeepLink(longDeepLink.substring(
                 longDeepLink.indexOf("=") + 1));
-        ClientDao.getInstance().rewriteClients();
     }
 
     public Long getChatId() {
@@ -80,12 +71,12 @@ public class Client implements Serializable {
         this.clientState = clientState;
     }
 
-    public void setContact(Client contact) {
-        Contact = contact;
+    public void setContactId(long contactId) {
+        this.contactId = contactId;
     }
 
-    public Client getContact() {
-        return Contact;
+    public long getContactId() {
+        return contactId;
     }
 
     @Override
@@ -111,7 +102,6 @@ public class Client implements Serializable {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
-        ClientDao.getInstance().rewriteClients();
     }
 
     @Override

@@ -5,6 +5,7 @@ import model.Client;
 import model.ClientState;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 
@@ -60,7 +61,7 @@ public class FindContactCommand extends Command{
                     contact.getTelegramUser().getFirstName()));
             BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
             client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
-            client.setContact(contact);
+            ClientService.getInstance().setContact(client, contact.getId());
         }
     }
 }

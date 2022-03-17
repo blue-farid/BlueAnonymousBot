@@ -4,6 +4,7 @@ import dao.ClientDao;
 import model.Client;
 import menu.MainMenu;
 import model.ClientState;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class StartCommand extends Command {
@@ -49,7 +50,7 @@ public class StartCommand extends Command {
                 contact.getTelegramUser().getFirstName()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
-        client.setContact(contact);
+        ClientService.getInstance().setContact(client, contact.getId());
         log.Console.println("- " + this.client + " trying to message to " + contact + "!");
     }
 

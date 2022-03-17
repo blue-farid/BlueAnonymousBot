@@ -4,6 +4,7 @@ import dao.ClientDao;
 import menu.CancelMenu;
 import model.Client;
 import model.ClientState;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class AnswerCommand extends Command {
@@ -20,9 +21,8 @@ public class AnswerCommand extends Command {
 
     @Override
     public void execute() {
-
         Client contact = ClientDao.getInstance().searchByDeepLink(deepLink);
-        client.setContact(contact);
+        ClientService.getInstance().setContact(client, contact.getId());
         sendMessage.setText(localMessage);
         sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
