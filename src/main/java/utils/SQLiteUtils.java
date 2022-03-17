@@ -4,7 +4,6 @@ import model.Client;
 import model.ClientState;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,17 +33,7 @@ public class SQLiteUtils {
 
     public void creatClientTable() {
         try {
-            String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" +
-                    "\"ID\"INTEGER UNIQUE NOT NULL," +
-                    "\"TelegramUser\"BLOB NOT NULL UNIQUE," +
-                    "\"LongDeepLink\"TEXT," +
-                    "\"ShortDeepLink\"TEXT," +
-                    "\"ChatId\"INTEGER NOT NULL," +
-                    "\"ClientState\"TEXT NOT NULL," +
-                    "\"IsAdmin\"INTEGER NOT NULL," +
-                    "\"ContactId\"INTEGER, " +
-                    "PRIMARY KEY(\"ID\")" +
-                    ");";
+            String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" + "\"ID\"INTEGER UNIQUE NOT NULL," + "\"TelegramUser\"BLOB NOT NULL UNIQUE," + "\"LongDeepLink\"TEXT," + "\"ShortDeepLink\"TEXT," + "\"ChatId\"INTEGER NOT NULL," + "\"ClientState\"TEXT NOT NULL," + "\"IsAdmin\"INTEGER NOT NULL," + "\"ContactId\"INTEGER, " + "PRIMARY KEY(\"ID\")" + ");";
             this.statement.executeUpdate(q);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,14 +166,13 @@ public class SQLiteUtils {
             ClientState clientState = ClientState.valueOf(rs.getString(6));
             boolean admin = rs.getInt(7) != 0;
             long contactId = rs.getInt(8);
-            return new Client(id, telegramUser, longDp, shortDp, chatId
-                    , clientState, admin, contactId);
+            return new Client(id, telegramUser, longDp, shortDp, chatId, clientState, admin, contactId);
         } catch (SQLException e) {
             return null;
         }
     }
 
-    private int booleanToInt(boolean target){
+    private int booleanToInt(boolean target) {
         return target ? 1 : 0;
     }
 
