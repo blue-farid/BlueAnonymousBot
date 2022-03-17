@@ -25,7 +25,15 @@ public class ClientDao {
     }
 
     public int addClient(Client client) {
-        return SQLiteUtils.getInstance().insertClient(client);
+        if (!exist(client.getId())) {
+            return SQLiteUtils.getInstance().insertClient(client);
+        } else {
+            return 1;
+        }
+    }
+
+    public boolean exist(long id){
+        return SQLiteUtils.getInstance().selectClientChatId(id) != null;
     }
 
     public Client searchById(long id) {

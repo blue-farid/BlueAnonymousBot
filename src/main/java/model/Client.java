@@ -26,7 +26,8 @@ public class Client implements Serializable {
         this.admin = false;
     }
 
-    public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId, ClientState clientState, boolean admin) {
+    public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId,
+                  ClientState clientState, boolean admin, long contactId) {
         this.id = id;
         this.telegramUser = telegramUser;
         this.longDeepLink = longDeepLink;
@@ -34,6 +35,7 @@ public class Client implements Serializable {
         this.chatId = chatId;
         this.clientState = clientState;
         this.admin = admin;
+        this.contactId = contactId;
     }
 
     public User getTelegramUser() {
@@ -55,8 +57,7 @@ public class Client implements Serializable {
 
     public void setLongDeepLink(String longDeepLink) {
         this.longDeepLink = longDeepLink;
-        setShortDeepLink(longDeepLink.substring(
-                longDeepLink.indexOf("=") + 1));
+        setShortDeepLink(longDeepLink.substring(longDeepLink.indexOf("=") + 1));
     }
 
     public Long getChatId() {
@@ -81,10 +82,7 @@ public class Client implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        return (this == o) ||
-                ((o instanceof Client) &&
-                        ((Client) o).telegramUser.getId().equals(
-                                this.telegramUser.getId()));
+        return (this == o) || ((o instanceof Client) && ((Client) o).telegramUser.getId().equals(this.telegramUser.getId()));
     }
 
     @Override
