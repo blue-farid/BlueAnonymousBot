@@ -85,16 +85,17 @@ public class SQLiteUtils {
 
     public int insertClient(Client client) {
         try {
-            String q = "INSERT INTO CLIENT VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+            String q = "INSERT INTO CLIENT VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = this.connection.prepareStatement(q);
             ps.setLong(1, client.getId());
             ps.setBytes(2, Common.getInstance().objectToBinaryInputStream(client.getTelegramUser()).readAllBytes());
             ps.setString(3, client.getLongDeepLink());
-            ps.setString(4, client.geId());
+            ps.setString(4, client.getShortDeepLink());
             ps.setLong(5, client.getChatId());
             ps.setString(6, client.getClientState().toString());
             ps.setInt(7, booleanToInt(client.isAdmin()));
             ps.setLong(8, client.getContactId());
+            ps.setInt(9, 0);
             ps.executeUpdate();
             return 0;
         } catch (SQLException e) {
@@ -184,6 +185,19 @@ public class SQLiteUtils {
             return ps.executeQuery().getLong(1);
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    public int updateClientContactMessageId(long id, Integer messageId) {
+        try {
+            String q = "UPDATE CLIENT SET ContactMessageId = ? WHERE ID = ?";
+            PreparedStatement ps = this.connection.prepareStatement(q);
+            ps.setInt(1, messageId);
+            ps.setLong(2, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }

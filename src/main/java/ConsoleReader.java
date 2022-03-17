@@ -47,7 +47,7 @@ public class ConsoleReader implements Runnable {
                     int id = Integer.parseInt(commands[2]);
                     String deeplink = commands[3];
                     Client client = ClientDao.getInstance().searchById(id);
-                    client.setLongDeepLink(deeplink);
+                    ClientService.getInstance().setDeepLink(client, deeplink);
                 }
             } else {
                 throw new Exception();

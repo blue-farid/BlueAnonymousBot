@@ -19,7 +19,7 @@ public class ClientService {
     public void setDeepLink(Client client, String longDeepLink) {
         // short deeplink will be handled by this too
         client.setLongDeepLink(longDeepLink);
-        ClientDao.getInstance().setDeepLink(client.getId(), longDeepLink, client.geId());
+        ClientDao.getInstance().setDeepLink(client.getId(), longDeepLink, client.getShortDeepLink());
     }
 
     public void setAdmin(Client client, boolean admin) {
@@ -39,5 +39,10 @@ public class ClientService {
     }
     public Client getContact(Client client) {
         return ClientDao.getInstance().searchById(client.getContactId());
+    }
+
+    public void setContactMessageId(Client client, Integer messageId) {
+        client.setContactMessageId(messageId);
+        ClientDao.getInstance().setContactMessageId(client.getId(), messageId);
     }
 }

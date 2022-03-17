@@ -84,7 +84,7 @@ public class SendMessageToContact extends Command {
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
             contactSendPhoto.setCaptionEntities(message.getCaptionEntities());
-            contactSendPhoto.setReplyMarkup(new InlineAMB(client.geId(), message.getMessageId()));
+            contactSendPhoto.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendPhoto.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendPhoto);
@@ -98,7 +98,7 @@ public class SendMessageToContact extends Command {
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
             contactSendVideo.setCaptionEntities(message.getCaptionEntities());
-            contactSendVideo.setReplyMarkup(new InlineAMB(client.geId(), message.getMessageId()));
+            contactSendVideo.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendVideo.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendVideo);
@@ -112,7 +112,7 @@ public class SendMessageToContact extends Command {
             SendAudio contactSendAudio = new SendAudio(contactChatId, audio);
             contactSendAudio.setCaption(message.getCaption());
             contactSendAudio.setCaptionEntities(message.getCaptionEntities());
-            contactSendAudio.setReplyMarkup(new InlineAMB(client.geId(), message.getMessageId()));
+            contactSendAudio.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendAudio.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendAudio);
@@ -138,8 +138,8 @@ public class SendMessageToContact extends Command {
                 "چه کاری برات انجام بدم؟");
         sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-        ClientService.getInstance().setContactMessageId(null);
-        ClientService.getInstance().setContact(client, null);
+        ClientService.getInstance().setContactMessageId(client, 0);
+        ClientService.getInstance().setContact(client, 0);
         ClientService.getInstance().setClientState(client, ClientState.NORMAL);
     }
 

@@ -10,7 +10,7 @@ import telegram.BlueAnonymousBot;
 public class AnswerCommand extends Command {
     private static final String localMessage = "☝️ در حال پاسخ دادن به فرستنده این پیام هستی ... ؛ منتظریم بفرستی :)";
     private final Client client;
-    private long contactId;
+    private final long contactId;
     private final int currentMessageId;
     private final int contactMessageId;
 
@@ -18,7 +18,7 @@ public class AnswerCommand extends Command {
     public AnswerCommand(String chatId, Client client, long contactId, int currentMessageId, int contactMessageId) {
         super(chatId);
         this.client = client;
-        this.deepLink = deepLink;
+        this.contactId = contactId;
         this.currentMessageId = currentMessageId;
         this.contactMessageId = contactMessageId;
     }

@@ -69,4 +69,8 @@ public class ClientDao {
     public int setClientState(long id, ClientState clientState) {
         return SQLiteUtils.getInstance().updateClientState(id, clientState);
     }
+
+    public int setContactMessageId(long id, Integer messageId) {
+        return SQLiteUtils.getInstance().updateClientContactMessageId(id, messageId);
+    }
 }

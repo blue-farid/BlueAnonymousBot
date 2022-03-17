@@ -52,7 +52,7 @@ public class Client implements Serializable {
         return longDeepLink;
     }
 
-    public String geId() {
+    public String getShortDeepLink() {
         return shortDeepLink;
     }
 
