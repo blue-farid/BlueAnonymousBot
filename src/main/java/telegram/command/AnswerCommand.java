@@ -10,18 +10,18 @@ import telegram.BlueAnonymousBot;
 public class AnswerCommand extends Command {
     private static final String localMessage = "☝️ در حال پاسخ دادن به فرستنده این پیام هستی ... ؛ منتظریم بفرستی :)";
     private final Client client;
-    private final String deepLink;
+    private  long contactId;
 
 
-    public AnswerCommand(String chatId, Client client, String deepLink) {
+    public AnswerCommand(String chatId, Client client, long contactId) {
         super(chatId);
         this.client = client;
-        this.deepLink = deepLink;
+        this.contactId = contactId;
     }
 
     @Override
     public void execute() {
-        Client contact = ClientDao.getInstance().searchByDeepLink(deepLink);
+        Client contact = ClientDao.getInstance().searchById(contactId);
         ClientService.getInstance().setContact(client, contact.getId());
         sendMessage.setText(localMessage);
         sendMessage.setReplyMarkup(CancelMenu.getInstance());

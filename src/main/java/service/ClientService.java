@@ -4,8 +4,6 @@ import dao.ClientDao;
 import model.Client;
 import model.ClientState;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
-
 public class ClientService {
     private static ClientService instance;
 
@@ -21,7 +19,7 @@ public class ClientService {
     public void setDeepLink(Client client, String longDeepLink) {
         // short deeplink will be handled by this too
         client.setLongDeepLink(longDeepLink);
-        ClientDao.getInstance().setDeepLink(client.getId(), longDeepLink, client.getShortDeepLink());
+        ClientDao.getInstance().setDeepLink(client.getId(), longDeepLink, client.geId());
     }
 
     public void setAdmin(Client client, boolean admin) {

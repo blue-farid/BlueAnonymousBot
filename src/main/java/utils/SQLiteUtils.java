@@ -90,7 +90,7 @@ public class SQLiteUtils {
             ps.setLong(1, client.getId());
             ps.setBytes(2, Common.getInstance().objectToBinaryInputStream(client.getTelegramUser()).readAllBytes());
             ps.setString(3, client.getLongDeepLink());
-            ps.setString(4, client.getShortDeepLink());
+            ps.setString(4, client.geId());
             ps.setLong(5, client.getChatId());
             ps.setString(6, client.getClientState().toString());
             ps.setInt(7, booleanToInt(client.isAdmin()));
@@ -183,7 +183,6 @@ public class SQLiteUtils {
             ps.setLong(1, id);
             return ps.executeQuery().getLong(1);
         } catch (SQLException e) {
-            e.printStackTrace();
             return null;
         }
     }

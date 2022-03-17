@@ -1,9 +1,6 @@
 package model;
 
-import dao.ClientDao;
 import org.telegram.telegrambots.meta.api.objects.User;
-import service.ClientService;
-import telegram.command.AnonymousLinkCommand;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -46,7 +43,7 @@ public class Client implements Serializable {
         return longDeepLink;
     }
 
-    public String getShortDeepLink() {
+    public String geId() {
         return shortDeepLink;
     }
 
