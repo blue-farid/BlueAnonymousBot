@@ -34,9 +34,10 @@ public abstract class Command {
         String caseValue;
         String chatId;
         Client client;
-        String[] callBackValues = new String[2];
+        String[] callBackValues = null;
 
         if (update.hasCallbackQuery()) {
+            callBackValues = new String[2];
             client = ClientDao.getInstance().searchById(
                     update.getCallbackQuery().getFrom().getId());
             chatId=client.getChatId().toString();
@@ -113,6 +114,12 @@ public abstract class Command {
                 throw new IllegalArgumentException();
             }
         } else if (client.getClientState() == ClientState.SENDING_MESSAGE_TO_CONTACT) {
+            if (callBackValues != null && callBackValues[0].equals(BlueAnonymousBot.
+                    getInstance().getProperty("command.answer"))) {
+                return new AnswerCommand(chatId, client, Integer.parseInt(callBackValues[1]),
+                        update.getCallbackQuery().getMessage().getMessageId(),
+                        Integer.parseInt(callBackValues[2]));
+            }
             return new SendMessageToContact(chatId, client,
                     update.getMessage());
         } else if (client.getClientState() == ClientState.SENDING_CONTACT_INFO) {
