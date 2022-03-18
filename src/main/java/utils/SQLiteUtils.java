@@ -167,7 +167,8 @@ public class SQLiteUtils {
             ClientState clientState = ClientState.valueOf(rs.getString(6));
             boolean admin = rs.getInt(7) != 0;
             long contactId = rs.getInt(8);
-            return new Client(id, telegramUser, longDp, shortDp, chatId, clientState, admin, contactId);
+            int contactMessageId = rs.getInt(9);
+            return new Client(id, telegramUser, longDp, shortDp, chatId, clientState, admin, contactId, contactMessageId);
         } catch (SQLException e) {
             return null;
         }
