@@ -49,7 +49,7 @@ public class StartCommand extends Command {
         sendMessage.setText(localMessage2.replace("?name",
                 contact.getTelegramUser().getFirstName()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-        ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
+        ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
         ClientService.getInstance().setContact(client, contact.getId());
         log.Console.println("- " + this.client + " trying to message to " + contact + "!");
     }

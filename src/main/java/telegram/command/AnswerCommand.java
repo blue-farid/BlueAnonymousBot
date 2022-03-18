@@ -32,7 +32,7 @@ public class AnswerCommand extends Command {
         sendMessage.setReplyToMessageId(currentMessageId);
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         ClientService.getInstance().setContactMessageId(client, contactMessageId);
-        ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
+        ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
 
     }
 }

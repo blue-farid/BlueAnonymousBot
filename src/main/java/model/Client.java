@@ -25,7 +25,7 @@ public class Client implements Serializable {
     }
 
     public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId,
-                  ClientState clientState, boolean admin, long contactId) {
+                  ClientState clientState, boolean admin, long contactId, int contactMessageId) {
         this.id = id;
         this.telegramUser = telegramUser;
         this.longDeepLink = longDeepLink;
@@ -34,6 +34,7 @@ public class Client implements Serializable {
         this.clientState = clientState;
         this.admin = admin;
         this.contactId = contactId;
+        this.contactMessageId = contactMessageId;
     }
 
     public User getTelegramUser() {
