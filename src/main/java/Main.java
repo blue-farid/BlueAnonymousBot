@@ -20,7 +20,7 @@ import java.util.Properties;
  * @author Farid Masjedi
  * @author Negar Anabestani
  * @author Alireza Jabbari
- * @version 3.7
+ * @version 4.0.0
  * <p>
  * Telegram_id: @blue_farid
  * github: https://github.com/blue-farid
@@ -38,7 +38,7 @@ public class Main {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(BlueAnonymousBot.getInstance());
             new Thread(new ConsoleReader()).start();
-            log.Console.initMessage("3.7");
+            log.Console.initMessage("4.0.0");
         } catch (TelegramApiException e) {
             e.printStackTrace();
             System.exit(-1);
