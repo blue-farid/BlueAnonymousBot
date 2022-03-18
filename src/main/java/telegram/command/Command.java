@@ -112,7 +112,7 @@ public abstract class Command {
             } else {
                 throw new IllegalArgumentException();
             }
-        } else if (client.getClientState() == ClientState.SENDING_MESSAGE_WITH_DEEPLINK) {
+        } else if (client.getClientState() == ClientState.SENDING_MESSAGE_TO_CONTACT) {
             return new SendMessageToContact(chatId, client,
                     update.getMessage());
         } else if (client.getClientState() == ClientState.SENDING_CONTACT_INFO) {
