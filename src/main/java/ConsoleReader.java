@@ -5,6 +5,11 @@ import service.ClientService;
 
 import java.util.Scanner;
 
+/**
+ * Console Reader class.
+ * reads console inputs to interact with the admin.
+ * @author Farid Masjedi
+ */
 public class ConsoleReader implements Runnable {
     @Override
     public void run() {
