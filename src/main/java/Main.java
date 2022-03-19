@@ -27,6 +27,10 @@ import java.util.Properties;
  * @since 2021/8
  */
 public class Main {
+    /**
+     * the entry point of the Application.
+     * @param args the initial arguments.
+     */
     public static void main(String[] args) {
         try {
             if (args.length > 0 && args[0].equals("test")) {
@@ -48,6 +52,10 @@ public class Main {
         }
     }
 
+    /**
+     * loads test bot.
+     * @throws IOException
+     */
     private static void loadTestBot() throws IOException {
         Properties pr = new Properties();
         try (InputStream in = ClassLoader.getSystemResourceAsStream("test_config.properties")){
@@ -57,6 +65,10 @@ public class Main {
         BlueAnonymousBot.getInstance().setBotToken(pr.getProperty("bot.token"));
     }
 
+    /**
+     * loads original bot.
+     * @throws IOException
+     */
     private static void loadOriginalBot() throws IOException {
         Properties pr = new Properties();
         try (InputStream in = ClassLoader.getSystemResourceAsStream("original_config.properties")){
@@ -66,6 +78,9 @@ public class Main {
         BlueAnonymousBot.getInstance().setBotToken(pr.getProperty("bot.token"));
     }
 
+    /**
+     * connects and loads to the database.
+     */
     private static void loadDatabase() {
         SQLiteUtils.getInstance().creatClientTable();
     }
