@@ -8,6 +8,8 @@ import java.util.*;
 
 /**
  * the FileUtils singleton class
+ *
+ * @author Farid Masjedi
  */
 public class FileUtils {
     private static FileUtils instance;
