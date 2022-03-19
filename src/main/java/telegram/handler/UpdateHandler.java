@@ -6,8 +6,19 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import telegram.BlueAnonymousBot;
 import telegram.command.Command;
 
+/**
+ * Update Handler class.
+ *
+ * @author Farid Masjedi
+ * @author Negar Anabestani
+ */
 public class UpdateHandler {
 
+    /**
+     * process the update
+     * @param update the update
+     * @throws BadInputException to handle bad inputs from the client
+     */
     public void processUpdate(Update update) throws BadInputException {
         Command command;
         Message message;
