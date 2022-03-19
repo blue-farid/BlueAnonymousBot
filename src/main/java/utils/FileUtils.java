@@ -23,6 +23,11 @@ public class FileUtils {
         return instance;
     }
 
+    /**
+     * write bot clients hashmap to the file.
+     * @param clients the clients.
+     * @deprecated now we use sqlite instead files.
+     */
     @Deprecated
     public synchronized void writeTelegramUsers(HashMap<Long, Client> clients) {
         initializeClientBotFile(botClientsFile);
@@ -37,6 +42,11 @@ public class FileUtils {
         }
     }
 
+    /**
+     * read bot clients from the file.
+     * @return the clients hashmap.
+     * @deprecated now we use sqlite instead file.
+     */
     @Deprecated
     public HashMap<Long, Client> readTelegramUsers() {
         initializeClientBotFile(botClientsFile);
@@ -51,6 +61,11 @@ public class FileUtils {
         return clients;
     }
 
+    /**
+     * create clients file if not exist.
+     * @param file the file
+     * @deprecated now we use sqlite instead file.
+     */
     @Deprecated
     private void initializeClientBotFile(File file) {
         if (!file.exists()) {
@@ -64,6 +79,11 @@ public class FileUtils {
         }
     }
 
+    /**
+     * get output stream of a file.
+     * @param file the file
+     * @return ObjectOutputStream of the file
+     */
     private ObjectOutputStream getObjectOutputStream(File file) {
         OutputStream out;
         try {
@@ -75,6 +95,11 @@ public class FileUtils {
         }
     }
 
+    /**
+     * get input stream of a file
+     * @param file the file
+     * @return ObjectInputStream of the file.
+     */
     private ObjectInputStream getObjectInputStream(File file) {
         InputStream in;
         try {
@@ -86,16 +111,28 @@ public class FileUtils {
         }
     }
 
+    /**
+     * @return clients file.
+     * @deprecated now we use sqlite instead of file.
+     */
     @Deprecated
     public File getBotClientsFile() {
         return botClientsFile;
     }
 
+    /**
+     * @return the database file (sqlite file).
+     */
     public File getDatabaseFile() {
         return new File(FilePath.DATABASE.getValue());
     }
 
 
+    /**
+     * load the properties file.
+     * @param filePath the properties file path.
+     * @return the Properties.
+     */
     public Properties loadProperties(FilePath filePath) {
         Properties properties = new Properties();
         try (InputStream in = ClassLoader
