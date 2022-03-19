@@ -3,7 +3,6 @@ package utils;
 import model.Client;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -26,7 +25,7 @@ public class FileUtils {
 
     @Deprecated
     public synchronized void writeTelegramUsers(HashMap<Long, Client> clients) {
-        initializeFile(botClientsFile);
+        initializeClientBotFile(botClientsFile);
         ObjectOutputStream out = getObjectOutputStream(botClientsFile);
         try {
             if (out == null)
@@ -40,7 +39,7 @@ public class FileUtils {
 
     @Deprecated
     public HashMap<Long, Client> readTelegramUsers() {
-        initializeFile(botClientsFile);
+        initializeClientBotFile(botClientsFile);
         ObjectInputStream in = getObjectInputStream(botClientsFile);
         HashMap<Long, Client> clients = new HashMap<>();
         try {
@@ -53,7 +52,7 @@ public class FileUtils {
     }
 
     @Deprecated
-    private void initializeFile(File file) {
+    private void initializeClientBotFile(File file) {
         if (!file.exists()) {
             try {
                 new File(file.getPath().replace(
@@ -112,20 +111,20 @@ public class FileUtils {
 
     /**
      * the FilePath enum
-     * all of the file paths should be defined here
+     * all the file paths should be defined here
      */
     public enum FilePath {
-        BOT_CLIENTS("files\\db\\clients_bot.bin"),
+        BOT_CLIENTS("files/db/clients_bot.bin"),
         BOT_PROPERTIES("blue_anonymous_bot.properties"),
-        DATABASE("files\\db\\sqlite\\blue-anonymous-bot.db");
+        DATABASE("files/db/sqlite/blue-anonymous-bot.db");
 
         private final String value;
 
         FilePath(String value) {
-            if (utils.Common.getInstance().isBotRunsOnWindows()) {
+            if (!utils.Common.getInstance().isBotRunsOnWindows()) {
                 this.value = value;
             } else {
-                this.value = value.replace("\\", "/");
+                this.value = value.replace("/", "\\");
             }
         }
 
