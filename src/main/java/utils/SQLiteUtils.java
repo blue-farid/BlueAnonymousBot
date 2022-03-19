@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * SQLite utils class.
+ * all the database operations are here.
+ * NOTE: connects to the database at constructor.
+ * @author Farid Masjedi
+ */
 public class SQLiteUtils {
     private static SQLiteUtils instance;
     private Connection connection;
@@ -31,6 +37,9 @@ public class SQLiteUtils {
         return instance;
     }
 
+    /**
+     * creates the client table if not exist.
+     */
     public void creatClientTable() {
         try {
             String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" + "\"ID\"INTEGER UNIQUE NOT NULL," + "\"TelegramUser\"BLOB NOT NULL UNIQUE," + "\"LongDeepLink\"TEXT," + "\"ShortDeepLink\"TEXT," + "\"ChatId\"INTEGER NOT NULL," + "\"ClientState\"TEXT NOT NULL," + "\"IsAdmin\"INTEGER NOT NULL," + "\"ContactId\"INTEGER, " + "PRIMARY KEY(\"ID\")" + ");";
@@ -40,6 +49,10 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * select clients.
+     * @return A Collection of the clients.
+     */
     public Collection<Client> selectClients() {
         try {
             String q = "SELECT * FROM CLIENT";
@@ -55,6 +68,11 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * select a client by its id.
+     * @param id the id
+     * @return the client.
+     */
     public Client selectClient(long id) {
         try {
             String q = "SELECT * FROM CLIENT WHERE ID = ?";
@@ -69,6 +87,11 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * select a client by its deeplink.
+     * @param shortDeeplink the deeplink.
+     * @return the client.
+     */
     public Client selectClient(String shortDeeplink) {
         try {
             String q = "SELECT * FROM CLIENT WHERE ShortDeepLink = ?";
@@ -83,6 +106,11 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * insert a client.
+     * @param client the client
+     * @return the result as int.
+     */
     public int insertClient(Client client) {
         try {
             String q = "INSERT INTO CLIENT VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -96,14 +124,20 @@ public class SQLiteUtils {
             ps.setInt(7, booleanToInt(client.isAdmin()));
             ps.setLong(8, client.getContactId());
             ps.setInt(9, 0);
-            ps.executeUpdate();
-            return 0;
+            return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
         }
     }
 
+    /**
+     * updates a client's deeplink.
+     * @param id the client's id.
+     * @param longDeepLink the client's long deeplink.
+     * @param shortDeepLink the client's short deeplink.
+     * @return the result as int.
+     */
     public int updateClientDeepLink(long id, String longDeepLink, String shortDeepLink) {
         try {
             String q = "UPDATE CLIENT SET LongDeepLink = ?, ShortDeepLink = ? WHERE ID = ?";
@@ -118,6 +152,12 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * updates a client's admin status.
+     * @param id the client's id.
+     * @param admin the client's admin status.
+     * @return the result as int.
+     */
     public int updateClientAdmin(long id, boolean admin) {
         try {
             String q = "UPDATE CLIENT SET IsAdmin = ? WHERE ID = ?";
@@ -131,6 +171,12 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * updates the client's contact.
+     * @param id the client's id.
+     * @param contactId the client's contact id.
+     * @return the result as int.
+     */
     public int updateClientContact(long id, long contactId) {
         try {
             String q = "UPDATE CLIENT SET ContactId = ? WHERE ID = ?";
@@ -144,6 +190,12 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * update the client's state.
+     * @param id the client's id.
+     * @param clientState the client's state.
+     * @return the result as int.
+     */
     public int updateClientState(long id, ClientState clientState) {
         try {
             String q = "UPDATE CLIENT SET ClientState = ? WHERE ID = ?";
@@ -157,6 +209,11 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * convert the result set to client.
+     * @param rs the result set.
+     * @return the client.
+     */
     private Client resultSetToClient(ResultSet rs) {
         try {
             long id = rs.getInt(1);
@@ -174,10 +231,20 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * converts the boolean to int. (sqlite can't store boolean directly).
+     * @param target the boolean.
+     * @return 1 if target == true else 0.
+     */
     private int booleanToInt(boolean target) {
         return target ? 1 : 0;
     }
 
+    /**
+     * select a client's chat id
+     * @param id the client's id.
+     * @return the chat id.
+     */
     public Long selectClientChatId(long id) {
         try {
             String q = "SELECT ChatId FROM CLIENT WHERE ID = ?";
@@ -189,6 +256,12 @@ public class SQLiteUtils {
         }
     }
 
+    /**
+     * update client's contact message id.
+     * @param id the client's id.
+     * @param messageId the client's contact message id.
+     * @return the result as int.
+     */
     public int updateClientContactMessageId(long id, Integer messageId) {
         try {
             String q = "UPDATE CLIENT SET ContactMessageId = ? WHERE ID = ?";

@@ -3,6 +3,11 @@ package utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * TimeUtils class.
+ *
+ * @author Farid Masjedi.
+ */
 public class TimeUtils {
     private static TimeUtils instance;
     private final SimpleDateFormat formatter;
@@ -16,10 +21,16 @@ public class TimeUtils {
         return instance;
     }
 
+    /**
+     * @return the current date as Date object.
+     */
     public Date getCurrentDate() {
         return new Date();
     }
 
+    /**
+     * @return the current date and time as string.
+     */
     public String getCurrentDateAndTimeString() {
         return formatter.format(this.getCurrentDate());
     }

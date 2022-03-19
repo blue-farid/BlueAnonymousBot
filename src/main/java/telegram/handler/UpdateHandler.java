@@ -3,10 +3,22 @@ package telegram.handler;
 import exception.BadInputException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import telegram.BlueAnonymousBot;
 import telegram.command.Command;
 
+/**
+ * Update Handler class.
+ *
+ * @author Farid Masjedi
+ * @author Negar Anabestani
+ */
 public class UpdateHandler {
 
+    /**
+     * process the update
+     * @param update the update
+     * @throws BadInputException to handle bad inputs from the client
+     */
     public void processUpdate(Update update) throws BadInputException {
         Command command;
         Message message;
@@ -19,7 +31,7 @@ public class UpdateHandler {
             log.Console.printNewRequestInfo(message, command, true);
         } catch (Exception e) {
             // handle bad inputs.
-            throw new BadInputException(telegram.Message.BAD_INPUT.getValue(),
+            throw new BadInputException(BlueAnonymousBot.getInstance().getProperty("message.bad_input"),
                     message.getChatId().toString());
         }
         command.execute();

@@ -4,7 +4,9 @@ import java.util.Random;
 
 /**
  * The RandomUtils Singleton class.
- * this class is used for all of the random operations.
+ * this class is used for all the random operations.
+ *
+ * @author Farid Masjedi
  */
 public class RandomUtils {
     private static RandomUtils instance;
@@ -20,18 +22,28 @@ public class RandomUtils {
         return instance;
     }
 
+    /**
+     * generates a string of random digits.
+     * @param len the length of the string.
+     * @return the string.
+     */
     public String generateRandomNumber(int len) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
 
         for (int i = 0; i < len; i++) {
             int randNum = random.nextInt(10);
-            string += randNum;
+            string.append(randNum);
         }
-        return string;
+        return string.toString();
     }
 
+    /**
+     * generates a string of ascii letters.
+     * @param len the length of the string.
+     * @return the string.
+     */
     public String generateRandomString(int len) {
-        String string = "";
+        StringBuilder string = new StringBuilder();
 
         for (int i = 0; i < len; i++) {
             char randChar;
@@ -40,9 +52,9 @@ public class RandomUtils {
             } else {
                 randChar = (char) (random.nextInt(26) + 'A');
             }
-            string += randChar + "";
+            string.append(randChar);
         }
-        return string;
+        return string.toString();
     }
 
 }

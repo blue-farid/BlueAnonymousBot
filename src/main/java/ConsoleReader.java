@@ -5,6 +5,11 @@ import service.ClientService;
 
 import java.util.Scanner;
 
+/**
+ * Console Reader class.
+ * reads console inputs to interact with the admin.
+ * @author Farid Masjedi
+ */
 public class ConsoleReader implements Runnable {
     @Override
     public void run() {
@@ -25,8 +30,8 @@ public class ConsoleReader implements Runnable {
      *     clear -> clear the screen
      *     set deeplink [client_id] [deeplink] -> set deeplink
      * }
-     * @param in
-     * @return
+     * @param in the input
+     * @return the result as int.
      */
     private static int read(String in) {
         String[] commands = in.split(" ");

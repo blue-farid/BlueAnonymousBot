@@ -14,6 +14,10 @@ import java.util.Properties;
 
 /**
  * the BlueAnonymousBot class
+ *
+ * @author Farid Masjedi
+ * @author Negar Anabestani
+ * @author Alireza Jabbari
  */
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private static BlueAnonymousBot instance;
@@ -58,11 +62,19 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     }
 
+    /**
+     * do necessary things after receiving an update.
+     * @param update the update.
+     */
     public void newRequestReceived(Update update) {
         ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom(),
                 update.getMessage().getChatId()));
     }
 
+    /**
+     * send message to client.
+     * @param sendMessage The Send message object.
+     */
     public void executeSendMessage(SendMessage sendMessage) {
         try {
             execute(sendMessage);
@@ -71,14 +83,27 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         }
     }
 
+    /**
+     * sets bot token
+     * @param botToken the bot token.
+     */
     public void setBotToken(String botToken) {
         this.botToken = botToken;
     }
 
+    /**
+     * sets bot username
+     * @param botUsername the bot username
+     */
     public void setBotUsername(String botUsername) {
         this.botUsername = botUsername;
     }
 
+    /**
+     * get a value from the bot properties.
+     * @param key the key.
+     * @return the value.
+     */
     public String getProperty(String key) {
         return this.properties.getProperty(key);
     }
