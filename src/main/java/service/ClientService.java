@@ -4,6 +4,8 @@ import dao.ClientDao;
 import model.Client;
 import model.ClientState;
 
+import java.util.Collection;
+
 public class ClientService {
     private static ClientService instance;
 
@@ -44,5 +46,9 @@ public class ClientService {
     public void setContactMessageId(Client client, Integer messageId) {
         client.setContactMessageId(messageId);
         ClientDao.getInstance().setContactMessageId(client.getId(), messageId);
+    }
+
+    public Collection<Client> getClients() {
+        return ClientDao.getInstance().getClients();
     }
 }
