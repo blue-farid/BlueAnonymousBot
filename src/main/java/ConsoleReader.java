@@ -44,7 +44,7 @@ public class ConsoleReader implements Runnable {
                 Console.clearScreen();
             } else if (commands[0].equals("set")) {
                 if (commands[1].equals("admin")) {
-                    int id = Integer.parseInt(commands[2]);
+                    long id = Long.parseLong(commands[2]);
                     boolean b = Boolean.parseBoolean(commands[3]);
                     Client client = ClientDao.getInstance().searchById(id);
                     ClientService.getInstance().setAdmin(client, b);

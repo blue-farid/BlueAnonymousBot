@@ -219,7 +219,7 @@ public class SQLiteUtils {
      */
     private Client resultSetToClient(ResultSet rs) {
         try {
-            long id = rs.getInt(1);
+            long id = rs.getLong(1);
             User telegramUser = (User) Common.getInstance().binaryInputStreamToObject(rs.getBinaryStream(2));
             String longDp = rs.getString(3);
             String shortDp = rs.getString(4);
