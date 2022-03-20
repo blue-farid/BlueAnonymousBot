@@ -223,10 +223,10 @@ public class SQLiteUtils {
             User telegramUser = (User) Common.getInstance().binaryInputStreamToObject(rs.getBinaryStream(2));
             String longDp = rs.getString(3);
             String shortDp = rs.getString(4);
-            long chatId = rs.getInt(5);
+            long chatId = rs.getLong(5);
             ClientState clientState = ClientState.valueOf(rs.getString(6));
             boolean admin = rs.getInt(7) != 0;
-            long contactId = rs.getInt(8);
+            long contactId = rs.getLong(8);
             int contactMessageId = rs.getInt(9);
             return new Client(id, telegramUser, longDp, shortDp, chatId, clientState, admin, contactId, contactMessageId);
         } catch (SQLException e) {
