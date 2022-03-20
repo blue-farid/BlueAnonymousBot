@@ -42,7 +42,7 @@ public class SQLiteUtils {
      */
     public void creatClientTable() {
         try {
-            String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" + "\"ID\"INTEGER UNIQUE NOT NULL," + "\"TelegramUser\"BLOB NOT NULL UNIQUE," + "\"LongDeepLink\"TEXT," + "\"ShortDeepLink\"TEXT," + "\"ChatId\"INTEGER NOT NULL," + "\"ClientState\"TEXT NOT NULL," + "\"IsAdmin\"INTEGER NOT NULL," + "\"ContactId\"INTEGER, " + "PRIMARY KEY(\"ID\")" + ");";
+            String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" + "\"ID\"INTEGER UNIQUE NOT NULL," + "\"TelegramUser\"BLOB NOT NULL UNIQUE," + "\"LongDeepLink\"TEXT," + "\"ShortDeepLink\"TEXT," + "\"ChatId\"INTEGER NOT NULL," + "\"ClientState\"TEXT NOT NULL," + "\"IsAdmin\"INTEGER NOT NULL," + "\"ContactId\"INTEGER, " + "\"ContactMessageId\"INTEGER, "+ "PRIMARY KEY(\"ID\")" + ");";
             this.statement.executeUpdate(q);
         } catch (SQLException e) {
             e.printStackTrace();
