@@ -2,6 +2,7 @@ package utils;
 
 import model.Client;
 import model.ClientState;
+import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.sql.*;
@@ -21,6 +22,7 @@ public class SQLiteUtils {
     private Statement statement;
 
     private SQLiteUtils() {
+        FileUtils.getInstance().initializeDBFile();
         try {
             Class.forName("org.sqlite.JDBC");
             this.connection = DriverManager.getConnection("jdbc:sqlite:files/db/sqlite/blue-anonymous-bot.db");
@@ -28,6 +30,7 @@ public class SQLiteUtils {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+        creatClientTable();
     }
 
     public static SQLiteUtils getInstance() {
@@ -40,7 +43,7 @@ public class SQLiteUtils {
     /**
      * creates the client table if not exist.
      */
-    public void creatClientTable() {
+    private void creatClientTable() {
         try {
             String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" + "\"ID\"INTEGER UNIQUE NOT NULL," + "\"TelegramUser\"BLOB NOT NULL UNIQUE," + "\"LongDeepLink\"TEXT," + "\"ShortDeepLink\"TEXT," + "\"ChatId\"INTEGER NOT NULL," + "\"ClientState\"TEXT NOT NULL," + "\"IsAdmin\"INTEGER NOT NULL," + "\"ContactId\"INTEGER, " + "\"ContactMessageId\"INTEGER, "+ "PRIMARY KEY(\"ID\")" + ");";
             this.statement.executeUpdate(q);

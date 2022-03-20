@@ -79,9 +79,9 @@ public class Main {
     }
 
     /**
-     * connects and loads to the database.
+     * connects the database.
      */
     private static void loadDatabase() {
-        SQLiteUtils.getInstance().creatClientTable();
+        SQLiteUtils.getInstance();
     }
 }

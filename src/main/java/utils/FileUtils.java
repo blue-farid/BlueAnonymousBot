@@ -81,6 +81,19 @@ public class FileUtils {
         }
     }
 
+    public void initializeDBFile() {
+        File file = new File(FilePath.DATABASE.getValue());
+        if (!file.exists()) {
+            try {
+                new File(file.getPath().replace(
+                        "blue-anonymous-bot.db", "")).mkdirs();
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * get output stream of a file.
      * @param file the file
