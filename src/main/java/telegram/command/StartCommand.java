@@ -1,12 +1,11 @@
 package telegram.command;
 
 import dao.ClientDao;
-import log.Console;
-import model.Client;
 import menu.MainMenu;
+import model.Client;
 import model.ClientState;
-import service.ClientService;
 import properties.Property;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class StartCommand extends Command {
@@ -30,7 +29,7 @@ public class StartCommand extends Command {
 
     @Override
     public void execute() {
-        if (optionalCommand.equals("")) {
+        if (optionalCommand.isEmpty()) {
             // first state
             this.sendMessage.setText(localMessage);
             this.sendMessage.setReplyMarkup(MainMenu.getInstance());

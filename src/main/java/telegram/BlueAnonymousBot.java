@@ -105,8 +105,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
      * @param key the key.
      * @return the value.
      */
-    public String getProperty(String key) {
-        return this.properties.getProperty(key);
-    }
+//    public String getProperty(String key) {
+//        return this.properties.getProperty(key);
+//    }
 
 }
