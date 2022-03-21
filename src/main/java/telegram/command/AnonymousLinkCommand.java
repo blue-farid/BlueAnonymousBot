@@ -3,24 +3,19 @@ package telegram.command;
 import dao.ClientDao;
 import model.Client;
 import service.ClientService;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 import utils.RandomUtils;
 
 public class AnonymousLinkCommand extends Command {
-    private final static String localMessage = "سلام" +
-            " " +
-            "?name" +
-            " هستم ✋️\n" +
-            "\n" +
-            "لینک زیر رو لمس کن و هر حرفی که تو دلت هست یا هر انتقادی که نسبت به من داری رو با خیال راحت بنویس و بفرست. بدون اینکه از اسمت باخبر بشم پیامت به من می\u200Cرسه. خودتم می\u200Cتونی امتحان کنی و از بقیه بخوای راحت و ناشناس بهت پیام بفرستن، حرفای خیلی جالبی می\u200Cشنوی! \uD83D\uDE09\n" +
-            "\n" +
-            "\uD83D\uDC47\uD83D\uDC47\n";
+    private final String localMessage ;
 
     private final Client client;
 
     public AnonymousLinkCommand(String chatId, Client client) {
         super(chatId);
         this.client = client;
+        localMessage= Property.MESSAGES_P.get("anonymous_link");
     }
 
     @Override

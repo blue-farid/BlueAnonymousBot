@@ -28,7 +28,7 @@ public abstract class Command {
         sendMessage.setChatId(chatId);
         this.optionalCommand = Optional.of(optionalCommand);
     }
-  
+
     public static Command valueOf(Update update) throws Exception {
         Message message = null;
         String caseValue;
@@ -54,7 +54,7 @@ public abstract class Command {
         if (client.getClientState() == ClientState.NORMAL||
                 (update.getMessage() != null && update.getMessage().getText() != null &&
                         update.getMessage().getText().equals(BlueAnonymousBot.getInstance().
-                        getProperty("command.cancel")))) {
+                                getProperty("command.cancel")))) {
             if (caseValue.contains(BlueAnonymousBot.getInstance()
                     .getProperty("command.start"))) {
                 String[] values = caseValue.split(" ");
@@ -98,8 +98,8 @@ public abstract class Command {
             } else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperty("command.answer"))){
                 return new AnswerCommand(chatId, client, Long.parseLong(callBackValues[1]),
-                                         update.getCallbackQuery().getMessage().getMessageId(), 
-                                         Integer.parseInt(callBackValues[2]));
+                        update.getCallbackQuery().getMessage().getMessageId(),
+                        Integer.parseInt(callBackValues[2]));
             }else if (caseValue.equals(BlueAnonymousBot.getInstance().
                     getProperty("command.block"))) {
                 return new BlockCommand(chatId);

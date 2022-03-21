@@ -4,7 +4,8 @@ import model.Client;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * the FileUtils singleton class
@@ -16,9 +17,7 @@ public class FileUtils {
     private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
 
     private FileUtils() {
-    }
-
-    public static FileUtils getInstance() {
+    }public static FileUtils getInstance() {
         if (instance == null) {
             instance = new FileUtils();
         }
@@ -166,11 +165,14 @@ public class FileUtils {
      * all the file paths should be defined here
      */
     public enum FilePath {
-        BOT_CLIENTS("files/db/clients_bot.bin"),
-        BOT_PROPERTIES("blue_anonymous_bot.properties"),
-        DATABASE("files/db/sqlite/blue-anonymous-bot.db");
+
+        BOT_CLIENTS("files\\db\\clients_bot.bin"),
+        COMMAND_PROPERTIES("commands.properties"),
+        DATABASE("files/db/sqlite/blue-anonymous-bot.db"),
+        MESSAGE_PROPERTIES("messages.properties");
 
         private final String value;
+
 
         FilePath(String value) {
             if (!utils.Common.getInstance().isBotRunsOnWindows()) {
@@ -178,6 +180,7 @@ public class FileUtils {
             } else {
                 this.value = value.replace("/", "\\");
             }
+
         }
 
         public String getValue() {

@@ -5,10 +5,11 @@ import menu.CancelMenu;
 import model.Client;
 import model.ClientState;
 import service.ClientService;
+import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class AnswerCommand extends Command {
-    private static final String localMessage = "☝️ در حال پاسخ دادن به فرستنده این پیام هستی ... ؛ منتظریم بفرستی :)";
+    private final String localMessage ;
     private final Client client;
     private final long contactId;
     private final int currentMessageId;
@@ -21,6 +22,7 @@ public class AnswerCommand extends Command {
         this.contactId = contactId;
         this.currentMessageId = currentMessageId;
         this.contactMessageId = contactMessageId;
+        this.localMessage= Property.MESSAGES_P.get("answer");
     }
 
     @Override

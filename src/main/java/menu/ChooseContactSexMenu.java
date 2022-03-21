@@ -1,7 +1,8 @@
 package menu;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import telegram.BlueAnonymousBot;
+import properties.Property;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +29,9 @@ public class ChooseContactSexMenu extends Menu {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         KeyboardRow keyboardRow2 = new KeyboardRow();
-        keyboardFirstRow.add(BlueAnonymousBot.getInstance().
-                getProperty("command.choose_contact_sex_male"));
-        keyboardFirstRow.add(BlueAnonymousBot.getInstance().
-                getProperty("command.choose_contact_sex_female"));
-        keyboardRow2.add(BlueAnonymousBot.getInstance()
-                .getProperty("command.choose_contact_sex_bi"));
+        keyboardFirstRow.add(Property.COMMANDS_P.get("choose_contact_sex_male"));
+        keyboardFirstRow.add(Property.COMMANDS_P.get("choose_contact_sex_female"));
+        keyboardRow2.add(Property.COMMANDS_P.get("choose_contact_sex_bi"));
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
         return keyboard;
