@@ -4,7 +4,8 @@ import model.Client;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * the FileUtils singleton class
@@ -109,6 +110,7 @@ public class FileUtils {
         MESSAGE_PROPERTIES("messages.properties");
 
         private final String value;
+
 
         FilePath(String value) {
             if (utils.Common.getInstance().isBotRunsOnWindows()) {

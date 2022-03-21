@@ -1,6 +1,7 @@
 package telegram.command;
 
 import dao.ClientDao;
+import log.Console;
 import model.Client;
 import menu.MainMenu;
 import model.ClientState;
@@ -28,7 +29,7 @@ public class StartCommand extends Command {
 
     @Override
     public void execute() {
-        if (optionalCommand.isEmpty()) {
+        if (optionalCommand.equals("")) {
             // first state
             this.sendMessage.setText(localMessage);
             this.sendMessage.setReplyMarkup(MainMenu.getInstance());
@@ -48,7 +49,7 @@ public class StartCommand extends Command {
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         client.setClientState(ClientState.SENDING_MESSAGE_WITH_DEEPLINK);
         client.setContact(contact);
-        log.Console.println("- " + this.client + " trying to message to " + contact + "!");
+        Console.println("- " + this.client + " trying to message to " + contact + "!");
     }
 
     private String selfAnonymousMessageString() {
