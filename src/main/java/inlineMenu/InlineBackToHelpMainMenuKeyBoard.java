@@ -2,6 +2,9 @@ package inlineMenu;
 
 import properties.Property;
 
+/**
+ * @author negar anabestani
+ */
 public class InlineBackToHelpMainMenuKeyBoard extends InlineBlueKeyBoard{
     private static InlineBackToHelpMainMenuKeyBoard inlineBackToHelpMainMenuKeyBoard;
     public static InlineBackToHelpMainMenuKeyBoard getInstance(){

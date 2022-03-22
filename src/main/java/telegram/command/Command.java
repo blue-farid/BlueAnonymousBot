@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import properties.Commands;
+import telegram.command.help.*;
 
 import java.lang.annotation.*;
 import java.util.Optional;
@@ -63,6 +64,18 @@ public abstract class Command {
                 }
             } else if (caseValue.equals(Commands.RESTART.get())) {
                 return new RestartCommand(chatId);
+            } else if (caseValue.equals(Commands.HELP_ANONYMOUS_TO_GROUP.get())){
+                return new HelpAnonymousToGroupCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_FREE_VIP.get())){
+                return new HelpFreeVIPCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_RANDOM_ANONYMOUS.get())){
+                return new HelpRandomAnonymousCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_RECEIVE_ANONYMOUS_MESSAGE.get())){
+                return new HelpReceiveAnonymousCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_SPECIFIC_CONNECTION.get())){
+                return new HelpSpecificConnectionCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_WHAT_FORE.get())){
+                return new HelpWhatForCommand(chatId);
             } else if (caseValue.equals(Commands.ANONYMOUS_CONNECTION.get())) {
                 return new AnonymousConnectionCommand(chatId, client);
             } else if (caseValue.equals(Commands.ANONYMOUS_TO_GROUP.get())) {

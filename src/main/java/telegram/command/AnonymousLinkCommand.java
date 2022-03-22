@@ -25,7 +25,7 @@ public class AnonymousLinkCommand extends Command {
         }
         this.sendMessage.setText(localMessage.replace("?name",
                 client.getTelegramUser().getFirstName())
-                .concat(client.getLongDeepLink()));
+                .concat("\n"+client.getLongDeepLink()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
     }
 

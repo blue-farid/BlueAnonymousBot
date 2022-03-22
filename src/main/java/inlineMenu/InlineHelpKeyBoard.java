@@ -1,6 +1,6 @@
 package inlineMenu;
 
-import properties.Property;
+import properties.Commands;
 
 public class InlineHelpKeyBoard extends InlineBlueKeyBoard{
     private static InlineHelpKeyBoard inlineHelpKeyBoard;
@@ -10,12 +10,12 @@ public class InlineHelpKeyBoard extends InlineBlueKeyBoard{
         return inlineHelpKeyBoard;
     }
    private InlineHelpKeyBoard(){
-       addButtonToList(0,"\uD83D\uDC48این روبات چیه؟ به چه درد میخوره؟"+"::"+ Property.COMMANDS_P.get("help.what_for"));
-       addButtonToList(1,"\uD83D\uDC48چطوری به یه ناشناس تصادفی وصل بشم؟"+"::"+ Property.COMMANDS_P.get("help.connect_random_anonymous"));
-       addButtonToList(2,"\uD83D\uDC48 چطوری نسخه ی رایگان"+"VIP"+" رو فعال کنم؟"+"::"+ Property.COMMANDS_P.get("help.free_vip"));
-       addButtonToList(3,"\uD83D\uDC48چطوری به مخاطب خاصم وصل بشم؟"+"::"+ Property.COMMANDS_P.get("help.specific_connection"));
-       addButtonToList(4,"\uD83D\uDC48چطوری پیام ناشناس دریافت کنم؟"+"::"+ Property.COMMANDS_P.get("help.receive_anonymous_message"));
-       addButtonToList(5,"\uD83D\uDC48چطوری به یه گروه پیام ناشناس بفرستم؟"+"::"+ Property.COMMANDS_P.get("help.send_anonymous_message_group"));
+       addButtonToList(0,"\uD83D\uDC48این روبات چیه؟ به چه درد میخوره؟"+"::"+ Commands.HELP_WHAT_FORE.get());
+       addButtonToList(1,"\uD83D\uDC48چطوری به یه ناشناس تصادفی وصل بشم؟"+"::"+ Commands.HELP_RANDOM_ANONYMOUS.get());
+       addButtonToList(2,"\uD83D\uDC48 چطوری نسخه ی رایگان"+"VIP"+" رو فعال کنم؟"+"::"+ Commands.HELP_FREE_VIP.get());
+       addButtonToList(3,"\uD83D\uDC48چطوری به مخاطب خاصم وصل بشم؟"+"::"+ Commands.HELP_SPECIFIC_CONNECTION.get());
+       addButtonToList(4,"\uD83D\uDC48چطوری پیام ناشناس دریافت کنم؟"+"::"+ Commands.HELP_RECEIVE_ANONYMOUS_MESSAGE.get());
+       addButtonToList(5,"\uD83D\uDC48چطوری به یه گروه پیام ناشناس بفرستم؟"+"::"+ Commands.HELP_ANONYMOUS_TO_GROUP.get());
        setInlineBlueKeyBoard();
    }
 }
