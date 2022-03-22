@@ -9,6 +9,7 @@
   # How to use it?
   * install java 17
   * clone the project
+  * (OPTIONAL BUT RECOMENDED!) type 'git log' on terminal and check out to the lastest version - that can be seen in commits description - for more stablity.
   * create a telegram bot
     * open telegram
     * text @botfather and create your bot
