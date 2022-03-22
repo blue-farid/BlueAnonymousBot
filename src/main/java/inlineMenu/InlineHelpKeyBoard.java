@@ -2,6 +2,10 @@ package inlineMenu;
 
 import properties.Commands;
 
+/**
+ * @author Negar Anabestani
+ */
+
 public class InlineHelpKeyBoard extends InlineBlueKeyBoard{
     private static InlineHelpKeyBoard inlineHelpKeyBoard;
     public static InlineHelpKeyBoard getInstance(){

@@ -5,6 +5,9 @@ import properties.Property;
 import telegram.BlueAnonymousBot;
 import telegram.command.Command;
 
+/**
+ * @author Negar Anabestani
+ */
 public class HelpCommand extends Command {
     public HelpCommand(String chatId) {
         super(chatId);

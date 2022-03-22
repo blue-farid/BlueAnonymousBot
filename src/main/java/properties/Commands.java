@@ -1,5 +1,8 @@
 package properties;
 
+/**
+ * @author Negar Anabestani
+ */
 public enum Commands {
     CANCEL("cancel"),
     START("start"),

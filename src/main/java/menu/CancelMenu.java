@@ -6,6 +6,9 @@ import properties.Property;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Negar anabestani
+ */
 public class CancelMenu extends Menu {
     public static CancelMenu instance;
 

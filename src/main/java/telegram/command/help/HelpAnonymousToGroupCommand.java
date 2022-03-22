@@ -2,6 +2,9 @@ package telegram.command.help;
 
 import telegram.command.Command;
 
+/**
+ * @author Negar Anabestani
+ */
 public class HelpAnonymousToGroupCommand extends Command {
     public HelpAnonymousToGroupCommand(String chatId) {
         super(chatId);

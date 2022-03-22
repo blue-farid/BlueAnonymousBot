@@ -1,11 +1,15 @@
 package menu;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import properties.Property;
+import properties.Commands;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Negar Anabestani
+ *
+ */
 public class MainMenu extends Menu {
     public static MainMenu instance;
 
@@ -30,12 +34,12 @@ public class MainMenu extends Menu {
         KeyboardRow keyboardRow2 = new KeyboardRow();
         KeyboardRow keyboardRow3 = new KeyboardRow();
         KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardFirstRow.add(Property.COMMANDS_P.get("anonymous_connection"));
-        keyboardRow2.add(Property.COMMANDS_P.get("specific_connection"));
-        keyboardRow3.add(Property.COMMANDS_P.get("anonymous_link"));
-        keyboardRow3.add(Property.COMMANDS_P.get("anonymous_to_group"));
-        keyboardRow4.add(Property.COMMANDS_P.get("help"));
-        keyboardRow4.add(Property.COMMANDS_P.get("score"));
+        keyboardFirstRow.add(Commands.ANONYMOUS_CONNECTION.get());
+        keyboardRow2.add(Commands.SPECIFIC_CONNECTION.get());
+        keyboardRow3.add(Commands.ANONYMOUS_LINK.get());
+        keyboardRow3.add(Commands.ANONYMOUS_TO_GROUP.get());
+        keyboardRow4.add(Commands.HELP.get());
+        keyboardRow4.add(Commands.SCORE.get());
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
         keyboard.add(keyboardRow3);

@@ -2,6 +2,9 @@ package telegram.command.help;
 
 import telegram.command.Command;
 
+/**
+ * @author Negar Anabestani
+ */
 public class HelpSpecificConnectionCommand extends Command {
     public HelpSpecificConnectionCommand(String chatId) {
         super(chatId);
