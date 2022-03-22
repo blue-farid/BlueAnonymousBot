@@ -18,7 +18,7 @@
       * bot.token=[the token]
   * now just go to out/artifacts/ and run the jar file!
   * for seeing more data directly on telegram, you should set yourself as admin
-    * just on console, type 'set admin [your telegram id] true'
+    * just on console, type 'set admin [your telegram numeric id] true'
   * you can read javadocs to prevents the possible confussions or contact me directly in telegram.
     * at least, read the documention of 'ConsoleReader'. It is necessary for interacting with the bot as an admin.
 
