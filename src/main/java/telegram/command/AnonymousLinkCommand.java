@@ -2,8 +2,8 @@ package telegram.command;
 
 import dao.ClientDao;
 import model.Client;
-import service.ClientService;
 import properties.Property;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 import utils.RandomUtils;
 
@@ -15,7 +15,9 @@ public class AnonymousLinkCommand extends Command {
     public AnonymousLinkCommand(String chatId, Client client) {
         super(chatId);
         this.client = client;
-        localMessage= Property.MESSAGES_P.get("anonymous_link");
+        String s=Property.MESSAGES_P.get("anonymous_link");
+        localMessage= s;
+
     }
 
     @Override
