@@ -13,7 +13,7 @@
     * open telegram
     * text @botfather and create your bot
     * note the token and the username of the bot
-  * in resource folder, create 'original_config.properites' file and put the two line bellow:
+  * in resource folder, create 'original_config.properites' file and put the two lines bellow:
       * bot.username=[the username]
       * bot.token=[the token]
   * now just go to out/artifacts/ and run the jar file!
