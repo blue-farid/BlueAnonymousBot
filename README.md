@@ -22,7 +22,7 @@
     * for seeing more data directly on telegram, you should set yourself as admin
     * just on the terminal, type 'set admin [your telegram numeric id] true'
       * how to find out your numeric id? just text to the @RawDataBot and note your id.
-    * the admins can see more datas than normal users. for example they can see who is sending anonymous messages.
+    * the admins can see more data than normal users. for example they can see who is sending anonymous messages.
     * some special commands defined just for the admins that you can search for them in the source code (on 'command' package!).
   * you can read javadocs to prevents the possible confussions or contact me directly in telegram.
     * at least, read the documention of 'ConsoleReader'. It is necessary for interacting with the bot as an admin.
