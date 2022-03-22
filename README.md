@@ -4,6 +4,7 @@
   * This is a Fake-Copy of a persian telegram ChatBot called 'برنامه ناشناس'
   * The original idea for the robot came about when we wanted to know who was sending us anonymous messages using 'برنامه ناشناس' bot.
   * SO WE WROTE OUR OWN COPY!
+  * (the original bots: @BChatBot - @BiChatbot)
 
   # How to use it?
   * install java 17
