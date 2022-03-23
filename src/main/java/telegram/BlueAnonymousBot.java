@@ -100,13 +100,4 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         this.botUsername = botUsername;
     }
 
-    /**
-     * get a value from the bot properties.
-     * @param key the key.
-     * @return the value.
-     */
-//    public String getProperty(String key) {
-//        return this.properties.getProperty(key);
-//    }
-
 }
