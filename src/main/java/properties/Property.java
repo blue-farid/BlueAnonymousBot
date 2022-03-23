@@ -5,6 +5,7 @@ import utils.FileUtils;
 import java.util.Properties;
 
 /**
+ * Properties enum
  * @author Negar Anabestani
  */
 public enum Property {

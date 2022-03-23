@@ -1,6 +1,7 @@
 package properties;
 
 /**
+ * Commands enum
  * @author Negar Anabestani
  */
 public enum Commands {
