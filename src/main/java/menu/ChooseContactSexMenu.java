@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * The Choose Contact Sex menu
+ *
  * @author Farid Masjedi
  */
 public class ChooseContactSexMenu extends Menu {

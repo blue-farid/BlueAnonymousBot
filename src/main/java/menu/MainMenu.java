@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * @author Negar Anabestani
- *
  */
 public class MainMenu extends Menu {
     public static MainMenu instance;
