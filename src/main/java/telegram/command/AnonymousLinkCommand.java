@@ -15,8 +15,7 @@ public class AnonymousLinkCommand extends Command {
     public AnonymousLinkCommand(String chatId, Client client) {
         super(chatId);
         this.client = client;
-        String s=Property.MESSAGES_P.get("anonymous_link");
-        localMessage= s;
+        localMessage= Property.MESSAGES_P.get("anonymous_link");
 
     }
 
