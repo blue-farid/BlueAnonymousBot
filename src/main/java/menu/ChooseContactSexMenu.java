@@ -6,6 +6,10 @@ import properties.Commands;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Choose Contact Sex menu
+ * @author Farid Masjedi
+ */
 public class ChooseContactSexMenu extends Menu {
 
     private static ChooseContactSexMenu instance;
