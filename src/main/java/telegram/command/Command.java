@@ -6,7 +6,8 @@ import model.ClientState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import telegram.BlueAnonymousBot;
+import properties.Commands;
+import telegram.command.help.*;
 
 import java.lang.annotation.*;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public abstract class Command {
         sendMessage.setChatId(chatId);
         this.optionalCommand = Optional.of(optionalCommand);
     }
-  
+
     public static Command valueOf(Update update) throws Exception {
         Message message = null;
         String caseValue;
@@ -53,68 +54,63 @@ public abstract class Command {
         }
         if (client.getClientState() == ClientState.NORMAL||
                 (update.getMessage() != null && update.getMessage().getText() != null &&
-                        update.getMessage().getText().equals(BlueAnonymousBot.getInstance().
-                        getProperty("command.cancel")))) {
-            if (caseValue.contains(BlueAnonymousBot.getInstance()
-                    .getProperty("command.start"))) {
+                        update.getMessage().getText().equals(Commands.CANCEL.get()))) {
+            if (caseValue.contains(Commands.START.get())) {
                 String[] values = caseValue.split(" ");
-                if (values[0].equals(BlueAnonymousBot.getInstance().
-                        getProperty("command.start")) && values.length > 1) {
+                if (values[0].equals(Commands.START.get()) && values.length > 1) {
                     return new StartCommand(chatId, values[1], client);
                 } else {
                     return new StartCommand(chatId);
                 }
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.restart"))) {
+            } else if (caseValue.equals(Commands.RESTART.get())) {
                 return new RestartCommand(chatId);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.anonymous_connection"))) {
+            } else if (caseValue.equals(Commands.HELP_ANONYMOUS_TO_GROUP.get())){
+                return new HelpAnonymousToGroupCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_FREE_VIP.get())){
+                return new HelpFreeVIPCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_RANDOM_ANONYMOUS.get())){
+                return new HelpRandomAnonymousCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_RECEIVE_ANONYMOUS_MESSAGE.get())){
+                return new HelpReceiveAnonymousCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_SPECIFIC_CONNECTION.get())){
+                return new HelpSpecificConnectionCommand(chatId);
+            }else if (caseValue.equals(Commands.HELP_WHAT_FORE.get())){
+                return new HelpWhatForCommand(chatId);
+            } else if (caseValue.equals(Commands.ANONYMOUS_CONNECTION.get())) {
                 return new AnonymousConnectionCommand(chatId, client);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.anonymous_to_group"))) {
+            } else if (caseValue.equals(Commands.ANONYMOUS_TO_GROUP.get())) {
                 return new AnonymousToGroupCommand(chatId);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.anonymous_link"))) {
+            } else if (caseValue.equals(Commands.ANONYMOUS_LINK.get())) {
                 return new AnonymousLinkCommand(chatId,
                         ClientDao.getInstance().searchById(
                                 update.getMessage().getFrom().getId()));
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.specific_connection"))) {
+            } else if (caseValue.equals(Commands.SPECIFIC_CONNECTION.get())) {
                 return new SpecificConnectionCommand(chatId, client);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.anonymous_link")) || caseValue.equals("/link")) {
+            } else if (caseValue.equals(Commands.ANONYMOUS_LINK.get()) || caseValue.equals(Commands.LINK.get())) {
                 return new AnonymousLinkCommand(chatId,
                         ClientDao.getInstance().searchById(
                                 update.getMessage().getFrom().getId()));
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.help"))) {
+            } else if (caseValue.equals(Commands.HELP.get())) {
                 return new HelpCommand(chatId);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.score"))) {
+            } else if (caseValue.equals(Commands.SCORE.get())) {
                 return new ScoreCommand(chatId);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.cancel"))) {
+            } else if (caseValue.equals(Commands.CANCEL.get())) {
                 return new CancelCommand(chatId,client);
-            } else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.answer"))){
+            } else if (caseValue.equals(Commands.ANSWER.get())){
                 return new AnswerCommand(chatId, client, Long.parseLong(callBackValues[1]),
-                                         update.getCallbackQuery().getMessage().getMessageId(), 
-                                         Integer.parseInt(callBackValues[2]));
-            }else if (caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.block"))) {
+                        update.getCallbackQuery().getMessage().getMessageId(),
+                        Integer.parseInt(callBackValues[2]));
+            }else if (caseValue.equals(Commands.BLOCK.get())) {
                 return new BlockCommand(chatId);
-            } else if (client.isAdmin() && caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.print_all_users"))) {
+            } else if (client.isAdmin() && caseValue.equals(Commands.PRINT_ALL_USERS.get())) {
                 return new PrintAllUsersCommand(chatId);
-            } else if (client.isAdmin() && caseValue.equals(BlueAnonymousBot.getInstance().
-                    getProperty("command.get_database"))) {
+            } else if (client.isAdmin() && caseValue.equals(Commands.GET_DATABASE.get())) {
                 return new GetDatabaseCommand(chatId);
             } else {
                 throw new IllegalArgumentException();
             }
         } else if (client.getClientState() == ClientState.SENDING_MESSAGE_TO_CONTACT) {
-            if (callBackValues != null && callBackValues[0].equals(BlueAnonymousBot.
-                    getInstance().getProperty("command.answer"))) {
+            if (callBackValues != null && callBackValues[0].equals(Commands.ANSWER.get())) {
                 return new AnswerCommand(chatId, client, Integer.parseInt(callBackValues[1]),
                         update.getCallbackQuery().getMessage().getMessageId(),
                         Integer.parseInt(callBackValues[2]));

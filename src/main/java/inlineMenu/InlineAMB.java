@@ -1,5 +1,9 @@
 package inlineMenu;
 
+/**
+ * @author negar anabestani
+ * answer and block inline keyboard for anonymous messages
+ */
 public class InlineAMB extends InlineBlueKeyBoard {
 
     public InlineAMB(long senderId, int messageId) {

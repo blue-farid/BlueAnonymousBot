@@ -20,6 +20,7 @@ import java.util.Properties;
  * @author Alireza Jabbari
  */
 public class BlueAnonymousBot extends TelegramLongPollingBot {
+
     private static BlueAnonymousBot instance;
     private final UpdateHandler updateHandler = new UpdateHandler();
     private final Properties properties;
@@ -28,7 +29,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     private BlueAnonymousBot() {
         this.properties = FileUtils.getInstance().
-                loadProperties(FileUtils.FilePath.BOT_PROPERTIES);
+                loadProperties(FileUtils.FilePath.COMMAND_PROPERTIES);
     }
 
     public static BlueAnonymousBot getInstance() {
@@ -104,7 +105,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
      * @param key the key.
      * @return the value.
      */
-    public String getProperty(String key) {
-        return this.properties.getProperty(key);
-    }
+//    public String getProperty(String key) {
+//        return this.properties.getProperty(key);
+//    }
+
 }
