@@ -5,6 +5,11 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * The Client class
+ * @author Farid Masjedi
+ * @author Alireza Jabbari
+ */
 public class Client implements Serializable {
     private final long id;
     private final User telegramUser;
