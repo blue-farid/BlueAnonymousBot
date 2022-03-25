@@ -32,7 +32,7 @@ public class AnonymousLinkCommand extends Command {
 
     private static String generateAnonymousLink() {
         while (true) {
-            String anonymousLink = "https://t.me/BChaatt_Bot?start=sc";
+            String anonymousLink = "https://t.me/"+BlueAnonymousBot.getInstance().getBotUsername()+"?start=sc";
             anonymousLink += "-";
             anonymousLink += RandomUtils.getInstance().generateRandomNumber(5);
             anonymousLink += "-";
