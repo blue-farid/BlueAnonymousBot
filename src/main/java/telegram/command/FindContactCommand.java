@@ -1,12 +1,13 @@
 package telegram.command;
 
 import dao.ClientDao;
+import menu.MainMenu;
 import model.Client;
 import model.ClientState;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
-import service.ClientService;
 import properties.Property;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 
@@ -23,37 +24,59 @@ public class FindContactCommand extends Command{
         this.client = client;
         this.localMessage= Property.MESSAGES_P.get("find_contact_1");
         this.localMessage2= Property.MESSAGES_P.get("find_contact_2");
+
+    }
+    private Client findWithForwarded(Message message){
+        User forwardedFrom = message.getForwardFrom();
+        if (forwardedFrom != null) {
+            return ClientDao.getInstance().searchById(forwardedFrom.getId());
+        }
+        return null;
+    }
+    private Client findWithUsername(Message message){
+        String text = message.getText();
+        String username = text.replaceFirst("@", "");
+        if (!username.contains(" ")) {
+            return ClientDao.getInstance().searchByUsername(username);
+        }
+        return null;
+    }
+    private boolean isUsername(String username){
+        return username.charAt(0) == '@';
     }
 
     @Override
     public void execute() {
-        // case 1 (find with forward)
-        User forwardedFrom = message.getForwardFrom();
-        Client contact = null;
-        if (forwardedFrom != null) {
-            contact = ClientDao.getInstance().searchById(forwardedFrom.getId());
-        }
-        if (contact != null && contact.equals(client))
-            contact = null;
-
-        // case 2 (find with username)
-        if (contact == null) {
-            String text = message.getText();
-            String username = text.replaceFirst("@", "");
-            if (!username.contains(" "))
-                contact = ClientDao.getInstance().searchByUsername(username);
-        }
         sendMessage.setChatId(chatId);
-        if (contact == null){
-            sendMessage.setText(localMessage2);
+        Client contact ;
+        contact=findWithForwarded(message);
+        if (contact==null&&!isUsername(message.getText())){
+            sendMessage.setText(Property.MESSAGES_P.get("send_forwarded_message"));
             BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-            ClientService.getInstance().setClientState(client, ClientState.NORMAL);
-        } else {
-            sendMessage.setText(localMessage.replace("?name",
-                    contact.getTelegramUser().getFirstName()));
-            BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-            ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
-            ClientService.getInstance().setContact(client, contact.getId());
+        }else {
+            if (contact==null)
+                contact=findWithUsername(message);
+            if (contact != null) {
+                if (contact.equals(client)) {
+                    sendMessage.setText(Property.MESSAGES_P.get("self_anonymous"));
+                    sendMessage.setReplyMarkup(MainMenu.getInstance());
+                    BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+                    ClientService.getInstance().setClientState(client, ClientState.NORMAL);
+                } else {
+                    sendMessage.setText(localMessage.replace("?name",
+                            contact.getTelegramUser().getFirstName()));
+                    BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+                    ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
+                    ClientService.getInstance().setContact(client, contact.getId());
+                }
+
+            }else {
+                sendMessage.setText(localMessage2);
+                sendMessage.setReplyMarkup(MainMenu.getInstance());
+                BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+                ClientService.getInstance().setClientState(client, ClientState.NORMAL);
+            }
         }
+
     }
 }

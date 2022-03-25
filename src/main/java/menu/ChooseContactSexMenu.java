@@ -35,7 +35,7 @@ public class ChooseContactSexMenu extends Menu {
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         KeyboardRow keyboardRow2 = new KeyboardRow();
         keyboardFirstRow.add(Commands.CHOOSE_CONTACT_SEX_MALE.get());
-        keyboardFirstRow.add(Commands.CHOOSE_CONTACT_SEX_MALE.get());
+        keyboardFirstRow.add(Commands.CHOOSE_CONTACT_SEX_FEMALE.get());
         keyboardRow2.add(Commands.CHOOSE_CONTACT_SEX_BI.get());
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
