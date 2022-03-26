@@ -14,7 +14,7 @@ public class InlineHelpKeyBoard extends InlineBlueKeyBoard{
         return inlineHelpKeyBoard;
     }
    private InlineHelpKeyBoard(){
-       addButtonToList(0,"\uD83D\uDC48این روبات چیه؟ به چه درد میخوره؟"+"::"+ Commands.HELP_WHAT_FORE.get());
+       addButtonToList(0,"\uD83D\uDC48این روبات چیه؟ به چه درد میخوره؟"+"::"+ Commands.HELP_WHAT_FOR.get());
        addButtonToList(1,"\uD83D\uDC48چطوری به یه ناشناس تصادفی وصل بشم؟"+"::"+ Commands.HELP_RANDOM_ANONYMOUS.get());
        addButtonToList(2,"\uD83D\uDC48 چطوری نسخه ی رایگان"+"VIP"+" رو فعال کنم؟"+"::"+ Commands.HELP_FREE_VIP.get());
        addButtonToList(3,"\uD83D\uDC48چطوری به مخاطب خاصم وصل بشم؟"+"::"+ Commands.HELP_SPECIFIC_CONNECTION.get());

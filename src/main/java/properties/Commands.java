@@ -20,7 +20,7 @@ public enum Commands {
     CHOOSE_CONTACT_SEX_FEMALE("choose_contact_sex_female"),
     CHOOSE_CONTACT_SEX_MALE("choose_contact_sex_male"),
     CHOOSE_CONTACT_SEX_BI("choose_contact_sex_bi"),
-    HELP_WHAT_FORE("help.what_for"),
+    HELP_WHAT_FOR("help.what_for"),
     HELP_RANDOM_ANONYMOUS("help.connect_random_anonymous"),
     HELP_FREE_VIP("help.free_vip"),
     HELP_SPECIFIC_CONNECTION("help.specific_connection"),

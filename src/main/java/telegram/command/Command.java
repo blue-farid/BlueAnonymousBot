@@ -74,7 +74,7 @@ public abstract class Command {
                 return new HelpReceiveAnonymousCommand(chatId);
             }else if (caseValue.equals(Commands.HELP_SPECIFIC_CONNECTION.get())){
                 return new HelpSpecificConnectionCommand(chatId);
-            }else if (caseValue.equals(Commands.HELP_WHAT_FORE.get())){
+            }else if (caseValue.equals(Commands.HELP_WHAT_FOR.get())){
                 return new HelpWhatForCommand(chatId);
             } else if (caseValue.equals(Commands.ANONYMOUS_CONNECTION.get())) {
                 return new AnonymousConnectionCommand(chatId, client);
