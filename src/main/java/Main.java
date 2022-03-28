@@ -39,6 +39,9 @@ public class Main {
                 loadOriginalBot();
             }
             loadDatabase();
+            log.Console.clearScreen();
+            log.Console.printAsciiBlueAnonymousBot();
+            log.Console.printAsciiLogo();
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(BlueAnonymousBot.getInstance());
             new Thread(new ConsoleReader()).start();
