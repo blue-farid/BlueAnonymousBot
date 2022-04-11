@@ -1,6 +1,7 @@
 package telegram.command;
 
 import dao.ClientDao;
+import menu.CancelMenu;
 import menu.MainMenu;
 import model.Client;
 import model.ClientState;
@@ -46,6 +47,7 @@ public class StartCommand extends Command {
         }
         sendMessage.setText(localMessage2.replace("?name",
                 contact.getTelegramUser().getFirstName()));
+        sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
         ClientService.getInstance().setContact(client, contact.getId());
