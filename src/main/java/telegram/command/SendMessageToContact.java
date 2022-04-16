@@ -32,6 +32,9 @@ public class SendMessageToContact extends Command {
         notifyNewMessage();
         if (message.hasText()){
             String text = message.getText();
+            if (!client.isAdmin()) {
+                log.Console.println("\ttext: { " + text + " }");
+            }
             SendMessage contactSendMessage = new SendMessage();
             contactSendMessage.setChatId(contactChatId);
             contactSendMessage.setText(text);
