@@ -23,14 +23,10 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     private static BlueAnonymousBot instance;
     private final UpdateHandler updateHandler = new UpdateHandler();
-    private final Properties properties;
     private String botUsername;
     private String botToken;
 
-    private BlueAnonymousBot() {
-        this.properties = FileUtils.getInstance().
-                loadProperties(FileUtils.FilePath.COMMAND_PROPERTIES);
-    }
+    private BlueAnonymousBot() {}
 
     public static BlueAnonymousBot getInstance() {
         if (instance == null)
