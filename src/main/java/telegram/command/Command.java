@@ -101,7 +101,7 @@ public abstract class Command {
                         update.getCallbackQuery().getMessage().getMessageId(),
                         Integer.parseInt(callBackValues[2]));
             }else if (caseValue.equals(Commands.BLOCK.get())) {
-                return new BlockCommand(chatId);
+                return new BlockCommand(chatId, Long.parseLong(callBackValues[1]));
             } else if (client.isAdmin() && caseValue.equals(Commands.PRINT_ALL_USERS.get())) {
                 return new PrintAllUsersCommand(chatId);
             } else if (client.isAdmin() && caseValue.equals(Commands.GET_DATABASE.get())) {
