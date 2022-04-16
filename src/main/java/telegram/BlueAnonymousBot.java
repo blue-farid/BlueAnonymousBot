@@ -8,9 +8,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.handler.UpdateHandler;
-import utils.FileUtils;
-
-import java.util.Properties;
 
 /**
  * the BlueAnonymousBot class
@@ -26,7 +23,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     private String botUsername;
     private String botToken;
 
-    private BlueAnonymousBot() {}
+    private BlueAnonymousBot() {
+    }
 
     public static BlueAnonymousBot getInstance() {
         if (instance == null)
@@ -39,9 +37,27 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         return this.botUsername;
     }
 
+    /**
+     * sets bot username
+     *
+     * @param botUsername the bot username
+     */
+    public void setBotUsername(String botUsername) {
+        this.botUsername = botUsername;
+    }
+
     @Override
     public String getBotToken() {
         return this.botToken;
+    }
+
+    /**
+     * sets bot token
+     *
+     * @param botToken the bot token.
+     */
+    public void setBotToken(String botToken) {
+        this.botToken = botToken;
     }
 
     @Override
@@ -61,6 +77,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     /**
      * do necessary things after receiving an update.
+     *
      * @param update the update.
      */
     public void newRequestReceived(Update update) {
@@ -70,6 +87,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     /**
      * send message to client.
+     *
      * @param sendMessage The Send message object.
      */
     public void executeSendMessage(SendMessage sendMessage) {
@@ -78,22 +96,6 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * sets bot token
-     * @param botToken the bot token.
-     */
-    public void setBotToken(String botToken) {
-        this.botToken = botToken;
-    }
-
-    /**
-     * sets bot username
-     * @param botUsername the bot username
-     */
-    public void setBotUsername(String botUsername) {
-        this.botUsername = botUsername;
     }
 
 }
