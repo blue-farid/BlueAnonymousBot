@@ -1,8 +1,11 @@
 package log;
 
+import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import service.ClientService;
+import telegram.command.AnswerCommand;
+import telegram.command.BlockCommand;
 import telegram.command.Command;
 import utils.TimeUtils;
 
@@ -44,6 +47,10 @@ public class Console {
      */
     public static void printNewRequestInfo(Message message, Command command
             , boolean printTime) {
+        if (cleanUpMessage(message, command) < 0) {
+            System.out.println("- AnswerCommand! -");
+            return;
+        }
         System.out.print("- new Request: " +
                 command +
                 "\n" + "\t" + "username: " +
@@ -56,6 +63,18 @@ public class Console {
         } else {
             System.out.println();
         }
+    }
+
+    private static int cleanUpMessage(Message message, Command command) {
+        if (command instanceof BlockCommand) {
+            message.setFrom(ClientDao.getInstance().searchById(
+                    Long.parseLong(command.getChatId())).getTelegramUser());
+            return 1;
+        }
+        if (command instanceof AnswerCommand) {
+            return -1;
+        }
+        return 0;
     }
 
     /**
