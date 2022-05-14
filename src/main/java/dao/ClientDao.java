@@ -66,8 +66,12 @@ public class ClientDao {
     public Client searchByUsername(String username) {
         Collection<Client> clientsCollection = SQLiteUtils.getInstance().selectClients();
         for (Client client : clientsCollection) {
-            if (client.getTelegramUser().getUserName().equals(username))
-                return client;
+            try {
+                if (client.getTelegramUser().getUserName().equals(username))
+                    return client;
+            } catch (NullPointerException e) {
+               // who cares??
+            }
         }
         return null;
     }

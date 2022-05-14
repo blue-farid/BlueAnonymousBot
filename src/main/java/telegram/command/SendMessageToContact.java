@@ -38,7 +38,9 @@ public class SendMessageToContact extends Command {
             contactSendMessage.setEntities(message.getEntities());
             contactSendMessage.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendMessage.setReplyToMessageId(client.getContactMessageId());
-            BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);
+            if(BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage) != 0) {
+                return;
+            }
         }
         else if (message.hasSticker()){
             InputFile sticker = new InputFile(message.getSticker().getFileId());
@@ -50,6 +52,7 @@ public class SendMessageToContact extends Command {
             }
             catch (Exception e){
                 e.printStackTrace();
+                return;
             }
         }
         else if (message.hasVoice()){
@@ -64,6 +67,7 @@ public class SendMessageToContact extends Command {
             }
             catch (Exception e){
                 e.printStackTrace();
+                return;
             }
         }
         else if (message.hasDocument()){
@@ -78,6 +82,7 @@ public class SendMessageToContact extends Command {
             }
             catch (Exception e){
                 e.printStackTrace();
+                return;
             }
         }
         else if (message.hasPhoto()){
@@ -92,6 +97,7 @@ public class SendMessageToContact extends Command {
             }
             catch (Exception e){
                 e.printStackTrace();
+                return;
             }
         }
         else if (message.hasVideo()){
@@ -106,6 +112,7 @@ public class SendMessageToContact extends Command {
             }
             catch (Exception e){
                 e.printStackTrace();
+                return;
             }
         }
         else if (message.hasAudio()){
@@ -120,6 +127,7 @@ public class SendMessageToContact extends Command {
             }
             catch (Exception e){
                 e.printStackTrace();
+                return;
             }
         }
 

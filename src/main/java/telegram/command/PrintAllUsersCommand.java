@@ -3,8 +3,10 @@ package telegram.command;
 import dao.ClientDao;
 import model.Client;
 import telegram.BlueAnonymousBot;
+import utils.StringUtils;
 
 import java.util.Collection;
+import java.util.List;
 
 @Admin
 public class PrintAllUsersCommand extends Command {
@@ -23,6 +25,13 @@ public class PrintAllUsersCommand extends Command {
                     getTelegramUser().toString().concat("\n")));
         }
         sendMessage.setText(result);
-        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        int res = BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        if (res > 0) {
+            // message is too long
+            if (res == 400) {
+                List<String> subStrings = StringUtils.getInstance().subStrings(result, 4000);
+                executeMessages(subStrings);
+            }
+        }
     }
 }

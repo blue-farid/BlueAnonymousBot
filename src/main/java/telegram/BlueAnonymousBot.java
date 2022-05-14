@@ -7,6 +7,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import telegram.handler.UpdateHandler;
 
 /**
@@ -90,11 +91,16 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
      *
      * @param sendMessage The Send message object.
      */
-    public void executeSendMessage(SendMessage sendMessage) {
+    public int executeSendMessage(SendMessage sendMessage) {
         try {
             execute(sendMessage);
+            return 0;
+        } catch (TelegramApiRequestException e) {
+            e.printStackTrace();
+            return e.getErrorCode();
         } catch (TelegramApiException e) {
             e.printStackTrace();
+            return -1;
         }
     }
 
