@@ -133,6 +133,18 @@ public class SendMessageToContact extends Command {
                 return;
             }
         }
+        else if (message.hasVideoNote()){
+            InputFile videoNote = new InputFile(message.getVideoNote().getFileId());
+            SendVideoNote contactSendVideoNote = new SendVideoNote(contactChatId, videoNote);
+            contactSendVideoNote.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            contactSendVideoNote.setReplyToMessageId(client.getContactMessageId());
+            try {
+                BlueAnonymousBot.getInstance().execute(contactSendVideoNote);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
         if (ClientService.getInstance().getContact(client).isAdmin()) {
             SendMessage adminSendMessage = new SendMessage();
