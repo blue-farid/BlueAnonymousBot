@@ -1,5 +1,6 @@
 package telegram.command;
 
+import com.google.common.base.Strings;
 import dao.ClientDao;
 import model.Client;
 import model.ClientState;
@@ -7,9 +8,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import properties.Commands;
+import telegram.BlueAnonymousBot;
 import telegram.command.help.*;
 
 import java.lang.annotation.*;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class Command {
@@ -136,6 +139,15 @@ public abstract class Command {
 
     public String getChatId() {
         return chatId;
+    }
+
+    protected void executeMessages(List<String> strings) {
+        for (String string: strings) {
+            if (!Strings.isNullOrEmpty(string)) {
+                sendMessage.setText(string);
+                BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+            }
+        }
     }
 }
 
