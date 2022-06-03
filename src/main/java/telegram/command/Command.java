@@ -41,6 +41,7 @@ public abstract class Command {
         sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(client.getChatId()));
         this.optionalCommand = Optional.of(optionalCommand);
+        this.client = client;
     }
 
     public static Command valueOf(Update update) throws Exception {
