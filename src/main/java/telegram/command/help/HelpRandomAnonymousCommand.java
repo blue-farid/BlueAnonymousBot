@@ -1,19 +1,19 @@
 package telegram.command.help;
 
+import model.Client;
 import telegram.command.Command;
 
 /**
  * @author Negar Anabestani
  */
 public class HelpRandomAnonymousCommand extends Command {
-    public HelpRandomAnonymousCommand(String chatId) {
-        super(chatId);
+
+    public HelpRandomAnonymousCommand(Client client) {
+        super(client);
     }
 
     @Override
     public void execute() {
-//        sendMessage.setText(Property.MESSAGES_P.get("help.random_anonymous"));
-//        sendMessage.setReplyMarkup(InlineBackToHelpMainMenuKeyBoard.getInstance());
-//        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        addBaseLog();
     }
 }

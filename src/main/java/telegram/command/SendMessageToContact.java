@@ -1,9 +1,11 @@
 package telegram.command;
 
+import console.ConsoleWriter;
 import inlineMenu.InlineAMB;
 import menu.MainMenu;
 import model.Client;
 import model.ClientState;
+import org.apache.log4j.MDC;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -13,12 +15,10 @@ import telegram.BlueAnonymousBot;
 
 public class SendMessageToContact extends Command {
 
-    private final Client client;
     private final Message message;
 
-    public SendMessageToContact(String chatId, Client client, Message message) {
-        super(chatId);
-        this.client = client;
+    public SendMessageToContact(Client client, Message message) {
+        super(client);
         this.message = message;
     }
 
@@ -29,12 +29,13 @@ public class SendMessageToContact extends Command {
             return;
         }
         String contactChatId = ClientService.getInstance().getContact(client).getChatId().toString();
+        MDC.put("others", ConsoleWriter.readyForLog("message: {" + message.getText() + "}") + ConsoleWriter.readyForLog(
+                "contactId: {" + contactChatId + "}"
+        ));
+        addBaseLog();
         notifyNewMessage();
         if (message.hasText()){
             String text = message.getText();
-            if (!client.isAdmin()) {
-                log.Console.println("\ttext: { " + text + " }");
-            }
             SendMessage contactSendMessage = new SendMessage();
             contactSendMessage.setChatId(contactChatId);
             contactSendMessage.setText(text);

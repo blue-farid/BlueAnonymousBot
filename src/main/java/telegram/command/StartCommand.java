@@ -1,5 +1,6 @@
 package telegram.command;
 
+import console.ConsoleWriter;
 import dao.ClientDao;
 import menu.CancelMenu;
 import menu.MainMenu;
@@ -14,15 +15,15 @@ public class StartCommand extends Command {
     private final String localMessage2 ;
     private final Client client;
 
-    public StartCommand(String chatId) {
-        super(chatId);
+    public StartCommand(Client client) {
+        super(client);
         this.client = null;
         localMessage= Property.MESSAGES_P.get("start_1");
         localMessage2= Property.MESSAGES_P.get("start_2");
     }
 
-    public StartCommand(String chatId, String optionalCommand, Client client) {
-        super(chatId, optionalCommand);
+    public StartCommand(Client client, String optionalCommand) {
+        super(client, optionalCommand);
         this.client = client;
         localMessage= Property.MESSAGES_P.get("start_1");
         localMessage2= Property.MESSAGES_P.get("start_2");
@@ -30,6 +31,7 @@ public class StartCommand extends Command {
 
     @Override
     public void execute() {
+        addBaseLog();
         if (optionalCommand.isEmpty()) {
             // first state
             this.sendMessage.setText(localMessage);
@@ -51,7 +53,7 @@ public class StartCommand extends Command {
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
         ClientService.getInstance().setContact(client, contact.getId());
-        log.Console.println("- " + this.client + " trying to message to " + contact + "!");
+        ConsoleWriter.println("- " + this.client + " trying to message to " + contact + "!");
 
     }
 

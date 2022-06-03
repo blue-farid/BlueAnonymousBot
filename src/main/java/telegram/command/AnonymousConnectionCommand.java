@@ -8,16 +8,14 @@ import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class AnonymousConnectionCommand extends Command {
-    private final Client client;
 
-    public AnonymousConnectionCommand(String chatId, Client client) {
-        super(chatId);
-        this.client = client;
+    public AnonymousConnectionCommand(Client client) {
+        super(client);
     }
-
 
     @Override
     public void execute() {
+        addBaseLog();
         if (this.client.getClientState() == ClientState.NORMAL) {
             this.sendMessage.setText(Property.MESSAGES_P.get("anonymous_connection"));
             this.sendMessage.setReplyMarkup(ChooseContactSexMenu.getInstance());
