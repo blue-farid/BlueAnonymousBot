@@ -9,9 +9,9 @@ import telegram.BlueAnonymousBot;
 
 public class SpecificConnectionCommand extends Command {
 
-    private final String localMessage;
+    protected final String localMessage;
 
-    private final Client client;
+    protected final Client client;
 
     public SpecificConnectionCommand(String chatId, Client client) {
         super(chatId);

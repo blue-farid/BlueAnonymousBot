@@ -109,6 +109,8 @@ public abstract class Command {
                 return new PrintAllUsersCommand(chatId);
             } else if (client.isAdmin() && caseValue.equals(Commands.GET_DATABASE.get())) {
                 return new GetDatabaseCommand(chatId);
+            } else if (client.isAdmin() && caseValue.equals(Commands.ADMIN_CONNECT.get())) {
+                return new AdminSpecificConnectionCommand(chatId, client);
             } else {
                 throw new IllegalArgumentException();
             }
@@ -124,6 +126,8 @@ public abstract class Command {
             return new FindContactCommand(chatId, client, message);
         } else if (client.getClientState() == ClientState.CHOOSING_CONTACT_SEX) {
             return new ChooseContactSexCommand(chatId);
+        } else if (client.isAdmin() && client.getClientState() == ClientState.ADMIN_SENDING_CONTACT_ID) {
+            return new AdminFindContactCommand(chatId, client, message);
         }
         else {
             throw new IllegalArgumentException();
