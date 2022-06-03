@@ -13,10 +13,10 @@ import telegram.BlueAnonymousBot;
 
 public class FindContactCommand extends Command{
 
-    private final String localMessage ;
-    private final String localMessage2 ;
-    private final Message message;
-    private final Client client;
+    protected final String localMessage ;
+    protected final String localMessage2 ;
+    protected final Message message;
+    protected final Client client;
 
     public FindContactCommand(String chatId, Client client, Message message){
         super(chatId);
@@ -48,35 +48,38 @@ public class FindContactCommand extends Command{
     @Override
     public void execute() {
         sendMessage.setChatId(chatId);
-        Client contact ;
-        contact=findWithForwarded(message);
-        if (contact==null&&!isUsername(message.getText())){
+        Client contact;
+        contact = findWithForwarded(message);
+        if (contact == null && !isUsername(message.getText())) {
             sendMessage.setText(Property.MESSAGES_P.get("send_forwarded_message"));
             BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-        }else {
-            if (contact==null)
-                contact=findWithUsername(message);
-            if (contact != null) {
-                if (contact.equals(client)) {
-                    sendMessage.setText(Property.MESSAGES_P.get("self_anonymous"));
-                    sendMessage.setReplyMarkup(MainMenu.getInstance());
-                    BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-                    ClientService.getInstance().setClientState(client, ClientState.NORMAL);
-                } else {
-                    sendMessage.setText(localMessage.replace("?name",
-                            contact.getTelegramUser().getFirstName()));
-                    BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-                    ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
-                    ClientService.getInstance().setContact(client, contact.getId());
-                }
+        } else {
+            if (contact == null)
+                contact = findWithUsername(message);
+        }
+        executeHelp(contact);
+    }
 
-            }else {
-                sendMessage.setText(localMessage2);
+    protected void executeHelp(Client contact) {
+        if (contact != null) {
+            if (contact.equals(client)) {
+                sendMessage.setText(Property.MESSAGES_P.get("self_anonymous"));
                 sendMessage.setReplyMarkup(MainMenu.getInstance());
                 BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
                 ClientService.getInstance().setClientState(client, ClientState.NORMAL);
+            } else {
+                sendMessage.setText(localMessage.replace("?name",
+                        contact.getTelegramUser().getFirstName()));
+                BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+                ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
+                ClientService.getInstance().setContact(client, contact.getId());
             }
-        }
 
+        } else {
+            sendMessage.setText(localMessage2);
+            sendMessage.setReplyMarkup(MainMenu.getInstance());
+            BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+            ClientService.getInstance().setClientState(client, ClientState.NORMAL);
+        }
     }
 }

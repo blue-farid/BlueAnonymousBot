@@ -28,7 +28,8 @@ public enum Commands {
     HELP_ANONYMOUS_TO_GROUP("help.send_anonymous_message_group"),
     PRINT_ALL_USERS("print_all_users"),
     GET_DATABASE("get_database"),
-    HELP_BACK_MAIN_MENU("back_help_main_menu");
+    HELP_BACK_MAIN_MENU("back_help_main_menu"),
+    ADMIN_CONNECT("admin_connect");
     private final String key;
     Commands(String key){
         this.key=key;
