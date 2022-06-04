@@ -48,8 +48,18 @@ public class SendMessageToContact extends Command {
             contactSendMessage.setEntities(message.getEntities());
             contactSendMessage.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendMessage.setReplyToMessageId(client.getContactMessageId());
-            if(BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage) != 0) {
-                return;
+            int res = BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);
+            if(res != 0) {
+                if (res == 400) {
+                    // reply not found
+                    contactSendMessage.setReplyToMessageId(null);
+                    if (BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage) != 0) {
+                        // failed again!
+                        return;
+                    }
+                } else {
+                    return;
+                }
             }
         }
         else if (message.hasSticker()){
