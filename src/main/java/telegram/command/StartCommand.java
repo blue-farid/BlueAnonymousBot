@@ -1,10 +1,12 @@
 package telegram.command;
 
+import console.ConsoleWriter;
 import dao.ClientDao;
 import menu.CancelMenu;
 import menu.MainMenu;
 import model.Client;
 import model.ClientState;
+import org.apache.log4j.MDC;
 import properties.Property;
 import service.ClientService;
 import telegram.BlueAnonymousBot;
@@ -12,18 +14,15 @@ import telegram.BlueAnonymousBot;
 public class StartCommand extends Command {
     private final String localMessage;
     private final String localMessage2 ;
-    private final Client client;
 
-    public StartCommand(String chatId) {
-        super(chatId);
-        this.client = null;
+    public StartCommand(Client client) {
+        super(client);
         localMessage= Property.MESSAGES_P.get("start_1");
         localMessage2= Property.MESSAGES_P.get("start_2");
     }
 
-    public StartCommand(String chatId, String optionalCommand, Client client) {
-        super(chatId, optionalCommand);
-        this.client = client;
+    public StartCommand(Client client, String optionalCommand) {
+        super(client, optionalCommand);
         localMessage= Property.MESSAGES_P.get("start_1");
         localMessage2= Property.MESSAGES_P.get("start_2");
     }
@@ -51,7 +50,9 @@ public class StartCommand extends Command {
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
         ClientService.getInstance().setContact(client, contact.getId());
-        log.Console.println("- " + this.client + " trying to message to " + contact + "!");
+        MDC.put("others", ConsoleWriter.readyForLog(
+                this.client + " trying to message to " + contact + "!"));
+        addBaseLog();
 
     }
 

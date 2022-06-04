@@ -1,19 +1,18 @@
 package telegram.command.help;
 
+import model.Client;
 import telegram.command.Command;
 
 /**
  * @author Negar Anabestani
  */
 public class HelpAnonymousToGroupCommand extends Command {
-    public HelpAnonymousToGroupCommand(String chatId) {
-        super(chatId);
+    public HelpAnonymousToGroupCommand(Client client) {
+        super(client);
     }
 
     @Override
     public void execute() {
-//        sendMessage.setText(Property.MESSAGES_P.get("help.add_to_group"));
-//        sendMessage.setReplyMarkup(InlineBackToHelpMainMenuKeyBoard.getInstance());
-//        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        addBaseLog();
     }
 }

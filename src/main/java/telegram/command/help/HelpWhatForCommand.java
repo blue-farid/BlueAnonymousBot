@@ -1,19 +1,19 @@
 package telegram.command.help;
 
+import model.Client;
 import telegram.command.Command;
 
 /**
  * @author Negar Anabestani
  */
 public class HelpWhatForCommand extends Command {
-    public HelpWhatForCommand(String chatId) {
-        super(chatId);
+
+    public HelpWhatForCommand(Client client) {
+        super(client);
     }
 
     @Override
     public void execute() {
-//        sendMessage.setText(Property.MESSAGES_P.get("help.what_for"));
-//        sendMessage.setReplyMarkup(InlineBackToHelpMainMenuKeyBoard.getInstance());
-//        BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
+        addBaseLog();
     }
 }

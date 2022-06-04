@@ -8,19 +8,18 @@ import telegram.BlueAnonymousBot;
 import utils.RandomUtils;
 
 public class AnonymousLinkCommand extends Command {
-    private final String localMessage ;
+    private final String localMessage;
 
-    private final Client client;
 
-    public AnonymousLinkCommand(String chatId, Client client) {
-        super(chatId);
-        this.client = client;
-        localMessage= Property.MESSAGES_P.get("anonymous_link");
+    public AnonymousLinkCommand(Client client) {
+        super(client);
+        this.localMessage= Property.MESSAGES_P.get("anonymous_link");
 
     }
 
     @Override
     public void execute() {
+        addBaseLog();
         if (!client.hasDeepLink()) {
             ClientService.getInstance().setDeepLink(client, generateAnonymousLink());
         }

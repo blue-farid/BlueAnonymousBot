@@ -9,16 +9,14 @@ import properties.Property;
 import telegram.BlueAnonymousBot;
 
 public class AnswerCommand extends Command {
-    private final String localMessage ;
-    private final Client client;
+    private final String localMessage;
     private final long contactId;
     private final int currentMessageId;
     private final int contactMessageId;
 
 
-    public AnswerCommand(String chatId, Client client, long contactId, int currentMessageId, int contactMessageId) {
-        super(chatId);
-        this.client = client;
+    public AnswerCommand(Client client, long contactId, int currentMessageId, int contactMessageId) {
+        super(client);
         this.contactId = contactId;
         this.currentMessageId = currentMessageId;
         this.contactMessageId = contactMessageId;
@@ -27,6 +25,7 @@ public class AnswerCommand extends Command {
 
     @Override
     public void execute() {
+        addBaseLog();
         Client contact = ClientDao.getInstance().searchById(contactId);
         ClientService.getInstance().setContact(client, contact.getId());
         sendMessage.setText(localMessage);

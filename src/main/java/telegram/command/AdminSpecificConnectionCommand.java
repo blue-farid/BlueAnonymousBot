@@ -8,12 +8,13 @@ import telegram.BlueAnonymousBot;
 
 @Admin
 public class AdminSpecificConnectionCommand extends SpecificConnectionCommand{
-    public AdminSpecificConnectionCommand(String chatId, Client client) {
-        super(chatId, client);
+    public AdminSpecificConnectionCommand(Client client) {
+        super(client);
     }
 
     @Override
     public void execute() {
+        addBaseLog();
         this.sendMessage.setText(localMessage);
         this.sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);

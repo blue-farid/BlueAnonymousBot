@@ -7,8 +7,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Admin
 public class AdminFindContactCommand extends FindContactCommand {
 
-    public AdminFindContactCommand(String chatId, Client client, Message message) {
-        super(chatId, client, message);
+    public AdminFindContactCommand(Client client, Message message) {
+        super(client, message);
     }
 
     private Client findWithId(long id) {
@@ -17,9 +17,10 @@ public class AdminFindContactCommand extends FindContactCommand {
 
     @Override
     public void execute() {
-        sendMessage.setChatId(chatId);
+        addBaseLog();
+        sendMessage.setChatId(getChatId());
         Client contact;
         contact = findWithId(Long.parseLong(message.getText()));
-        executeHelp(contact);
+        executeHelp(contact, message.getText());
     }
 }

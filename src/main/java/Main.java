@@ -1,3 +1,5 @@
+import console.ConsoleWriter;
+import console.ConsoleReader;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -20,7 +22,7 @@ import java.util.Properties;
  * @author Farid Masjedi
  * @author Negar Anabestani
  * @author Alireza Jabbari
- * @version 5.5.0
+ * @version 6.0.1
  * <p>
  * Telegram_id: @blue_farid
  * github: https://github.com/blue-farid
@@ -39,13 +41,13 @@ public class Main {
                 loadOriginalBot();
             }
             loadDatabase();
-            log.Console.clearScreen();
-            log.Console.printAsciiBlueAnonymousBot();
-            log.Console.printAsciiLogo();
+            ConsoleWriter.clearScreen();
+            ConsoleWriter.printAsciiBlueAnonymousBot();
+            ConsoleWriter.printAsciiLogo();
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(BlueAnonymousBot.getInstance());
             new Thread(new ConsoleReader()).start();
-            log.Console.initMessage("5.5.0");
+            ConsoleWriter.initMessage("6.0.1");
         } catch (TelegramApiException e) {
             e.printStackTrace();
             System.exit(-1);

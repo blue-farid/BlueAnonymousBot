@@ -1,5 +1,6 @@
 package telegram.command.help;
 
+import model.Client;
 import telegram.command.Command;
 
 /**
@@ -7,12 +8,12 @@ import telegram.command.Command;
  */
 public class HelpFreeVIPCommand extends Command {
 
-    public HelpFreeVIPCommand(String chatId) {
-        super(chatId);
+    public HelpFreeVIPCommand(Client client) {
+        super(client);
     }
 
     @Override
     public void execute() {
-
+        addBaseLog();
     }
 }

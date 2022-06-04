@@ -1,22 +1,24 @@
 package telegram.command;
 
+import console.ConsoleWriter;
 import dao.ClientDao;
 import model.Client;
+import org.apache.log4j.MDC;
 import telegram.BlueAnonymousBot;
 
 public class BlockCommand extends Command {
     private final long contactId;
-    private final Client client;
 
-    public BlockCommand(String chatId, long contactId, Client client) {
-        super(chatId);
+    public BlockCommand(long contactId, Client client) {
+        super(client);
         this.contactId = contactId;
-        this.client = client;
     }
 
     @Override
     public void execute() {
         Client contact = ClientDao.getInstance().searchById(this.contactId);
+        MDC.put("others", ConsoleWriter.readyForLog("contactId: {" + contact.getId() + "}"));
+        addBaseLog();
         if (contact.isAdmin()) {
             this.sendMessage.setText("" + client.getTelegramUser().getFirstName()
             + " tries to block you!");

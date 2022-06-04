@@ -28,7 +28,6 @@ public class UpdateHandler {
             message = update.getMessage();
         try {
             command = Command.valueOf(update);
-            log.Console.printNewRequestInfo(message, command, true);
         } catch (Exception e) {
             // handle bad inputs.
             throw new BadInputException(Property.MESSAGES_P.get("bad_input"),

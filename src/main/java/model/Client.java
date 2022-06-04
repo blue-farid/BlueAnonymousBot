@@ -20,6 +20,7 @@ public class Client implements Serializable {
     private Integer contactMessageId;
     private long contactId;
     private boolean admin;
+    private String clientInfo;
 
     public Client(User user, Long chatId) {
         this.id = user.getId();
@@ -121,6 +122,15 @@ public class Client implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public String getClientInfo() {
+        if(clientInfo == null) {
+            this.clientInfo = "\t- firstName: " + this.telegramUser.getFirstName() +
+                    "\n" + "\t- lastName: " + this.telegramUser.getLastName() +
+                    "\n" + "\t- username: " + this.telegramUser.getUserName();
+        }
+        return clientInfo;
     }
 }
 

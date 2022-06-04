@@ -24,6 +24,6 @@
     * the admins can see more data than normal users. for example they can see who is sending anonymous messages.
     * some special commands defined just for the admins that you can search for them in the source code (on 'command' package!).
   * you can read javadocs to prevents the possible confussions or contact me directly in telegram.
-    * at least, read the documention of 'ConsoleReader'. It is necessary for interacting with the bot as an admin.
+    * at least, read the documention of 'console.ConsoleReader'. It is necessary for interacting with the bot as an admin.
 
 - fully tested on ubuntu 20.04
