@@ -29,9 +29,15 @@ public class SendMessageToContact extends Command {
             return;
         }
         String contactChatId = ClientService.getInstance().getContact(client).getChatId().toString();
-        MDC.put("others", ConsoleWriter.readyForLog("message: {" + message.getText() + "}") + ConsoleWriter.readyForLog(
-                "contactId: {" + contactChatId + "}"
-        ));
+        try {
+            MDC.put("others", ConsoleWriter.readyForLog("message: {" + message.getText() + "}") + ConsoleWriter.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
+        } catch (NullPointerException e) {
+            MDC.put("others", ConsoleWriter.readyForLog("message: {not text!}") + ConsoleWriter.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
+        }
         addBaseLog();
         notifyNewMessage();
         if (message.hasText()){
