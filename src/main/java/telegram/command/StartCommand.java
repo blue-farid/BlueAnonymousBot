@@ -31,6 +31,7 @@ public class StartCommand extends Command {
     public void execute() {
         if (optionalCommand.isEmpty()) {
             // first state
+            addBaseLog();
             this.sendMessage.setText(localMessage);
             this.sendMessage.setReplyMarkup(MainMenu.getInstance());
             BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
