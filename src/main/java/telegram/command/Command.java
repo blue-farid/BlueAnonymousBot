@@ -6,7 +6,6 @@ import model.Client;
 import model.ClientState;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
