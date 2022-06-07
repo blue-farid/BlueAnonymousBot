@@ -13,7 +13,10 @@ import properties.Commands;
 import telegram.BlueAnonymousBot;
 import telegram.command.help.*;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +45,7 @@ public abstract class Command {
         this.client = client;
     }
 
-    public static Command valueOf(Update update) throws Exception {
+    public static Command valueOf(Update update) {
         Message message = null;
         String caseValue;
         Client client;
