@@ -15,7 +15,8 @@ public class GetDatabaseCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
         SendDocument sendDocument = new SendDocument();
         sendDocument.setChatId(sendMessage.getChatId());

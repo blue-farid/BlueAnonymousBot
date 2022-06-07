@@ -17,7 +17,8 @@ public class CancelCommand extends Command{
 
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
         this.sendMessage.setText(localMessage);
         this.sendMessage.setReplyMarkup(MainMenu.getInstance());

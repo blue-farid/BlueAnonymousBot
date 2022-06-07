@@ -23,7 +23,8 @@ public class SendMessageToContact extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         if (message == null){
             ClientService.getInstance().setClientState(client, ClientState.NORMAL);
             return;

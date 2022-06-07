@@ -15,7 +15,8 @@ public class BlockCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         Client contact = ClientDao.getInstance().searchById(this.contactId);
         MDC.put("others", ConsoleWriter.readyForLog("contactId: {" + contact.getId() + "}"));
         addBaseLog();

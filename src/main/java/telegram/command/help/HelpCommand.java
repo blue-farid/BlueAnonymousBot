@@ -16,7 +16,8 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
         sendMessage.setText(Property.MESSAGES_P.get("help"));
         sendMessage.setReplyMarkup(InlineHelpKeyBoard.getInstance());

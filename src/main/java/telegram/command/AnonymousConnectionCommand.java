@@ -14,7 +14,8 @@ public class AnonymousConnectionCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
         if (this.client.getClientState() == ClientState.NORMAL) {
             this.sendMessage.setText(Property.MESSAGES_P.get("anonymous_connection"));

@@ -17,7 +17,8 @@ public class PrintAllUsersCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
         String result = "";
         Collection<Client> clientsCollection = ClientDao.getInstance().getClients();

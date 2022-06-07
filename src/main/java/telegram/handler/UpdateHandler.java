@@ -28,12 +28,14 @@ public class UpdateHandler {
             message = update.getMessage();
         try {
             command = Command.valueOf(update);
+            command.execute();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             // handle bad inputs.
             throw new BadInputException(Property.MESSAGES_P.get("bad_input"),
                     message.getChatId().toString());
         }
-        command.execute();
     }
 }
 

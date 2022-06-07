@@ -17,9 +17,8 @@ import java.lang.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Documented
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @interface Admin {
 }
 
@@ -110,11 +109,11 @@ public abstract class Command {
                         Integer.parseInt(callBackValues[2]));
             } else if (caseValue.equals(Commands.BLOCK.get())) {
                 return new BlockCommand(Long.parseLong(callBackValues[1]), client);
-            } else if (client.isAdmin() && caseValue.equals(Commands.PRINT_ALL_USERS.get())) {
+            } else if (caseValue.equals(Commands.PRINT_ALL_USERS.get())) {
                 return new PrintAllUsersCommand(client);
-            } else if (client.isAdmin() && caseValue.equals(Commands.GET_DATABASE.get())) {
+            } else if (caseValue.equals(Commands.GET_DATABASE.get())) {
                 return new GetDatabaseCommand(client);
-            } else if (client.isAdmin() && caseValue.equals(Commands.ADMIN_CONNECT.get())) {
+            } else if (caseValue.equals(Commands.ADMIN_CONNECT.get())) {
                 return new AdminSpecificConnectionCommand(client);
             } else {
                 throw new IllegalArgumentException();
@@ -131,7 +130,7 @@ public abstract class Command {
             return new FindContactCommand(client, message);
         } else if (client.getClientState() == ClientState.CHOOSING_CONTACT_SEX) {
             return new ChooseContactSexCommand(client);
-        } else if (client.isAdmin() && client.getClientState() == ClientState.ADMIN_SENDING_CONTACT_ID) {
+        } else if (client.getClientState() == ClientState.ADMIN_SENDING_CONTACT_ID) {
             return new AdminFindContactCommand(client, message);
         } else {
             throw new IllegalArgumentException();
@@ -143,7 +142,14 @@ public abstract class Command {
         return this.getClass().getSimpleName();
     }
 
-    public abstract void execute();
+    public void execute() throws IllegalAccessException {
+        if (getClass().isAnnotationPresent(Admin.class)) {
+            if (!client.isAdmin()) {
+                addBaseLog();
+                throw new IllegalAccessException("The Client is not Admin!");
+            }
+        }
+    }
 
     protected void addBaseLog() {
         logger.info(client.getClientInfo());

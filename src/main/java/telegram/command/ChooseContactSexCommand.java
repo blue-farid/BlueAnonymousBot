@@ -11,7 +11,8 @@ public class ChooseContactSexCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
         this.sendMessage.setText(Property.MESSAGES_P.get("choose_contact_sex"));
         this.sendMessage.setReplyMarkup(CancelMenu.getInstance());

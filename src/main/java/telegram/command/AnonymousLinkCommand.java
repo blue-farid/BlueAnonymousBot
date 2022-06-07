@@ -18,7 +18,8 @@ public class AnonymousLinkCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
         if (!client.hasDeepLink()) {
             ClientService.getInstance().setDeepLink(client, generateAnonymousLink());

@@ -46,7 +46,8 @@ public class FindContactCommand extends Command{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         sendMessage.setChatId(getChatId());
         Client contact;
         contact = findWithForwarded(message);

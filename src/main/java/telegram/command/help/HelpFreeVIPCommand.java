@@ -13,7 +13,8 @@ public class HelpFreeVIPCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         addBaseLog();
     }
 }

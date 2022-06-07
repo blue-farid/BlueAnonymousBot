@@ -28,7 +28,8 @@ public class StartCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IllegalAccessException {
+        super.execute();
         if (optionalCommand.isEmpty()) {
             // first state
             addBaseLog();
