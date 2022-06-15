@@ -1,9 +1,12 @@
 package utils;
 
 import model.Client;
+import org.apache.commons.io.output.FileWriterWithEncoding;
+import telegram.command.Command;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -15,6 +18,7 @@ import java.util.Properties;
 public class FileUtils {
     private static FileUtils instance;
     private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
+    private BufferedWriter monitorSendMessageToContactBuffer;
 
     private FileUtils() {
     }public static FileUtils getInstance() {
@@ -160,31 +164,79 @@ public class FileUtils {
         return null;
     }
 
+    public void monitorSendMessageToContact(String className, String message, Client client) {
+        String path = FilePath.MONITORING.getValue().concat(className.concat("/"));
+        long firstId = client.getId();
+        long secondId = client.getContactId();
+        if (firstId > secondId) {
+            long temp = secondId;
+            secondId = firstId;
+            firstId = temp;
+        }
+        // create dirs at first .
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        // now create the file.
+        path = path.concat(String.valueOf(firstId)).concat("-").concat(String.valueOf(secondId).concat(".txt"));
+        file = new File(path);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            if (monitorSendMessageToContactBuffer == null) {
+                FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8,true);
+                monitorSendMessageToContactBuffer = new BufferedWriter(out);
+            }
+            String str = TimeUtils.getInstance().getCurrentDateAndTimeString().
+                    concat(" " + String.valueOf(client.getId()).concat(":{\n").concat("\t" + message)
+                    .concat("\n}\n"));
+            monitorSendMessageToContactBuffer.write(str);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public BufferedWriter getMonitorSendMessageToContactBuffer() {
+        return monitorSendMessageToContactBuffer;
+    }
+
     /**
      * the FilePath enum
      * all the file paths should be defined here
      */
     public enum FilePath {
 
-        BOT_CLIENTS("files\\db\\clients_bot.bin"),
+        BOT_CLIENTS("files/db/clients_bot.bin"),
         COMMAND_PROPERTIES("commands.properties"),
         DATABASE("files/db/sqlite/blue-anonymous-bot.db"),
+        MONITORING("files/monitor/"),
         MESSAGE_PROPERTIES("messages.properties");
 
-        private final String value;
+        private String value;
 
 
         FilePath(String value) {
-            if (!utils.Common.getInstance().isBotRunsOnWindows()) {
-                this.value = value;
-            } else {
-                this.value = value.replace("/", "\\");
-            }
-
+            this.value = value;
+            formatBasedOnOs();
         }
 
         public String getValue() {
             return value;
+        }
+
+        private void formatBasedOnOs() {
+            if (utils.Common.getInstance().isBotRunsOnWindows()) {
+                this.value = value.replace("/", "\\");
+            }
         }
     }
 }
