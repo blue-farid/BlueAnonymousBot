@@ -166,7 +166,7 @@ public class FileUtils {
      */
     public enum FilePath {
 
-        BOT_CLIENTS("files\\db\\clients_bot.bin"),
+        BOT_CLIENTS("files/db/clients_bot.bin"),
         COMMAND_PROPERTIES("commands.properties"),
         DATABASE("files/db/sqlite/blue-anonymous-bot.db"),
         MESSAGE_PROPERTIES("messages.properties");
