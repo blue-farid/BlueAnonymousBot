@@ -3,6 +3,7 @@ package console;
 import dao.ClientDao;
 import model.Client;
 import service.ClientService;
+import utils.FileUtils;
 
 import java.util.Scanner;
 
@@ -26,7 +27,6 @@ public class ConsoleReader implements Runnable {
     /**
      * commands {
      *     exit -> terminate the bot
-     *     sleep -> shuts down the readMode
      *     set admin [client_id] [boolean] -> set admin true or false
      *     clear -> clear the screen
      *     set deeplink [client_id] [deeplink] -> set deeplink
@@ -38,9 +38,8 @@ public class ConsoleReader implements Runnable {
         String[] commands = in.split(" ");
         try {
             if (commands[0].equals("exit")) {
+                FileUtils.getInstance().getMonitorSendMessageToContactBuffer().close();
                 System.exit(0);
-            } else if (commands[0].equals("sleep")) {
-                return 0;
             } else if (commands[0].equals("clear")) {
                 ConsoleWriter.clearScreen();
             } else if (commands[0].equals("set")) {

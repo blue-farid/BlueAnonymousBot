@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import properties.Commands;
 import telegram.BlueAnonymousBot;
 import telegram.command.help.*;
+import utils.FileUtils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,6 +24,11 @@ import java.util.Optional;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @interface Admin {
+}
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@interface Monitor {
 }
 
 public abstract class Command {
@@ -150,6 +156,14 @@ public abstract class Command {
             if (!client.isAdmin()) {
                 addBaseLog();
                 throw new IllegalAccessException("The Client is not Admin!");
+            }
+        }
+
+        if(getClass().isAnnotationPresent(Monitor.class)) {
+            if (this instanceof SendMessageToContact sendMessageToContact &&
+                    sendMessageToContact.message.hasText()) {
+                FileUtils.getInstance().monitorSendMessageToContact(getClass().getSimpleName(),
+                        sendMessageToContact.message.getText(), client);
             }
         }
     }

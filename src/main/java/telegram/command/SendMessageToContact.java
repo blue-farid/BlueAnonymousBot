@@ -13,9 +13,10 @@ import service.ClientService;
 import properties.Property;
 import telegram.BlueAnonymousBot;
 
+@Monitor
 public class SendMessageToContact extends Command {
 
-    private final Message message;
+    protected final Message message;
 
     public SendMessageToContact(Client client, Message message) {
         super(client);
