@@ -1,10 +1,9 @@
-import console.ConsoleWriter;
 import console.ConsoleReader;
+import console.ConsoleWriter;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.BlueAnonymousBot;
-import utils.FileUtils;
 import utils.SQLiteUtils;
 
 import java.io.IOException;
@@ -12,8 +11,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- *     ! The BlueAnonymousBot Project !
- *
+ * ! The BlueAnonymousBot Project !
+ * <p>
  * This is a Fake-Copy of a persian telegram ChatBot called 'برنامه ناشناس'
  * The original idea for the robot came about
  * when we wanted to know who was sending us anonymous messages
@@ -32,12 +31,13 @@ import java.util.Properties;
 public class Main {
     /**
      * the entry point of the Application.
+     *
      * @param args the initial arguments.
      */
     public static void main(String[] args) {
         try {
             if (args.length > 0 && args[0].equals("test")) {
-               loadTestBot();
+                loadTestBot();
             } else {
                 loadOriginalBot();
             }
@@ -60,11 +60,12 @@ public class Main {
 
     /**
      * loads test bot.
+     *
      * @throws IOException
      */
     private static void loadTestBot() throws IOException {
         Properties pr = new Properties();
-        try (InputStream in = ClassLoader.getSystemResourceAsStream("test_config.properties")){
+        try (InputStream in = ClassLoader.getSystemResourceAsStream("test_config.properties")) {
             pr.load(in);
         }
         BlueAnonymousBot.getInstance().setBotUsername(pr.getProperty("bot.username"));
@@ -73,11 +74,12 @@ public class Main {
 
     /**
      * loads original bot.
+     *
      * @throws IOException
      */
     private static void loadOriginalBot() throws IOException {
         Properties pr = new Properties();
-        try (InputStream in = ClassLoader.getSystemResourceAsStream("original_config.properties")){
+        try (InputStream in = ClassLoader.getSystemResourceAsStream("original_config.properties")) {
             pr.load(in);
         }
         BlueAnonymousBot.getInstance().setBotUsername(pr.getProperty("bot.username"));
