@@ -16,7 +16,7 @@ public class MainMenu extends Menu {
         this.setSelective(true);
         this.setResizeKeyboard(true);
         this.setOneTimeKeyboard(false);
-        this.setKeyboard(creatKeyBoard());
+        this.setKeyboard(createKeyBoard());
     }
 
     public static MainMenu getInstance() {
@@ -27,7 +27,7 @@ public class MainMenu extends Menu {
     }
 
     @Override
-    protected List<KeyboardRow> creatKeyBoard() {
+    protected List<KeyboardRow> createKeyBoard() {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         KeyboardRow keyboardRow2 = new KeyboardRow();

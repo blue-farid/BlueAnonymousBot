@@ -16,7 +16,7 @@ public class CancelMenu extends Menu {
         this.setSelective(true);
         this.setResizeKeyboard(true);
         this.setOneTimeKeyboard(false);
-        this.setKeyboard(creatKeyBoard());
+        this.setKeyboard(createKeyBoard());
     }
 
     public static CancelMenu getInstance() {
@@ -27,7 +27,7 @@ public class CancelMenu extends Menu {
     }
 
     @Override
-    protected List<KeyboardRow> creatKeyBoard() {
+    protected List<KeyboardRow> createKeyBoard() {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         keyboardFirstRow.add(Property.COMMANDS_P.get("cancel"));

@@ -10,5 +10,5 @@ import java.util.List;
  */
 
 public abstract class Menu extends ReplyKeyboardMarkup {
-    protected abstract List<KeyboardRow> creatKeyBoard();
+    protected abstract List<KeyboardRow> createKeyBoard();
 }
