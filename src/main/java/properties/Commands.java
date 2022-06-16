@@ -8,6 +8,7 @@ public enum Commands {
     CANCEL("cancel"),
     START("start"),
     RESTART("restart"),
+    SETTINGS("settings"),
     ANONYMOUS_CONNECTION("anonymous_connection"),
     ANSWER("answer"),
     BLOCK("block"),

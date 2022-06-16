@@ -17,6 +17,7 @@ public class Client implements Serializable {
     private String shortDeepLink;
     private final Long chatId;
     private ClientState clientState;
+    private Gender clientGender;
     private Integer contactMessageId;
     private long contactId;
     private boolean admin;
@@ -28,16 +29,18 @@ public class Client implements Serializable {
         this.chatId = chatId;
         this.clientState = ClientState.NORMAL;
         this.admin = false;
+        this.clientGender = Gender.NOT_SPECIFIED;
     }
 
     public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId,
-                  ClientState clientState, boolean admin, long contactId, int contactMessageId) {
+                  ClientState clientState,Gender clientGender, boolean admin, long contactId, int contactMessageId) {
         this.id = id;
         this.telegramUser = telegramUser;
         this.longDeepLink = longDeepLink;
         this.shortDeepLink = shortDeepLink;
         this.chatId = chatId;
         this.clientState = clientState;
+        this.clientGender = clientGender;
         this.admin = admin;
         this.contactId = contactId;
         this.contactMessageId = contactMessageId;
@@ -71,6 +74,14 @@ public class Client implements Serializable {
     public void setLongDeepLink(String longDeepLink) {
         this.longDeepLink = longDeepLink;
         setShortDeepLink(longDeepLink.substring(longDeepLink.indexOf("=") + 1));
+    }
+
+    public Gender getClientGender() {
+        return clientGender;
+    }
+
+    public void setClientGender(Gender clientGender) {
+        this.clientGender = clientGender;
     }
 
     public Long getChatId() {

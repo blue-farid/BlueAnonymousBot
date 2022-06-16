@@ -2,6 +2,7 @@ package dao;
 
 import model.Client;
 import model.ClientState;
+import model.Gender;
 import utils.SQLiteUtils;
 
 import java.util.Collection;
@@ -124,6 +125,16 @@ public class ClientDao {
      */
     public int setClientState(long id, ClientState clientState) {
         return SQLiteUtils.getInstance().updateClientState(id, clientState);
+    }
+
+    /**
+     * set the client's gender
+     * @param id the client's id
+     * @param gender the client gender
+     * @return the result as int
+     */
+    public int setClientGender(long id, Gender gender){
+        return SQLiteUtils.getInstance().updateClientGender(id, gender);
     }
 
     /**

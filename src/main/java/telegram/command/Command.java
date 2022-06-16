@@ -82,6 +82,8 @@ public abstract class Command {
                 }
             } else if (caseValue.equals(Commands.RESTART.get())) {
                 return new RestartCommand(client);
+            } else if (caseValue.equals(Commands.SETTINGS.get())) {
+                return new SettingsCommand(client);
             } else if (caseValue.equals(Commands.HELP_ANONYMOUS_TO_GROUP.get())) {
                 return new HelpAnonymousToGroupCommand(client);
             } else if (caseValue.equals(Commands.HELP_FREE_VIP.get())) {
@@ -141,6 +143,8 @@ public abstract class Command {
             return new ChooseContactSexCommand(client);
         } else if (client.getClientState() == ClientState.ADMIN_SENDING_CONTACT_ID) {
             return new AdminFindContactCommand(client, message);
+        } else if (client.getClientState() == ClientState.CHOOSING_ITS_SEX) {
+            return new ChooseSelfSexCommand(client, message);
         } else {
             throw new IllegalArgumentException();
         }

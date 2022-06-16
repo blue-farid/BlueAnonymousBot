@@ -3,6 +3,7 @@ package service;
 import dao.ClientDao;
 import model.Client;
 import model.ClientState;
+import model.Gender;
 
 import java.util.Collection;
 
@@ -70,6 +71,18 @@ public class ClientService {
     public void setClientState(Client client, ClientState clientState) {
         client.setClientState(clientState);
         ClientDao.getInstance().setClientState(client.getId(), clientState);
+    }
+
+
+    /**
+     * Sets client gender.
+     *
+     * @param client      the client
+     * @param gender      the client gender
+     */
+    public void setClientGender(Client client, Gender gender){
+        client.setClientGender(gender);
+        ClientDao.getInstance().setClientGender(client.getId(), gender);
     }
 
     /**

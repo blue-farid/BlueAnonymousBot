@@ -2,7 +2,7 @@ package utils;
 
 import model.Client;
 import model.ClientState;
-import org.telegram.telegrambots.meta.api.objects.File;
+import model.Gender;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.sql.*;
@@ -30,7 +30,7 @@ public class SQLiteUtils {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        creatClientTable();
+        createClientTable();
     }
 
     public static SQLiteUtils getInstance() {
@@ -43,9 +43,9 @@ public class SQLiteUtils {
     /**
      * creates the client table if not exist.
      */
-    private void creatClientTable() {
+    private void createClientTable() {
         try {
-            String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" + "\"ID\"INTEGER UNIQUE NOT NULL," + "\"TelegramUser\"BLOB NOT NULL UNIQUE," + "\"LongDeepLink\"TEXT," + "\"ShortDeepLink\"TEXT," + "\"ChatId\"INTEGER NOT NULL," + "\"ClientState\"TEXT NOT NULL," + "\"IsAdmin\"INTEGER NOT NULL," + "\"ContactId\"INTEGER, " + "\"ContactMessageId\"INTEGER, "+ "PRIMARY KEY(\"ID\")" + ");";
+            String q = "CREATE TABLE IF NOT EXISTS \"CLIENT\" (" + "\"ID\"INTEGER UNIQUE NOT NULL," + "\"TelegramUser\"BLOB NOT NULL UNIQUE," + "\"LongDeepLink\"TEXT," + "\"ShortDeepLink\"TEXT," + "\"ChatId\"INTEGER NOT NULL," + "\"ClientState\"TEXT NOT NULL,"+ "\"ClientGender\"TEXT," + "\"IsAdmin\"INTEGER NOT NULL," + "\"ContactId\"INTEGER, " + "\"ContactMessageId\"INTEGER, "+ "PRIMARY KEY(\"ID\")" + ");";
             this.statement.executeUpdate(q);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,7 +116,7 @@ public class SQLiteUtils {
      */
     public int insertClient(Client client) {
         try {
-            String q = "INSERT INTO CLIENT VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String q = "INSERT INTO CLIENT VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = this.connection.prepareStatement(q);
             ps.setLong(1, client.getId());
             ps.setBytes(2, Common.getInstance().objectToBinaryInputStream(client.getTelegramUser()).readAllBytes());
@@ -124,9 +124,10 @@ public class SQLiteUtils {
             ps.setString(4, client.getShortDeepLink());
             ps.setLong(5, client.getChatId());
             ps.setString(6, client.getClientState().toString());
-            ps.setInt(7, booleanToInt(client.isAdmin()));
-            ps.setLong(8, client.getContactId());
-            ps.setInt(9, 0);
+            ps.setString(7, client.getClientGender().toString());
+            ps.setInt(8, booleanToInt(client.isAdmin()));
+            ps.setLong(9, client.getContactId());
+            ps.setInt(10, 0);
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -194,6 +195,25 @@ public class SQLiteUtils {
     }
 
     /**
+     * updates the client's contact.
+     * @param id the client's id.
+     * @param gender the client's gender.
+     * @return the result as int.
+     */
+    public int updateClientGender(long id, Gender gender){
+        try {
+            String q = "UPDATE CLIENT SET ClientGender = ? WHERE ID = ?";
+            PreparedStatement ps = this.connection.prepareStatement(q);
+            ps.setString(1, gender.toString());
+            ps.setLong(2, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
      * update the client's state.
      * @param id the client's id.
      * @param clientState the client's state.
@@ -225,10 +245,11 @@ public class SQLiteUtils {
             String shortDp = rs.getString(4);
             long chatId = rs.getLong(5);
             ClientState clientState = ClientState.valueOf(rs.getString(6));
-            boolean admin = rs.getInt(7) != 0;
-            long contactId = rs.getLong(8);
-            int contactMessageId = rs.getInt(9);
-            return new Client(id, telegramUser, longDp, shortDp, chatId, clientState, admin, contactId, contactMessageId);
+            Gender clientGender = Gender.valueOf(rs.getString(7));
+            boolean admin = rs.getInt(8) != 0;
+            long contactId = rs.getLong(9);
+            int contactMessageId = rs.getInt(10);
+            return new Client(id, telegramUser, longDp, shortDp, chatId, clientState, clientGender, admin, contactId, contactMessageId);
         } catch (SQLException e) {
             return null;
         }
