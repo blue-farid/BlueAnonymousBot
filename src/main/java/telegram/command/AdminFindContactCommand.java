@@ -17,7 +17,7 @@ public class AdminFindContactCommand extends FindContactCommand {
 
     @Override
     public void execute() throws IllegalAccessException {
-        super.execute();
+        checkAnnotations();
         addBaseLog();
         sendMessage.setChatId(getChatId());
         Client contact;

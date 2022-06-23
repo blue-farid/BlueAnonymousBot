@@ -152,6 +152,10 @@ public abstract class Command {
     }
 
     public void execute() throws IllegalAccessException {
+        checkAnnotations();
+    }
+
+    protected void checkAnnotations() throws IllegalAccessException {
         if (getClass().isAnnotationPresent(Admin.class)) {
             if (!client.isAdmin()) {
                 addBaseLog();

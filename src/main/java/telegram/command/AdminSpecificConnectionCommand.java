@@ -14,7 +14,7 @@ public class AdminSpecificConnectionCommand extends SpecificConnectionCommand{
 
     @Override
     public void execute() throws IllegalAccessException {
-        super.execute();
+        checkAnnotations();
         addBaseLog();
         this.sendMessage.setText(localMessage);
         this.sendMessage.setReplyMarkup(CancelMenu.getInstance());
