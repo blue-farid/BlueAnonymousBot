@@ -19,6 +19,7 @@ public class FileUtils {
     private static FileUtils instance;
     private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
     private BufferedWriter monitorSendMessageToContactBuffer;
+    private String lastFilePath;
 
     private FileUtils() {
     }public static FileUtils getInstance() {
@@ -181,6 +182,8 @@ public class FileUtils {
         // now create the file.
         path = path.concat(String.valueOf(firstId)).concat("-").concat(String.valueOf(secondId).concat(".txt"));
         file = new File(path);
+        boolean fileChanged = lastFilePath != null && !lastFilePath.equals(path);
+        lastFilePath = path;
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -192,6 +195,12 @@ public class FileUtils {
             if (monitorSendMessageToContactBuffer == null) {
                 FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8,true);
                 monitorSendMessageToContactBuffer = new BufferedWriter(out);
+            } else {
+                if (fileChanged) {
+                    monitorSendMessageToContactBuffer.flush();
+                    FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8,true);
+                    monitorSendMessageToContactBuffer = new BufferedWriter(out);
+                }
             }
             String str = TimeUtils.getInstance().getCurrentDateAndTimeString().
                     concat(" " + String.valueOf(client.getId()).concat(":{\n").concat("\t" + message)
