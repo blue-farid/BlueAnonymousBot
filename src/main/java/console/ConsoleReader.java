@@ -38,7 +38,6 @@ public class ConsoleReader implements Runnable {
         String[] commands = in.split(" ");
         try {
             if (commands[0].equals("exit")) {
-                FileUtils.getInstance().getMonitorSendMessageToContactBuffer().close();
                 System.exit(0);
             } else if (commands[0].equals("clear")) {
                 ConsoleWriter.clearScreen();

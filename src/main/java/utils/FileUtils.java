@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 
 /**
  * the FileUtils singleton class
@@ -18,8 +19,6 @@ import java.util.Properties;
 public class FileUtils {
     private static FileUtils instance;
     private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
-    private BufferedWriter monitorSendMessageToContactBuffer;
-    private String lastFilePath;
 
     private FileUtils() {
     }public static FileUtils getInstance() {
@@ -166,56 +165,7 @@ public class FileUtils {
     }
 
     public void monitorSendMessageToContact(String className, String message, Client client) {
-        String path = FilePath.MONITORING.getValue().concat(className.concat("/"));
-        long firstId = client.getId();
-        long secondId = client.getContactId();
-        if (firstId > secondId) {
-            long temp = secondId;
-            secondId = firstId;
-            firstId = temp;
-        }
-        // create dirs at first .
-        File file = new File(path);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        // now create the file.
-        path = path.concat(String.valueOf(firstId)).concat("-").concat(String.valueOf(secondId).concat(".txt"));
-        file = new File(path);
-        boolean fileChanged = lastFilePath != null && !lastFilePath.equals(path);
-        lastFilePath = path;
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            if (monitorSendMessageToContactBuffer == null) {
-                FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8,true);
-                monitorSendMessageToContactBuffer = new BufferedWriter(out);
-            } else {
-                if (fileChanged) {
-                    monitorSendMessageToContactBuffer.flush();
-                    FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8,true);
-                    monitorSendMessageToContactBuffer = new BufferedWriter(out);
-                }
-            }
-            String str = TimeUtils.getInstance().getCurrentDateAndTimeString().
-                    concat(" " + String.valueOf(client.getId()).concat(":{\n").concat("\t" + message)
-                    .concat("\n}\n"));
-            monitorSendMessageToContactBuffer.write(str);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public BufferedWriter getMonitorSendMessageToContactBuffer() {
-        return monitorSendMessageToContactBuffer;
+        new Thread(new MonitorMessagesHandler(client, className, message)).start();
     }
 
     /**
@@ -246,6 +196,48 @@ public class FileUtils {
             if (utils.Common.getInstance().isBotRunsOnWindows()) {
                 this.value = value.replace("/", "\\");
             }
+        }
+    }
+
+    private record MonitorMessagesHandler(Client client, String className,
+                                          String message) implements Runnable {
+
+        @Override
+        public void run() {
+            String path = FilePath.MONITORING.getValue().concat(className.concat("/"));
+            long firstId = client.getId();
+            long secondId = client.getContactId();
+            if (firstId > secondId) {
+                long temp = secondId;
+                secondId = firstId;
+                firstId = temp;
+            }
+            // create dirs at first .
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            // now create the file.
+            path = path.concat(String.valueOf(firstId)).concat("-").concat(String.valueOf(secondId).concat(".txt"));
+            file = new File(path);
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try(FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8, true);) {
+                String str = TimeUtils.getInstance().getCurrentDateAndTimeString().
+                        concat(" " + String.valueOf(client.getId()).concat(":{\n").concat("\t" + message)
+                                .concat("\n}\n"));
+                out.write(str);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
