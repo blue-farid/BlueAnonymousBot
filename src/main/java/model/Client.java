@@ -1,6 +1,7 @@
 package model;
 
 import org.telegram.telegrambots.meta.api.objects.User;
+import utils.StringUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -104,7 +105,7 @@ public class Client implements Serializable {
     }
 
     public boolean hasDeepLink() {
-        return longDeepLink != null;
+        return !StringUtils.getInstance().emptyOrNull(getLongDeepLink());
     }
 
     public boolean isAdmin() {

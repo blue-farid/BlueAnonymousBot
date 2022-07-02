@@ -33,4 +33,8 @@ public class StringUtils {
         }
         return strings;
     }
+
+    public boolean emptyOrNull(String str){
+        return str == null || str.isEmpty();
+    }
 }
