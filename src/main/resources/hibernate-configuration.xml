@@ -11,8 +11,6 @@
             org.sqlite.JDBC
         </property>
 
-        <!-- Assume test is the database name -->
-
         <property name = "hibernate.connection.url">
             jdbc:sqlite:files/db/sqlite/blue-anonymous-bot.db
         </property>
