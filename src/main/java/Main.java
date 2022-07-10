@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.BlueAnonymousBot;
-import utils.SQLiteUtils;
+import utils.SQLUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,6 +90,6 @@ public class Main {
      * connects the database.
      */
     private static void loadDatabase() {
-        SQLiteUtils.getInstance();
+        SQLUtils.getInstance();
     }
 }

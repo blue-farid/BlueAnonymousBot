@@ -2,7 +2,7 @@ package dao;
 
 import model.Client;
 import model.ClientState;
-import utils.SQLiteUtils;
+import utils.SQLUtils;
 
 import java.util.Collection;
 
@@ -22,7 +22,7 @@ public class ClientDao {
      * @return Clients
      */
     public Collection<Client> getClients() {
-        return SQLiteUtils.getInstance().selectClients();
+        return SQLUtils.getInstance().selectClients();
     }
 
     /**
@@ -32,7 +32,7 @@ public class ClientDao {
      */
     public int addClient(Client client) {
         if (!exist(client.getId())) {
-            return SQLiteUtils.getInstance().insertClient(client);
+            return SQLUtils.getInstance().insertClient(client);
         } else {
             return 1;
         }
@@ -44,7 +44,7 @@ public class ClientDao {
      * @return existence boolean
      */
     public boolean exist(long id) {
-        return SQLiteUtils.getInstance().selectClientChatId(id) != null;
+        return SQLUtils.getInstance().selectClientChatId(id) != null;
     }
 
     /**
@@ -53,7 +53,7 @@ public class ClientDao {
      * @return the client
      */
     public Client searchById(long id) {
-        return SQLiteUtils.getInstance().selectClient(id);
+        return SQLUtils.getInstance().selectClient(id);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ClientDao {
      */
     @Deprecated
     public Client searchByUsername(String username) {
-        Collection<Client> clientsCollection = SQLiteUtils.getInstance().selectClients();
+        Collection<Client> clientsCollection = SQLUtils.getInstance().selectClients();
         for (Client client : clientsCollection) {
             try {
                 if (client.getTelegramUser().getUserName().equalsIgnoreCase(username))
@@ -82,7 +82,7 @@ public class ClientDao {
      * @return the client.
      */
     public Client searchByDeepLink(String shortDeepLink) {
-        return SQLiteUtils.getInstance().selectClient(shortDeepLink);
+        return SQLUtils.getInstance().selectClient(shortDeepLink);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setDeepLink(long id, String lDeepLink, String shDeepLink) {
-        return SQLiteUtils.getInstance().updateClientDeepLink(id, lDeepLink, shDeepLink);
+        return SQLUtils.getInstance().updateClientDeepLink(id, lDeepLink, shDeepLink);
     }
 
     /**
@@ -103,7 +103,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setAdmin(long id, boolean admin) {
-        return SQLiteUtils.getInstance().updateClientAdmin(id, admin);
+        return SQLUtils.getInstance().updateClientAdmin(id, admin);
     }
 
     /**
@@ -113,7 +113,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setContact(long id, long contactId) {
-        return SQLiteUtils.getInstance().updateClientContact(id, contactId);
+        return SQLUtils.getInstance().updateClientContact(id, contactId);
     }
 
     /**
@@ -123,7 +123,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setClientState(long id, ClientState clientState) {
-        return SQLiteUtils.getInstance().updateClientState(id, clientState);
+        return SQLUtils.getInstance().updateClientState(id, clientState);
     }
 
     /**
@@ -133,6 +133,6 @@ public class ClientDao {
      * @return the result as int
      */
     public int setContactMessageId(long id, Integer messageId) {
-        return SQLiteUtils.getInstance().updateClientContactMessageId(id, messageId);
+        return SQLUtils.getInstance().updateClientContactMessageId(id, messageId);
     }
 }

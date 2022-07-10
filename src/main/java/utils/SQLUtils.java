@@ -2,7 +2,6 @@ package utils;
 
 import model.Client;
 import model.ClientState;
-import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.sql.*;
@@ -16,12 +15,12 @@ import java.util.List;
  * NOTE: connects to the database at constructor.
  * @author Farid Masjedi
  */
-public class SQLiteUtils {
-    private static SQLiteUtils instance;
+public class SQLUtils {
+    private static SQLUtils instance;
     private Connection connection;
     private Statement statement;
 
-    private SQLiteUtils() {
+    private SQLUtils() {
         FileUtils.getInstance().initializeDBFile();
         try {
             Class.forName("org.sqlite.JDBC");
@@ -33,9 +32,9 @@ public class SQLiteUtils {
         creatClientTable();
     }
 
-    public static SQLiteUtils getInstance() {
+    public static SQLUtils getInstance() {
         if (instance == null) {
-            instance = new SQLiteUtils();
+            instance = new SQLUtils();
         }
         return instance;
     }
