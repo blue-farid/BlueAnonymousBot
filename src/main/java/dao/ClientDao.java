@@ -2,7 +2,7 @@ package dao;
 
 import model.Client;
 import model.ClientState;
-import utils.SQLUtils;
+import utils.HibernateUtils;
 
 import java.util.Collection;
 
@@ -22,7 +22,7 @@ public class ClientDao {
      * @return Clients
      */
     public Collection<Client> getClients() {
-        return SQLUtils.getInstance().selectClients();
+        return HibernateUtils.getInstance().selectClients();
     }
 
     /**
@@ -32,7 +32,7 @@ public class ClientDao {
      */
     public int addClient(Client client) {
         if (!exist(client.getId())) {
-            return SQLUtils.getInstance().insertClient(client);
+            return HibernateUtils.getInstance().insertClient(client);
         } else {
             return 1;
         }
@@ -44,7 +44,7 @@ public class ClientDao {
      * @return existence boolean
      */
     public boolean exist(long id) {
-        return SQLUtils.getInstance().selectClientChatId(id) != null;
+        return HibernateUtils.getInstance().selectClientChatId(id) != null;
     }
 
     /**
@@ -53,7 +53,7 @@ public class ClientDao {
      * @return the client
      */
     public Client searchById(long id) {
-        return SQLUtils.getInstance().selectClient(id);
+        return HibernateUtils.getInstance().selectClient(id);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ClientDao {
      */
     @Deprecated
     public Client searchByUsername(String username) {
-        Collection<Client> clientsCollection = SQLUtils.getInstance().selectClients();
+        Collection<Client> clientsCollection = HibernateUtils.getInstance().selectClients();
         for (Client client : clientsCollection) {
             try {
                 if (client.getTelegramUser().getUserName().equalsIgnoreCase(username))
@@ -82,7 +82,7 @@ public class ClientDao {
      * @return the client.
      */
     public Client searchByDeepLink(String shortDeepLink) {
-        return SQLUtils.getInstance().selectClient(shortDeepLink);
+        return HibernateUtils.getInstance().selectClient(shortDeepLink);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setDeepLink(long id, String lDeepLink, String shDeepLink) {
-        return SQLUtils.getInstance().updateClientDeepLink(id, lDeepLink, shDeepLink);
+        return HibernateUtils.getInstance().updateClientDeepLink(id, lDeepLink, shDeepLink);
     }
 
     /**
@@ -103,7 +103,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setAdmin(long id, boolean admin) {
-        return SQLUtils.getInstance().updateClientAdmin(id, admin);
+        return HibernateUtils.getInstance().updateClientAdmin(id, admin);
     }
 
     /**
@@ -113,7 +113,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setContact(long id, long contactId) {
-        return SQLUtils.getInstance().updateClientContact(id, contactId);
+        return HibernateUtils.getInstance().updateClientContact(id, contactId);
     }
 
     /**
@@ -123,7 +123,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setClientState(long id, ClientState clientState) {
-        return SQLUtils.getInstance().updateClientState(id, clientState);
+        return HibernateUtils.getInstance().updateClientState(id, clientState);
     }
 
     /**
@@ -133,6 +133,6 @@ public class ClientDao {
      * @return the result as int
      */
     public int setContactMessageId(long id, Integer messageId) {
-        return SQLUtils.getInstance().updateClientContactMessageId(id, messageId);
+        return HibernateUtils.getInstance().updateClientContactMessageId(id, messageId);
     }
 }

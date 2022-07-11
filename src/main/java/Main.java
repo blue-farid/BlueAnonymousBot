@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import telegram.BlueAnonymousBot;
-import utils.SQLUtils;
+import utils.HibernateUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -86,10 +86,7 @@ public class Main {
         BlueAnonymousBot.getInstance().setBotToken(pr.getProperty("bot.token"));
     }
 
-    /**
-     * connects the database.
-     */
     private static void loadDatabase() {
-        SQLUtils.getInstance();
+        HibernateUtils.getInstance();
     }
 }

@@ -3,6 +3,10 @@ package model;
 import org.telegram.telegrambots.meta.api.objects.User;
 import utils.StringUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,72 +15,50 @@ import java.util.Objects;
  * @author Farid Masjedi
  * @author Alireza Jabbari
  */
+@Entity
+@Table(name = "CLIENT")
 public class Client implements Serializable {
+    @Id
+    @Column(name = "ID")
     private final long id;
-    private final User telegramUser;
-    private String longDeepLink;
-    private String shortDeepLink;
-    private final Long chatId;
+    @Column(name = "USERNAME")
+    private final String username;
+    @Column(name = "FIRSTNAME")
+    private final String firstname;
+    @Column(name = "LASTNAME")
+    private final String lastname;
+    @Column(name = "SHORT_DEEPLINK")
+    private String deepLink;
+    @Column(name = "STATE")
     private ClientState clientState;
-    private Integer contactMessageId;
+    @Column(name = "CONTACT")
     private long contactId;
+    @Column(name = "ADMIN")
     private boolean admin;
     private String clientInfo;
 
-    public Client(User user, Long chatId) {
+    public Client(User user) {
         this.id = user.getId();
-        this.telegramUser = user;
-        this.chatId = chatId;
+        this.username = user.getUserName();
+        this.firstname = user.getFirstName();
+        this.lastname = user.getLastName();
         this.clientState = ClientState.NORMAL;
         this.admin = false;
     }
 
-    public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId,
-                  ClientState clientState, boolean admin, long contactId, int contactMessageId) {
+    public Client(long id, User telegramUser, String deepLink,
+                  ClientState clientState, boolean admin, long contactId) {
         this.id = id;
-        this.telegramUser = telegramUser;
-        this.longDeepLink = longDeepLink;
-        this.shortDeepLink = shortDeepLink;
-        this.chatId = chatId;
+        this.username = telegramUser.getUserName();
+        this.firstname = telegramUser.getFirstName();
+        this.lastname = telegramUser.getLastName();
+        this.deepLink = deepLink;
         this.clientState = clientState;
         this.admin = admin;
         this.contactId = contactId;
-        this.contactMessageId = contactMessageId;
-    }
-
-    public User getTelegramUser() {
-        return telegramUser;
-    }
-
-    public Integer getContactMessageId() {
-        return contactMessageId;
-    }
-
-    public void setContactMessageId(Integer contactMessageId) {
-        this.contactMessageId = contactMessageId;
-    }
-
-    public String getLongDeepLink() {
-        return longDeepLink;
-    }
-
-    public String getShortDeepLink() {
-        return shortDeepLink;
     }
 
 
-    private void setShortDeepLink(String shortDeepLink) {
-        this.shortDeepLink = shortDeepLink;
-    }
-
-    public void setLongDeepLink(String longDeepLink) {
-        this.longDeepLink = longDeepLink;
-        setShortDeepLink(longDeepLink.substring(longDeepLink.indexOf("=") + 1));
-    }
-
-    public Long getChatId() {
-        return chatId;
-    }
 
     public ClientState getClientState() {
         return clientState;
@@ -96,16 +78,16 @@ public class Client implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        return (this == o) || ((o instanceof Client) && ((Client) o).telegramUser.getId().equals(this.telegramUser.getId()));
+        return (this == o) || ((o instanceof Client) && ((Client) o).getId() == this.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(telegramUser);
+        return Objects.hash(this.id);
     }
 
     public boolean hasDeepLink() {
-        return !StringUtils.getInstance().emptyOrNull(getLongDeepLink());
+        return !StringUtils.getInstance().emptyOrNull(this.deepLink);
     }
 
     public boolean isAdmin() {
@@ -118,7 +100,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return telegramUser.getUserName();
+        return this.username;
     }
 
     public long getId() {
@@ -127,11 +109,19 @@ public class Client implements Serializable {
 
     public String getClientInfo() {
         if(clientInfo == null) {
-            this.clientInfo = "\t- firstName: " + this.telegramUser.getFirstName() +
-                    "\n" + "\t- lastName: " + this.telegramUser.getLastName() +
-                    "\n" + "\t- username: " + this.telegramUser.getUserName();
+            this.clientInfo = "\t- firstName: " + this.firstname +
+                    "\n" + "\t- lastName: " + this.lastname +
+                    "\n" + "\t- username: " + this.username;
         }
         return clientInfo;
+    }
+
+    public String getDeepLink() {
+        return deepLink;
+    }
+
+    public void setDeepLink(String deepLink) {
+        this.deepLink = deepLink;
     }
 }
 

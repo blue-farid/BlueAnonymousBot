@@ -82,8 +82,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
      * @param update the update.
      */
     public void newRequestReceived(Update update) {
-        ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom(),
-                update.getMessage().getChatId()));
+        ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom()));
     }
 
     /**
