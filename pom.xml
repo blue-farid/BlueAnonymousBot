@@ -19,7 +19,6 @@
 <!--            </plugin>-->
 <!--        </plugins>-->
     </build>
-
     <repositories>
         <repository>
             <id>jitpack.io</id>
@@ -81,7 +80,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.1.0.Final</version>
+            <version>5.6.10.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -94,9 +93,9 @@
             <version>5.6.8.Final</version>
         </dependency>
         <dependency>
-            <groupId>com.github.gwenn</groupId>
+            <groupId>com.zsoltfabok</groupId>
             <artifactId>sqlite-dialect</artifactId>
-            <version>master</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>

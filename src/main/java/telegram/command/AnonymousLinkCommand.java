@@ -25,8 +25,8 @@ public class AnonymousLinkCommand extends Command {
             ClientService.getInstance().setDeepLink(client, generateAnonymousLink());
         }
         this.sendMessage.setText(localMessage.replace("?name",
-                client.getTelegramUser().getFirstName())
-                .concat("\n"+client.getLongDeepLink()));
+                client.getFirstname())
+                .concat("\n"+client.getDeepLink()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
     }
 

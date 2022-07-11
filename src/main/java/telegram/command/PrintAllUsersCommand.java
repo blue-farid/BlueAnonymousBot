@@ -25,7 +25,7 @@ public class PrintAllUsersCommand extends Command {
         for (Client client: clientsCollection) {
             ConsoleWriter.printUser(client);
             result = result.concat("\n".concat(client.
-                    getTelegramUser().toString().concat("\n")));
+                    toString().concat("\n")));
         }
         sendMessage.setText(result);
         int res = BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);

@@ -30,12 +30,8 @@ public class ClientDao {
      * @param client the client
      * @return the result as int
      */
-    public int addClient(Client client) {
-        if (!exist(client.getId())) {
-            return HibernateUtils.getInstance().insertClient(client);
-        } else {
-            return 1;
-        }
+    public int insertClient(Client client) {
+        return HibernateUtils.getInstance().insertClient(client);
     }
 
     /**
@@ -43,8 +39,8 @@ public class ClientDao {
      * @param id the client id.
      * @return existence boolean
      */
-    public boolean exist(long id) {
-        return HibernateUtils.getInstance().selectClientChatId(id) != null;
+    public boolean clientExist(long id) {
+        return HibernateUtils.getInstance().selectClientById(id) != null;
     }
 
     /**
@@ -53,27 +49,16 @@ public class ClientDao {
      * @return the client
      */
     public Client searchById(long id) {
-        return HibernateUtils.getInstance().selectClient(id);
+        return HibernateUtils.getInstance().selectClientById(id);
     }
 
     /**
      * search for a client
      * @param username the client username
      * @return the client
-     * @deprecated not efficient.
      */
-    @Deprecated
     public Client searchByUsername(String username) {
-        Collection<Client> clientsCollection = HibernateUtils.getInstance().selectClients();
-        for (Client client : clientsCollection) {
-            try {
-                if (client.getTelegramUser().getUserName().equalsIgnoreCase(username))
-                    return client;
-            } catch (NullPointerException e) {
-               // who cares??
-            }
-        }
-        return null;
+        return HibernateUtils.getInstance().selectClientByUsername(username);
     }
 
     /**
@@ -82,18 +67,18 @@ public class ClientDao {
      * @return the client.
      */
     public Client searchByDeepLink(String shortDeepLink) {
-        return HibernateUtils.getInstance().selectClient(shortDeepLink);
+        return HibernateUtils.getInstance().selectClientByDeepLink(shortDeepLink);
     }
 
     /**
      * set new deeplink for the client.
      * @param id the client's id.
-     * @param lDeepLink long deeplink
+     * @param dee long deeplink
      * @param shDeepLink short deeplink
      * @return the result as int
      */
-    public int setDeepLink(long id, String lDeepLink, String shDeepLink) {
-        return HibernateUtils.getInstance().updateClientDeepLink(id, lDeepLink, shDeepLink);
+    public int setDeepLink(long id, String deepLink) {
+        return HibernateUtils.getInstance().updateClientDeepLink(id, deepLink);
     }
 
     /**

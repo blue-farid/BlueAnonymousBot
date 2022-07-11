@@ -1,6 +1,5 @@
 package telegram;
 
-import dao.ClientDao;
 import exception.BadInputException;
 import model.Client;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -8,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import service.ClientService;
 import telegram.handler.UpdateHandler;
 
 /**
@@ -82,7 +82,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
      * @param update the update.
      */
     public void newRequestReceived(Update update) {
-        ClientDao.getInstance().addClient(new Client(update.getMessage().getFrom()));
+        ClientService.getInstance().addClient(new Client(update.getMessage().getFrom()));
     }
 
     /**

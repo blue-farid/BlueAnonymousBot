@@ -47,7 +47,7 @@ public class StartCommand extends Command {
             return;
         }
         sendMessage.setText(localMessage2.replace("?name",
-                contact.getTelegramUser().getFirstName()));
+                contact.getFirstname()));
         sendMessage.setReplyMarkup(CancelMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
         ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);

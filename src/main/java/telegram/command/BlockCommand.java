@@ -21,7 +21,7 @@ public class BlockCommand extends Command {
         MDC.put("others", ConsoleWriter.readyForLog("contactId: {" + contact.getId() + "}"));
         addBaseLog();
         if (contact.isAdmin()) {
-            this.sendMessage.setText("" + client.getTelegramUser().getFirstName()
+            this.sendMessage.setText("" + client.getFirstname()
             + " tries to block you!");
             this.sendMessage.setChatId(String.valueOf(contactId));
             BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);

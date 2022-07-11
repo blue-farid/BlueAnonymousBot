@@ -3,10 +3,8 @@ package model;
 import org.telegram.telegrambots.meta.api.objects.User;
 import utils.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,23 +17,39 @@ import java.util.Objects;
 @Table(name = "CLIENT")
 public class Client implements Serializable {
     @Id
+    @NotNull
     @Column(name = "ID")
-    private final long id;
+    private long id;
+    @NotNull
     @Column(name = "USERNAME")
-    private final String username;
+    private String username;
+    @NotNull
     @Column(name = "FIRSTNAME")
-    private final String firstname;
+    private String firstname;
+    @NotNull
     @Column(name = "LASTNAME")
-    private final String lastname;
+    private String lastname;
     @Column(name = "SHORT_DEEPLINK")
     private String deepLink;
+    @NotNull
     @Column(name = "STATE")
     private ClientState clientState;
     @Column(name = "CONTACT")
-    private long contactId;
+    private Long contactId;
+    @Column(name = "CONTACT_MESSAGE")
+    private Integer contactMessageId;
+    @NotNull
     @Column(name = "ADMIN")
     private boolean admin;
+    @NotNull
+    @Column(name = "TELEGRAM_USER")
+    private User telegramUser;
+    @Transient
     private String clientInfo;
+
+    public Client() {
+
+    }
 
     public Client(User user) {
         this.id = user.getId();
@@ -44,6 +58,7 @@ public class Client implements Serializable {
         this.lastname = user.getLastName();
         this.clientState = ClientState.NORMAL;
         this.admin = false;
+        this.telegramUser = user;
     }
 
     public Client(long id, User telegramUser, String deepLink,
@@ -122,6 +137,34 @@ public class Client implements Serializable {
 
     public void setDeepLink(String deepLink) {
         this.deepLink = deepLink;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public Integer getContactMessageId() {
+        return contactMessageId;
+    }
+
+    public void setContactMessageId(Integer contactMessageId) {
+        this.contactMessageId = contactMessageId;
+    }
+
+    public User getTelegramUser() {
+        return telegramUser;
+    }
+
+    public void setTelegramUser(User telegramUser) {
+        this.telegramUser = telegramUser;
     }
 }
 

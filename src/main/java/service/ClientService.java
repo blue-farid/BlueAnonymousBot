@@ -30,12 +30,11 @@ public class ClientService {
      * Sets deep link.
      *
      * @param client       the client
-     * @param longDeepLink the long deep link
+     * @param deepLink the long deep link
      */
-    public void setDeepLink(Client client, String longDeepLink) {
-        // short deeplink will be handled by this method (setLongDeeplink) too
-        client.setLongDeepLink(longDeepLink);
-        ClientDao.getInstance().setDeepLink(client.getId(), longDeepLink, client.getShortDeepLink());
+    public void setDeepLink(Client client, String deepLink) {
+        client.setDeepLink(deepLink);
+        ClientDao.getInstance().setDeepLink(client.getId(), deepLink);
     }
 
     /**
@@ -100,5 +99,20 @@ public class ClientService {
      */
     public Collection<Client> getClients() {
         return ClientDao.getInstance().getClients();
+    }
+
+    public int addClient(Client client) {
+        if (!ClientDao.getInstance().clientExist(client.getId())) {
+            return ClientDao.getInstance().insertClient(client);
+        }
+        return 1;
+    }
+
+    public Client getClientById(long id) {
+        return ClientDao.getInstance().searchById(id);
+    }
+
+    public Client getClientByUsername(String username) {
+        return ClientDao.getInstance().searchByUsername(username);
     }
 }

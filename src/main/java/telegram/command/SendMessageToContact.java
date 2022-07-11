@@ -30,7 +30,7 @@ public class SendMessageToContact extends Command {
             ClientService.getInstance().setClientState(client, ClientState.NORMAL);
             return;
         }
-        String contactChatId = ClientService.getInstance().getContact(client).getChatId().toString();
+        String contactChatId = String.valueOf(ClientService.getInstance().getContact(client).getId());
         try {
             MDC.put("others", ConsoleWriter.readyForLog("message: {" + message.getText().replace("\n", " ") + "}") + ConsoleWriter.readyForLog(
                     "contactId: {" + contactChatId + "}"
@@ -169,13 +169,13 @@ public class SendMessageToContact extends Command {
             SendMessage adminSendMessage = new SendMessage();
             adminSendMessage.setChatId(contactChatId);
             adminSendMessage.setText("Sender:" + "\n" +
-                    "username: " + client.getTelegramUser().getUserName()
-                    + "\nfirstname: " + client.getTelegramUser().getFirstName()
-                    + "\nlastname: " + client.getTelegramUser().getLastName());
+                    "username: " + client.getUsername()
+                    + "\nfirstname: " + client.getFirstname()
+                    + "\nlastname: " + client.getLastname());
             BlueAnonymousBot.getInstance().executeSendMessage(adminSendMessage);
         }
 
-        sendMessage.setChatId(client.getChatId().toString());
+        sendMessage.setChatId(String.valueOf(client.getId()));
         sendMessage.setText(Property.MESSAGES_P.get("send_message_done"));
         sendMessage.setReplyMarkup(MainMenu.getInstance());
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
@@ -185,7 +185,7 @@ public class SendMessageToContact extends Command {
     }
 
     private void notifyNewMessage(){
-        String contactChatId = ClientService.getInstance().getContact(client).getChatId().toString();
+        String contactChatId = String.valueOf(ClientService.getInstance().getContact(client).getId());
         SendMessage contactSendMessage = new SendMessage();
         contactSendMessage.setChatId(contactChatId);
         contactSendMessage.setText(Property.MESSAGES_P.get("new_anonymous_message"));

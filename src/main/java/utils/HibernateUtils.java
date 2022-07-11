@@ -2,7 +2,9 @@ package utils;
 
 import model.Client;
 import model.ClientState;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.Collection;
@@ -35,7 +37,12 @@ public class HibernateUtils {
      * @return A Collection of the clients.
      */
     public Collection<Client> selectClients() {
-        return this.factory.openSession().createQuery("FROM CLIENT", Client.class).list();
+        try (Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Collection<Client> result = session.createQuery("FROM CLIENT", Client.class).list();
+            transaction.commit();
+            return result;
+        }
     }
 
     /**
@@ -44,18 +51,37 @@ public class HibernateUtils {
      * @param id the id
      * @return the client.
      */
-    public Client selectClient(long id) {
-        return this.factory.openSession().byId(Client.class).getReference(id);
+    public Client selectClientById(long id) {
+        try (Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client result = session.get(Client.class, id);
+            transaction.commit();
+            return result;
+        }
     }
 
     /**
      * select a client by its deeplink.
      *
-     * @param shortDeeplink the deeplink.
+     * @param deepLink the deeplink.
      * @return the client.
      */
-    public Client selectClient(String shortDeeplink) {
-        return this.factory.openSession().get(Client.class, shortDeeplink);
+    public Client selectClientByDeepLink(String deepLink) {
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client result = session.get(Client.class, deepLink);
+            transaction.commit();
+            return result;
+        }
+    }
+
+    public Client selectClientByUsername(String username) {
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client result = session.get(Client.class, username);
+            transaction.commit();
+            return result;
+        }
     }
 
     /**
@@ -65,8 +91,12 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int insertClient(Client client) {
-        this.factory.openSession().saveOrUpdate(client);
-        return 0;
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.save(client);
+            transaction.commit();
+            return 0;
+        }
     }
 
     /**
@@ -77,10 +107,14 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientDeepLink(long id, String deepLink) {
-        Client client = this.selectClient(id);
-        client.setDeepLink(deepLink);
-        this.factory.openSession().update(client);
-        return 0;
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client client = this.selectClientById(id);
+            client.setDeepLink(deepLink);
+            session.update(client);
+            transaction.commit();
+            return 0;
+        }
     }
 
     /**
@@ -91,10 +125,14 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientAdmin(long id, boolean admin) {
-        Client client = this.selectClient(id);
-        client.setAdmin(admin);
-        this.factory.openSession().update(client);
-        return 0;
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client client = this.selectClientById(id);
+            client.setAdmin(admin);
+            session.update(client);
+            transaction.commit();
+            return 0;
+        }
     }
 
     /**
@@ -105,10 +143,14 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientContact(long id, long contactId) {
-        Client client = this.selectClient(id);
-        client.setContactId(contactId);
-        this.factory.openSession().update(client);
-        return 0;
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client client = this.selectClientById(id);
+            client.setContactId(contactId);
+            session.update(client);
+            transaction.commit();
+            return 0;
+        }
     }
 
     /**
@@ -119,9 +161,24 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientState(long id, ClientState clientState) {
-        Client client = this.selectClient(id);
-        client.setClientState(clientState);
-        this.factory.openSession().update(client);
-        return 0;
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client client = this.selectClientById(id);
+            client.setClientState(clientState);
+            session.update(client);
+            transaction.commit();
+            return 0;
+        }
+    }
+
+    public int updateClientContactMessageId(long id, int contactMessageId) {
+        try(Session session = this.factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Client client = this.selectClientById(id);
+            client.setContactMessageId(contactMessageId);
+            session.update(client);
+            transaction.commit();
+            return 0;
+        }
     }
 }
