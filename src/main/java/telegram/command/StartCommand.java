@@ -39,8 +39,8 @@ public class StartCommand extends Command {
             return;
         }
         // second state
-        String deepLink = optionalCommand.get();
-        Client contact = ClientDao.getInstance().searchByDeepLink(deepLink);
+        String deepLink = AnonymousLinkCommand.getAnonymousLinkPrefix() + optionalCommand.get();
+        Client contact = ClientService.getInstance().getClientByDeepLink(deepLink);
         if (client.equals(contact)) {
             sendMessage.setText(selfAnonymousMessageString());
             BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);

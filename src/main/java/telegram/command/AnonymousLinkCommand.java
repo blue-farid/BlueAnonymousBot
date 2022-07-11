@@ -1,6 +1,5 @@
 package telegram.command;
 
-import dao.ClientDao;
 import model.Client;
 import properties.Property;
 import service.ClientService;
@@ -8,13 +7,28 @@ import telegram.BlueAnonymousBot;
 import utils.RandomUtils;
 
 public class AnonymousLinkCommand extends Command {
+    private final static String anonymousLinkPrefix = "https://t.me/" +
+            BlueAnonymousBot.getInstance().getBotUsername() + "?start=";
     private final String localMessage;
 
 
     public AnonymousLinkCommand(Client client) {
         super(client);
-        this.localMessage= Property.MESSAGES_P.get("anonymous_link");
+        this.localMessage = Property.MESSAGES_P.get("anonymous_link");
 
+    }
+
+    private static String generateAnonymousLink() {
+        while (true) {
+            String anonymousLink = anonymousLinkPrefix + "sc";
+            anonymousLink += "-";
+            anonymousLink += RandomUtils.getInstance().generateRandomNumber(5);
+            anonymousLink += "-";
+            anonymousLink += RandomUtils.getInstance().generateRandomString(8);
+            if (ClientService.getInstance().getClientByDeepLink(anonymousLink) == null) {
+                return anonymousLink;
+            }
+        }
     }
 
     @Override
@@ -25,22 +39,12 @@ public class AnonymousLinkCommand extends Command {
             ClientService.getInstance().setDeepLink(client, generateAnonymousLink());
         }
         this.sendMessage.setText(localMessage.replace("?name",
-                client.getFirstname())
-                .concat("\n"+client.getDeepLink()));
+                        client.getFirstname())
+                .concat("\n" + client.getDeepLink()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
     }
 
-    private static String generateAnonymousLink() {
-        while (true) {
-            String anonymousLink = "https://t.me/"+BlueAnonymousBot.getInstance().getBotUsername()+"?start=sc";
-            anonymousLink += "-";
-            anonymousLink += RandomUtils.getInstance().generateRandomNumber(5);
-            anonymousLink += "-";
-            anonymousLink += RandomUtils.getInstance().generateRandomString(8);
-            if (ClientDao.getInstance().searchByDeepLink(anonymousLink) == null) {
-                return anonymousLink;
-            }
-        }
+    public static String getAnonymousLinkPrefix() {
+        return anonymousLinkPrefix;
     }
-
 }

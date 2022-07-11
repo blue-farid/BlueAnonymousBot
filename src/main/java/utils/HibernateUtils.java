@@ -2,10 +2,12 @@ package utils;
 
 import model.Client;
 import model.ClientState;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
 
@@ -67,18 +69,22 @@ public class HibernateUtils {
      * @return the client.
      */
     public Client selectClientByDeepLink(String deepLink) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            Client result = session.get(Client.class, deepLink);
+            Criteria criteria = session.createCriteria(Client.class);
+            criteria.add(Restrictions.eq("deepLink", deepLink));
+            Client result = (Client) criteria.uniqueResult();
             transaction.commit();
             return result;
         }
     }
 
     public Client selectClientByUsername(String username) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            Client result = session.get(Client.class, username);
+            Criteria criteria = session.createCriteria(Client.class);
+            criteria.add(Restrictions.eq("username", username));
+            Client result = (Client) criteria.uniqueResult();
             transaction.commit();
             return result;
         }
@@ -91,7 +97,7 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int insertClient(Client client) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(client);
             transaction.commit();
@@ -107,7 +113,7 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientDeepLink(long id, String deepLink) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             Client client = this.selectClientById(id);
             client.setDeepLink(deepLink);
@@ -125,7 +131,7 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientAdmin(long id, boolean admin) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             Client client = this.selectClientById(id);
             client.setAdmin(admin);
@@ -143,7 +149,7 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientContact(long id, long contactId) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             Client client = this.selectClientById(id);
             client.setContactId(contactId);
@@ -161,7 +167,7 @@ public class HibernateUtils {
      * @return the result as int.
      */
     public int updateClientState(long id, ClientState clientState) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             Client client = this.selectClientById(id);
             client.setClientState(clientState);
@@ -172,7 +178,7 @@ public class HibernateUtils {
     }
 
     public int updateClientContactMessageId(long id, int contactMessageId) {
-        try(Session session = this.factory.openSession()) {
+        try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             Client client = this.selectClientById(id);
             client.setContactMessageId(contactMessageId);

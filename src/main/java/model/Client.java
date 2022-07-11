@@ -1,5 +1,6 @@
 package model;
 
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.telegram.telegrambots.meta.api.objects.User;
 import utils.StringUtils;
 
@@ -21,7 +22,7 @@ public class Client implements Serializable {
     @Column(name = "ID")
     private long id;
     @NotNull
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", unique = true)
     private String username;
     @NotNull
     @Column(name = "FIRSTNAME")
@@ -29,7 +30,7 @@ public class Client implements Serializable {
     @NotNull
     @Column(name = "LASTNAME")
     private String lastname;
-    @Column(name = "SHORT_DEEPLINK")
+    @Column(name = "DEEPLINK", unique = true)
     private String deepLink;
     @NotNull
     @Column(name = "STATE")

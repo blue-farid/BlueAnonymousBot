@@ -115,4 +115,8 @@ public class ClientService {
     public Client getClientByUsername(String username) {
         return ClientDao.getInstance().searchByUsername(username);
     }
+
+    public Client getClientByDeepLink(String deepLink) {
+        return ClientDao.getInstance().searchByDeepLink(deepLink);
+    }
 }
