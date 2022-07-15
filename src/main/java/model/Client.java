@@ -1,8 +1,11 @@
 package model;
 
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.telegram.telegrambots.meta.api.objects.User;
 import utils.StringUtils;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,72 +14,68 @@ import java.util.Objects;
  * @author Farid Masjedi
  * @author Alireza Jabbari
  */
+@Entity
+@Table(name = "CLIENT")
 public class Client implements Serializable {
-    private final long id;
-    private final User telegramUser;
-    private String longDeepLink;
-    private String shortDeepLink;
-    private final Long chatId;
+    @Id
+    @NotNull
+    @Column(name = "ID")
+    private long id;
+    @NotNull
+    @Column(name = "USERNAME", unique = true)
+    private String username;
+    @NotNull
+    @Column(name = "FIRSTNAME")
+    private String firstname;
+    @NotNull
+    @Column(name = "LASTNAME")
+    private String lastname;
+    @Column(name = "DEEPLINK", unique = true)
+    private String deepLink;
+    @NotNull
+    @Column(name = "STATE")
+    @Enumerated(EnumType.STRING)
     private ClientState clientState;
+    @Column(name = "CONTACT")
+    private Long contactId;
+    @Column(name = "CONTACT_MESSAGE")
     private Integer contactMessageId;
-    private long contactId;
+    @NotNull
+    @Column(name = "ADMIN")
     private boolean admin;
+    @NotNull
+    @Column(name = "TELEGRAM_USER")
+    private User telegramUser;
+    @Transient
     private String clientInfo;
 
-    public Client(User user, Long chatId) {
-        this.id = user.getId();
-        this.telegramUser = user;
-        this.chatId = chatId;
-        this.clientState = ClientState.NORMAL;
-        this.admin = false;
+    public Client() {
+
     }
 
-    public Client(long id, User telegramUser, String longDeepLink, String shortDeepLink, Long chatId,
-                  ClientState clientState, boolean admin, long contactId, int contactMessageId) {
+    public Client(User user) {
+        this.id = user.getId();
+        this.username = user.getUserName();
+        this.firstname = user.getFirstName();
+        this.lastname = user.getLastName();
+        this.clientState = ClientState.NORMAL;
+        this.admin = false;
+        this.telegramUser = user;
+    }
+
+    public Client(long id, User telegramUser, String deepLink,
+                  ClientState clientState, boolean admin, long contactId) {
         this.id = id;
-        this.telegramUser = telegramUser;
-        this.longDeepLink = longDeepLink;
-        this.shortDeepLink = shortDeepLink;
-        this.chatId = chatId;
+        this.username = telegramUser.getUserName();
+        this.firstname = telegramUser.getFirstName();
+        this.lastname = telegramUser.getLastName();
+        this.deepLink = deepLink;
         this.clientState = clientState;
         this.admin = admin;
         this.contactId = contactId;
-        this.contactMessageId = contactMessageId;
-    }
-
-    public User getTelegramUser() {
-        return telegramUser;
-    }
-
-    public Integer getContactMessageId() {
-        return contactMessageId;
-    }
-
-    public void setContactMessageId(Integer contactMessageId) {
-        this.contactMessageId = contactMessageId;
-    }
-
-    public String getLongDeepLink() {
-        return longDeepLink;
-    }
-
-    public String getShortDeepLink() {
-        return shortDeepLink;
     }
 
 
-    private void setShortDeepLink(String shortDeepLink) {
-        this.shortDeepLink = shortDeepLink;
-    }
-
-    public void setLongDeepLink(String longDeepLink) {
-        this.longDeepLink = longDeepLink;
-        setShortDeepLink(longDeepLink.substring(longDeepLink.indexOf("=") + 1));
-    }
-
-    public Long getChatId() {
-        return chatId;
-    }
 
     public ClientState getClientState() {
         return clientState;
@@ -96,16 +95,16 @@ public class Client implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        return (this == o) || ((o instanceof Client) && ((Client) o).telegramUser.getId().equals(this.telegramUser.getId()));
+        return (this == o) || ((o instanceof Client) && ((Client) o).getId() == this.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(telegramUser);
+        return Objects.hash(this.id);
     }
 
     public boolean hasDeepLink() {
-        return !StringUtils.getInstance().emptyOrNull(getLongDeepLink());
+        return !StringUtils.getInstance().emptyOrNull(this.deepLink);
     }
 
     public boolean isAdmin() {
@@ -118,7 +117,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return telegramUser.getUserName();
+        return this.username;
     }
 
     public long getId() {
@@ -127,11 +126,47 @@ public class Client implements Serializable {
 
     public String getClientInfo() {
         if(clientInfo == null) {
-            this.clientInfo = "\t- firstName: " + this.telegramUser.getFirstName() +
-                    "\n" + "\t- lastName: " + this.telegramUser.getLastName() +
-                    "\n" + "\t- username: " + this.telegramUser.getUserName();
+            this.clientInfo = "\t- firstName: " + this.firstname +
+                    "\n" + "\t- lastName: " + this.lastname +
+                    "\n" + "\t- username: " + this.username;
         }
         return clientInfo;
+    }
+
+    public String getDeepLink() {
+        return deepLink;
+    }
+
+    public void setDeepLink(String deepLink) {
+        this.deepLink = deepLink;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public Integer getContactMessageId() {
+        return contactMessageId;
+    }
+
+    public void setContactMessageId(Integer contactMessageId) {
+        this.contactMessageId = contactMessageId;
+    }
+
+    public User getTelegramUser() {
+        return telegramUser;
+    }
+
+    public void setTelegramUser(User telegramUser) {
+        this.telegramUser = telegramUser;
     }
 }
 

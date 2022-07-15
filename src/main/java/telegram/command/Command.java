@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import properties.Commands;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 import telegram.command.help.*;
 import utils.FileUtils;
@@ -39,14 +40,14 @@ public abstract class Command {
 
     public Command(Client client) {
         sendMessage = new SendMessage();
-        sendMessage.setChatId(String.valueOf(client.getChatId()));
+        sendMessage.setChatId(String.valueOf(client.getId()));
         optionalCommand = Optional.empty();
         this.client = client;
     }
 
     public Command(Client client, String optionalCommand) {
         sendMessage = new SendMessage();
-        sendMessage.setChatId(String.valueOf(client.getChatId()));
+        sendMessage.setChatId(String.valueOf(client.getId()));
         this.optionalCommand = Optional.of(optionalCommand);
         this.client = client;
     }
@@ -58,15 +59,14 @@ public abstract class Command {
         String[] callBackValues = null;
 
         if (update.hasCallbackQuery()) {
-            client = ClientDao.getInstance().searchById(
+            client = ClientService.getInstance().getClientById(
                     update.getCallbackQuery().getFrom().getId());
             callBackValues = update.getCallbackQuery().getData().split(" ");
             caseValue = callBackValues[0];
         } else if (update.hasMessage()) {
             message = update.getMessage();
             caseValue = message.getText();
-            client = ClientDao.getInstance().searchById(
-                    message.getFrom().getId());
+            client = ClientService.getInstance().getClientById(message.getFrom().getId());
         } else {
             throw new IllegalArgumentException();
         }
@@ -178,7 +178,7 @@ public abstract class Command {
     }
 
     public String getChatId() {
-        return String.valueOf(client.getChatId());
+        return String.valueOf(client.getId());
     }
 
     protected void executeMessages(List<String> strings) {

@@ -2,7 +2,7 @@ package dao;
 
 import model.Client;
 import model.ClientState;
-import utils.SQLiteUtils;
+import utils.HibernateUtils;
 
 import java.util.Collection;
 
@@ -22,7 +22,7 @@ public class ClientDao {
      * @return Clients
      */
     public Collection<Client> getClients() {
-        return SQLiteUtils.getInstance().selectClients();
+        return HibernateUtils.getInstance().selectClients();
     }
 
     /**
@@ -30,12 +30,8 @@ public class ClientDao {
      * @param client the client
      * @return the result as int
      */
-    public int addClient(Client client) {
-        if (!exist(client.getId())) {
-            return SQLiteUtils.getInstance().insertClient(client);
-        } else {
-            return 1;
-        }
+    public int insertClient(Client client) {
+        return HibernateUtils.getInstance().insertClient(client);
     }
 
     /**
@@ -43,8 +39,8 @@ public class ClientDao {
      * @param id the client id.
      * @return existence boolean
      */
-    public boolean exist(long id) {
-        return SQLiteUtils.getInstance().selectClientChatId(id) != null;
+    public boolean clientExist(long id) {
+        return HibernateUtils.getInstance().selectClientById(id) != null;
     }
 
     /**
@@ -53,27 +49,16 @@ public class ClientDao {
      * @return the client
      */
     public Client searchById(long id) {
-        return SQLiteUtils.getInstance().selectClient(id);
+        return HibernateUtils.getInstance().selectClientById(id);
     }
 
     /**
      * search for a client
      * @param username the client username
      * @return the client
-     * @deprecated not efficient.
      */
-    @Deprecated
     public Client searchByUsername(String username) {
-        Collection<Client> clientsCollection = SQLiteUtils.getInstance().selectClients();
-        for (Client client : clientsCollection) {
-            try {
-                if (client.getTelegramUser().getUserName().equalsIgnoreCase(username))
-                    return client;
-            } catch (NullPointerException e) {
-               // who cares??
-            }
-        }
-        return null;
+        return HibernateUtils.getInstance().selectClientByUsername(username);
     }
 
     /**
@@ -82,18 +67,18 @@ public class ClientDao {
      * @return the client.
      */
     public Client searchByDeepLink(String shortDeepLink) {
-        return SQLiteUtils.getInstance().selectClient(shortDeepLink);
+        return HibernateUtils.getInstance().selectClientByDeepLink(shortDeepLink);
     }
 
     /**
      * set new deeplink for the client.
      * @param id the client's id.
-     * @param lDeepLink long deeplink
+     * @param dee long deeplink
      * @param shDeepLink short deeplink
      * @return the result as int
      */
-    public int setDeepLink(long id, String lDeepLink, String shDeepLink) {
-        return SQLiteUtils.getInstance().updateClientDeepLink(id, lDeepLink, shDeepLink);
+    public int setDeepLink(long id, String deepLink) {
+        return HibernateUtils.getInstance().updateClientDeepLink(id, deepLink);
     }
 
     /**
@@ -103,7 +88,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setAdmin(long id, boolean admin) {
-        return SQLiteUtils.getInstance().updateClientAdmin(id, admin);
+        return HibernateUtils.getInstance().updateClientAdmin(id, admin);
     }
 
     /**
@@ -113,7 +98,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setContact(long id, long contactId) {
-        return SQLiteUtils.getInstance().updateClientContact(id, contactId);
+        return HibernateUtils.getInstance().updateClientContact(id, contactId);
     }
 
     /**
@@ -123,7 +108,7 @@ public class ClientDao {
      * @return the result as int
      */
     public int setClientState(long id, ClientState clientState) {
-        return SQLiteUtils.getInstance().updateClientState(id, clientState);
+        return HibernateUtils.getInstance().updateClientState(id, clientState);
     }
 
     /**
@@ -133,6 +118,10 @@ public class ClientDao {
      * @return the result as int
      */
     public int setContactMessageId(long id, Integer messageId) {
-        return SQLiteUtils.getInstance().updateClientContactMessageId(id, messageId);
+        return HibernateUtils.getInstance().updateClientContactMessageId(id, messageId);
+    }
+
+    public int updateClient(Client client) {
+        return HibernateUtils.getInstance().updateClient(client);
     }
 }

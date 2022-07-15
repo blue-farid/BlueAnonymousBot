@@ -71,7 +71,7 @@ public class FindContactCommand extends Command{
                 ClientService.getInstance().setClientState(client, ClientState.NORMAL);
             } else {
                 sendMessage.setText(localMessage.replace("?name",
-                        contact.getTelegramUser().getFirstName()));
+                        contact.getFirstname()));
                 BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
                 ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
                 ClientService.getInstance().setContact(client, contact.getId());
