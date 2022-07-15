@@ -13,9 +13,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
+import java.util.List;
 
 /**
- * SQLite utils class.
+ * Hibernate utils class.
  * all the database operations are here.
  * NOTE: connects to the database at constructor.
  *
@@ -44,9 +45,10 @@ public class HibernateUtils {
     public Collection<Client> selectClients() {
         try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            Collection<Client> result = session.createQuery("FROM CLIENT", Client.class).list();
+            Criteria criteria = session.createCriteria(Client.class);
+            List<Client> clients = criteria.list();
             transaction.commit();
-            return result;
+            return clients;
         }
     }
 
