@@ -198,8 +198,8 @@ public class HibernateUtils {
             CriteriaUpdate<Client> update = cb.createCriteriaUpdate(Client.class);
             Root<Client> root = update.from(Client.class);
             update.set("firstname", client.getFirstname())
-                            .set("lastname", client.getLastname()).set("telegramUser", client.getTelegramUser())
-                            .set("username", client.getUsername());
+                    .set("lastname", client.getLastname()).set("telegramUser", client.getTelegramUser())
+                    .set("username", client.getUsername());
             update.where(cb.equal(root.get("id"), client.getId()));
             session.createQuery(update).executeUpdate();
             tr.commit();
