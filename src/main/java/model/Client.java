@@ -116,7 +116,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return this.username;
+        return this.telegramUser.toString();
     }
 
     public long getId() {
