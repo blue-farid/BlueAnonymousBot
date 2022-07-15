@@ -76,9 +76,11 @@ public class HibernateUtils {
     public Client selectClientByDeepLink(String deepLink) {
         try (Session session = this.factory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            Criteria criteria = session.createCriteria(Client.class);
-            criteria.add(Restrictions.eq("deepLink", deepLink));
-            Client result = (Client) criteria.uniqueResult();
+            int index = deepLink.indexOf('=');
+            deepLink = deepLink.substring(index + 1);
+            String q = "SELECT c FROM Client c WHERE SUBSTRING(c.deepLink, :index) = :deepLink";
+            Client result = (Client) session.createQuery(q).setParameter("index", index + 2).setParameter("deepLink", deepLink)
+                            .uniqueResult();
             transaction.commit();
             return result;
         }
