@@ -37,7 +37,7 @@ public class FindContactCommand extends Command{
         String text = message.getText();
         String username = text.replaceFirst("@", "");
         if (!username.contains(" ")) {
-            return ClientDao.getInstance().searchByUsername(username);
+            return ClientService.getInstance().getClientByUsername(username);
         }
         return null;
     }
