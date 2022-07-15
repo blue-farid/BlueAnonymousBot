@@ -1,6 +1,5 @@
 package model;
 
-import org.checkerframework.common.aliasing.qual.Unique;
 import org.telegram.telegrambots.meta.api.objects.User;
 import utils.StringUtils;
 
@@ -11,6 +10,7 @@ import java.util.Objects;
 
 /**
  * The Client class
+ *
  * @author Farid Masjedi
  * @author Alireza Jabbari
  */
@@ -76,7 +76,6 @@ public class Client implements Serializable {
     }
 
 
-
     public ClientState getClientState() {
         return clientState;
     }
@@ -85,12 +84,12 @@ public class Client implements Serializable {
         this.clientState = clientState;
     }
 
-    public void setContactId(long contactId) {
-        this.contactId = contactId;
-    }
-
     public long getContactId() {
         return contactId;
+    }
+
+    public void setContactId(long contactId) {
+        this.contactId = contactId;
     }
 
     @Override
@@ -125,7 +124,7 @@ public class Client implements Serializable {
     }
 
     public String getClientInfo() {
-        if(clientInfo == null) {
+        if (clientInfo == null) {
             this.clientInfo = "\t- firstName: " + this.firstname +
                     "\n" + "\t- lastName: " + this.lastname +
                     "\n" + "\t- username: " + this.username;
