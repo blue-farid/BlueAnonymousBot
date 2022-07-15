@@ -53,7 +53,7 @@ public class StartCommand extends Command {
         ClientService.getInstance().setClientState(client, ClientState.SENDING_MESSAGE_TO_CONTACT);
         ClientService.getInstance().setContact(client, contact.getId());
         MDC.put("others", ConsoleWriter.readyForLog(
-                this.client + " trying to message to " + contact + "!"));
+                this.client.getId() + " trying to message to " + contact.getId() + "!"));
         addBaseLog();
 
     }
