@@ -120,4 +120,8 @@ public class ClientDao {
     public int setContactMessageId(long id, Integer messageId) {
         return HibernateUtils.getInstance().updateClientContactMessageId(id, messageId);
     }
+
+    public int updateClient(Client client) {
+        return HibernateUtils.getInstance().updateClient(client);
+    }
 }

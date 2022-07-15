@@ -104,8 +104,9 @@ public class ClientService {
     public int addClient(Client client) {
         if (!ClientDao.getInstance().clientExist(client.getId())) {
             return ClientDao.getInstance().insertClient(client);
+        } else {
+            return ClientDao.getInstance().updateClient(client);
         }
-        return 1;
     }
 
     public Client getClientById(long id) {

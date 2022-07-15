@@ -9,6 +9,9 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
 
 /**
@@ -184,6 +187,22 @@ public class HibernateUtils {
             client.setContactMessageId(contactMessageId);
             session.update(client);
             transaction.commit();
+            return 0;
+        }
+    }
+
+    public int updateClient(Client client) {
+        try (Session session = this.factory.openSession()) {
+            Transaction tr = session.beginTransaction();
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaUpdate<Client> update = cb.createCriteriaUpdate(Client.class);
+            Root<Client> root = update.from(Client.class);
+            update.set("firstname", client.getFirstname())
+                            .set("lastname", client.getLastname()).set("telegramUser", client.getTelegramUser())
+                            .set("username", client.getUsername());
+            update.where(cb.equal(root.get("id"), client.getId()));
+            session.createQuery(update).executeUpdate();
+            tr.commit();
             return 0;
         }
     }

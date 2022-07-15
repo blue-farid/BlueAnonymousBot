@@ -34,6 +34,7 @@ public class Client implements Serializable {
     private String deepLink;
     @NotNull
     @Column(name = "STATE")
+    @Enumerated(EnumType.STRING)
     private ClientState clientState;
     @Column(name = "CONTACT")
     private Long contactId;
