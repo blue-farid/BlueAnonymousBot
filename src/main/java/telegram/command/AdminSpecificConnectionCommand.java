@@ -7,7 +7,7 @@ import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 @Admin
-public class AdminSpecificConnectionCommand extends SpecificConnectionCommand{
+public class AdminSpecificConnectionCommand extends SpecificConnectionCommand {
     public AdminSpecificConnectionCommand(Client client) {
         super(client);
     }

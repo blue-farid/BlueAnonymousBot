@@ -13,27 +13,29 @@ import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 
-public class FindContactCommand extends Command{
+public class FindContactCommand extends Command {
 
-    protected final String localMessage ;
-    protected final String localMessage2 ;
+    protected final String localMessage;
+    protected final String localMessage2;
     protected final Message message;
 
-    public FindContactCommand(Client client, Message message){
+    public FindContactCommand(Client client, Message message) {
         super(client);
         this.message = message;
-        this.localMessage= Property.MESSAGES_P.get("find_contact_1");
-        this.localMessage2= Property.MESSAGES_P.get("find_contact_2");
+        this.localMessage = Property.MESSAGES_P.get("find_contact_1");
+        this.localMessage2 = Property.MESSAGES_P.get("find_contact_2");
 
     }
-    private Client findWithForwarded(Message message){
+
+    private Client findWithForwarded(Message message) {
         User forwardedFrom = message.getForwardFrom();
         if (forwardedFrom != null) {
             return ClientDao.getInstance().searchById(forwardedFrom.getId());
         }
         return null;
     }
-    private Client findWithUsername(Message message){
+
+    private Client findWithUsername(Message message) {
         String text = message.getText();
         String username = text.replaceFirst("@", "");
         if (!username.contains(" ")) {
@@ -41,7 +43,8 @@ public class FindContactCommand extends Command{
         }
         return null;
     }
-    private boolean isUsername(String username){
+
+    private boolean isUsername(String username) {
         return username.charAt(0) == '@';
     }
 
@@ -63,7 +66,7 @@ public class FindContactCommand extends Command{
 
     protected void executeHelp(Client contact, String input) {
         if (contact != null) {
-            MDC.put("others", ConsoleWriter.readyForLog("input: " + input) +ConsoleWriter.readyForLog("contactId: {" + contact.getId() + "}"));
+            MDC.put("others", ConsoleWriter.readyForLog("input: " + input) + ConsoleWriter.readyForLog("contactId: {" + contact.getId() + "}"));
             if (contact.equals(client)) {
                 sendMessage.setText(Property.MESSAGES_P.get("self_anonymous"));
                 sendMessage.setReplyMarkup(MainMenu.getInstance());

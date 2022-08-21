@@ -4,8 +4,8 @@ import dao.ClientDao;
 import menu.CancelMenu;
 import model.Client;
 import model.ClientState;
-import service.ClientService;
 import properties.Property;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class AnswerCommand extends Command {
@@ -20,7 +20,7 @@ public class AnswerCommand extends Command {
         this.contactId = contactId;
         this.currentMessageId = currentMessageId;
         this.contactMessageId = contactMessageId;
-        this.localMessage= Property.MESSAGES_P.get("answer");
+        this.localMessage = Property.MESSAGES_P.get("answer");
     }
 
     @Override

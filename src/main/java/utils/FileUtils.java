@@ -2,14 +2,11 @@ package utils;
 
 import model.Client;
 import org.apache.commons.io.output.FileWriterWithEncoding;
-import telegram.command.Command;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
 
 /**
  * the FileUtils singleton class
@@ -21,7 +18,9 @@ public class FileUtils {
     private final File botClientsFile = new File(FilePath.BOT_CLIENTS.getValue());
 
     private FileUtils() {
-    }public static FileUtils getInstance() {
+    }
+
+    public static FileUtils getInstance() {
         if (instance == null) {
             instance = new FileUtils();
         }
@@ -30,6 +29,7 @@ public class FileUtils {
 
     /**
      * write bot clients hashmap to the file.
+     *
      * @param clients the clients.
      * @deprecated now we use sqlite instead files.
      */
@@ -49,6 +49,7 @@ public class FileUtils {
 
     /**
      * read bot clients from the file.
+     *
      * @return the clients hashmap.
      * @deprecated now we use sqlite instead file.
      */
@@ -68,6 +69,7 @@ public class FileUtils {
 
     /**
      * create clients file if not exist.
+     *
      * @param file the file
      * @deprecated now we use sqlite instead file.
      */
@@ -99,6 +101,7 @@ public class FileUtils {
 
     /**
      * get output stream of a file.
+     *
      * @param file the file
      * @return ObjectOutputStream of the file
      */
@@ -115,6 +118,7 @@ public class FileUtils {
 
     /**
      * get input stream of a file
+     *
      * @param file the file
      * @return ObjectInputStream of the file.
      */
@@ -148,6 +152,7 @@ public class FileUtils {
 
     /**
      * load the properties file.
+     *
      * @param filePath the properties file path.
      * @return the Properties.
      */
@@ -227,7 +232,7 @@ public class FileUtils {
                     e.printStackTrace();
                 }
             }
-            try(FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8, true);) {
+            try (FileWriterWithEncoding out = new FileWriterWithEncoding(file, StandardCharsets.UTF_8, true)) {
                 String str = TimeUtils.getInstance().getCurrentDateAndTimeString().
                         concat(" " + String.valueOf(client.getId()).concat(":{\n").concat("\t" + message)
                                 .concat("\n}\n"));

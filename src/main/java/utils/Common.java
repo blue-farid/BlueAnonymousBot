@@ -41,6 +41,7 @@ public class Common {
 
     /**
      * convert an object to bytes.
+     *
      * @param o the object.
      * @return ByteArrayInputStream.
      */
@@ -58,6 +59,7 @@ public class Common {
 
     /**
      * convert bytes to an object.
+     *
      * @param inputStream the input stream that contain bytes.
      * @return the Object.
      */

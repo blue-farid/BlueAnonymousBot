@@ -3,8 +3,8 @@ package telegram.command;
 import menu.ChooseContactSexMenu;
 import model.Client;
 import model.ClientState;
-import service.ClientService;
 import properties.Property;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 public class AnonymousConnectionCommand extends Command {

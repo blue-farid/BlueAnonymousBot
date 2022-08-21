@@ -2,6 +2,7 @@ package properties;
 
 /**
  * Commands enum
+ *
  * @author Negar Anabestani
  */
 public enum Commands {
@@ -31,11 +32,13 @@ public enum Commands {
     HELP_BACK_MAIN_MENU("back_help_main_menu"),
     ADMIN_CONNECT("admin_connect");
     private final String key;
-    Commands(String key){
-        this.key=key;
+
+    Commands(String key) {
+        this.key = key;
     }
-    public String get(){
-       return Property.COMMANDS_P.get(key);
+
+    public String get() {
+        return Property.COMMANDS_P.get(key);
     }
 
 }

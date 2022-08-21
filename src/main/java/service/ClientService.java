@@ -12,7 +12,8 @@ import java.util.Collection;
 public class ClientService {
     private static ClientService instance;
 
-    private ClientService() {}
+    private ClientService() {
+    }
 
     /**
      * Gets instance.
@@ -29,7 +30,7 @@ public class ClientService {
     /**
      * Sets deep link.
      *
-     * @param client       the client
+     * @param client   the client
      * @param deepLink the long deep link
      */
     public void setDeepLink(Client client, String deepLink) {

@@ -1,8 +1,8 @@
 package console;
+
 import dao.ClientDao;
 import model.Client;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import service.ClientService;
 import telegram.command.AnswerCommand;
 import telegram.command.BlockCommand;
 import telegram.command.Command;
@@ -26,10 +26,9 @@ public class ConsoleWriter {
      * @param message   the message
      * @param printTime print time boolean
      */
+    @Deprecated
     public static void printNewRequestInfo(Message message, boolean printTime) {
-        System.out.print("- new Request: " +
-                "\n" + "\t" + "from: " +
-                message.getFrom().getUserName());
+        System.out.print("- new Request: " + "\n" + "\t" + "from: " + message.getFrom().getUserName());
         if (printTime) {
             System.out.println("\t" + TimeUtils.getInstance().getCurrentDateAndTimeString());
         } else {
@@ -44,19 +43,13 @@ public class ConsoleWriter {
      * @param command   the command
      * @param printTime print time boolean
      */
-    public static void printNewRequestInfo(Message message, Command command
-            , boolean printTime) {
+    @Deprecated
+    public static void printNewRequestInfo(Message message, Command command, boolean printTime) {
         if (cleanUpMessage(message, command) < 0) {
             System.out.println("- AnswerCommand! -");
             return;
         }
-        System.out.print("- new Request: " +
-                command +
-                "\n" + "\t" + "username: " +
-                message.getFrom().getUserName() +
-                "\n" + "\t" + "name: " +
-                message.getFrom().getFirstName() +
-                " " + message.getFrom().getLastName());
+        System.out.print("- new Request: " + command + "\n" + "\t" + "username: " + message.getFrom().getUserName() + "\n" + "\t" + "name: " + message.getFrom().getFirstName() + " " + message.getFrom().getLastName());
         if (printTime) {
             System.out.println("\t" + TimeUtils.getInstance().getCurrentDateAndTimeString());
         } else {
@@ -66,35 +59,13 @@ public class ConsoleWriter {
 
     private static int cleanUpMessage(Message message, Command command) {
         if (command instanceof BlockCommand) {
-            message.setFrom(ClientDao.getInstance().searchById(
-                    Long.parseLong(command.getChatId())).getTelegramUser());
+            message.setFrom(ClientDao.getInstance().searchById(Long.parseLong(command.getChatId())).getTelegramUser());
             return 1;
         }
         if (command instanceof AnswerCommand) {
             return -1;
         }
         return 0;
-    }
-
-    /**
-     * print all the clients.
-     */
-    public static void printAllUsers() {
-        Collection<Client> clientsCollection = ClientService.getInstance().getClients();
-        for (Client client : clientsCollection) {
-            System.out.println("##############\n");
-            System.out.println(client.getTelegramUser());
-            System.out.println("\n##############");
-        }
-    }
-
-    /**
-     * print a client info
-     *
-     * @param client the client.
-     */
-    public static void printUser(Client client) {
-        System.out.println(client.getTelegramUser());
     }
 
     /**
@@ -121,50 +92,15 @@ public class ConsoleWriter {
      * @param version the version of the bot.
      */
     public static void initMessage(String version) {
-        System.out.println("- the bot is running!\n".concat(
-                "- Version: ".concat(version.concat("\n")).concat(
-                        "- OS: ".concat(
-                                utils.Common.getInstance().getOsName()
-                        )
-                )
-        ));
+        System.out.println("- the bot is running!\n".concat("- Version: ".concat(version.concat("\n")).concat("- OS: ".concat(utils.Common.getInstance().getOsName()))));
     }
 
-    public static void printAsciiBlueAnonymousBot(){
-        System.out.println(
-                " ____  _                 _                                                        ____        _   \n" +
-                        "| __ )| |_   _  ___     / \\   _ __   ___  _ __  _   _ _ __ ___   ___  _   _ ___  | __ )  ___ | |_ \n" +
-                        "|  _ \\| | | | |/ _ \\   / _ \\ | '_ \\ / _ \\| '_ \\| | | | '_ ` _ \\ / _ \\| | | / __| |  _ \\ / _ \\| __|\n" +
-                        "| |_) | | |_| |  __/  / ___ \\| | | | (_) | | | | |_| | | | | | | (_) | |_| \\__ \\ | |_) | (_) | |_ \n" +
-                        "|____/|_|\\__,_|\\___| /_/   \\_\\_| |_|\\___/|_| |_|\\__, |_| |_| |_|\\___/ \\__,_|___/ |____/ \\___/ \\__|\n" +
-                        "                                                |___/     ");
+    public static void printAsciiBlueAnonymousBot() {
+        System.out.println(" ____  _                 _                                                        ____        _   \n" + "| __ )| |_   _  ___     / \\   _ __   ___  _ __  _   _ _ __ ___   ___  _   _ ___  | __ )  ___ | |_ \n" + "|  _ \\| | | | |/ _ \\   / _ \\ | '_ \\ / _ \\| '_ \\| | | | '_ ` _ \\ / _ \\| | | / __| |  _ \\ / _ \\| __|\n" + "| |_) | | |_| |  __/  / ___ \\| | | | (_) | | | | |_| | | | | | | (_) | |_| \\__ \\ | |_) | (_) | |_ \n" + "|____/|_|\\__,_|\\___| /_/   \\_\\_| |_|\\___/|_| |_|\\__, |_| |_| |_|\\___/ \\__,_|___/ |____/ \\___/ \\__|\n" + "                                                |___/     ");
     }
 
     public static void printAsciiLogo() {
-        System.out.println(
-                "               .:lodoc:.                          \n" +
-                        "             cOKKKKKKOxKk;                        \n" +
-                        "            xKKKKKKKKKdkKKk'                      \n" +
-                        "           :KKKKKKKKKK0OKKK0,                     \n" +
-                        "           OKKKKKKKKKKKKKKKK0'                    \n" +
-                        "          'KKKKKKKKKKKKKKKKKK0'                   \n" +
-                        "          lKKKKKOxoxO:c.ldx;dxk.                  \n" +
-                        "          dKKK0d..x,',  l' :KKKo                  \n" +
-                        "          xKKKk .; ,;;cll;;0KKd.                  \n" +
-                        "          oKKK0l:   .''','kK0;                    \n" +
-                        "          .0KKo:oo,.  ;k.kKKl                     \n" +
-                        "         .'dkOk' .c;;d:00OK0:x:ll;..              \n" +
-                        "        c00d0kxkk, ,x. xc00cldddddddoood:c        \n" +
-                        "       .0KK:0KKK0x. :. .00x0KKKKKKK00KKKO;c.      \n" +
-                        "       lKKK:kKKKKKO. . dxKK0'.....''..x:,,:o      \n" +
-                        "      .0K0k,dKKKKKKk: 'c,KK0  .  ...  :c'':d      \n" +
-                        "      dKkoxkclxdOKKc.lc .0K0       ..  k00x       \n" +
-                        "      dKKKo,cl::OKKo  '  xK0       .   kKKd       \n" +
-                        "       xlc00OOl,lKKo  ,  :K0  .  ..    xKKc       \n" +
-                        "       .:dl;.'d00KKl  c. .00.          xOK.       \n" +
-                        "         ,dccl..:okc      dK0kkxxddooloOoO        \n" +
-                        "                          .''',;:codxO0:Ol        \n" +
-                        "                                       .;   ");
+        System.out.println("               .:lodoc:.                          \n" + "             cOKKKKKKOxKk;                        \n" + "            xKKKKKKKKKdkKKk'                      \n" + "           :KKKKKKKKKK0OKKK0,                     \n" + "           OKKKKKKKKKKKKKKKK0'                    \n" + "          'KKKKKKKKKKKKKKKKKK0'                   \n" + "          lKKKKKOxoxO:c.ldx;dxk.                  \n" + "          dKKK0d..x,',  l' :KKKo                  \n" + "          xKKKk .; ,;;cll;;0KKd.                  \n" + "          oKKK0l:   .''','kK0;                    \n" + "          .0KKo:oo,.  ;k.kKKl                     \n" + "         .'dkOk' .c;;d:00OK0:x:ll;..              \n" + "        c00d0kxkk, ,x. xc00cldddddddoood:c        \n" + "       .0KK:0KKK0x. :. .00x0KKKKKKK00KKKO;c.      \n" + "       lKKK:kKKKKKO. . dxKK0'.....''..x:,,:o      \n" + "      .0K0k,dKKKKKKk: 'c,KK0  .  ...  :c'':d      \n" + "      dKkoxkclxdOKKc.lc .0K0       ..  k00x       \n" + "      dKKKo,cl::OKKo  '  xK0       .   kKKd       \n" + "       xlc00OOl,lKKo  ,  :K0  .  ..    xKKc       \n" + "       .:dl;.'d00KKl  c. .00.          xOK.       \n" + "         ,dccl..:okc      dK0kkxxddooloOoO        \n" + "                          .''',;:codxO0:Ol        \n" + "                                       .;   ");
     }
 
     /**
@@ -184,5 +120,11 @@ public class ConsoleWriter {
 
     public static String readyForLog(String str) {
         return "\t- " + str + "\n";
+    }
+
+    public static void printAllClients(Collection<Client> clients) {
+        for (Client client : clients) {
+            System.out.println(client);
+        }
     }
 }

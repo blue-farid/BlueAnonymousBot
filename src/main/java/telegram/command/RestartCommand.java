@@ -10,7 +10,7 @@ public class RestartCommand extends Command {
 
     public RestartCommand(Client client) {
         super(client);
-        localMessage= Property.MESSAGES_P.get("restart");
+        localMessage = Property.MESSAGES_P.get("restart");
     }
 
     @Override

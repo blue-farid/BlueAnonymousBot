@@ -80,7 +80,7 @@ public class HibernateUtils {
             deepLink = deepLink.substring(index + 1);
             String q = "SELECT c FROM Client c WHERE SUBSTRING(c.deepLink, :index) = :deepLink";
             Client result = (Client) session.createQuery(q).setParameter("index", index + 2).setParameter("deepLink", deepLink)
-                            .uniqueResult();
+                    .uniqueResult();
             transaction.commit();
             return result;
         }

@@ -22,7 +22,7 @@ public class BlockCommand extends Command {
         addBaseLog();
         if (contact.isAdmin()) {
             this.sendMessage.setText("" + client.getFirstname()
-            + " tries to block you!");
+                    + " tries to block you!");
             this.sendMessage.setChatId(String.valueOf(contactId));
             BlueAnonymousBot.getInstance().executeSendMessage(this.sendMessage);
         } else {

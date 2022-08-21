@@ -31,6 +31,10 @@ public class AnonymousLinkCommand extends Command {
         }
     }
 
+    public static String getAnonymousLinkPrefix() {
+        return anonymousLinkPrefix;
+    }
+
     @Override
     public void execute() throws IllegalAccessException {
         super.execute();
@@ -42,9 +46,5 @@ public class AnonymousLinkCommand extends Command {
                         client.getFirstname())
                 .concat("\n" + client.getDeepLink()));
         BlueAnonymousBot.getInstance().executeSendMessage(sendMessage);
-    }
-
-    public static String getAnonymousLinkPrefix() {
-        return anonymousLinkPrefix;
     }
 }
