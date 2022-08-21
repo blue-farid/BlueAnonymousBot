@@ -3,16 +3,16 @@ package telegram.command;
 import menu.MainMenu;
 import model.Client;
 import model.ClientState;
-import service.ClientService;
 import properties.Property;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
-public class CancelCommand extends Command{
+public class CancelCommand extends Command {
     private final String localMessage;
 
     public CancelCommand(Client client) {
         super(client);
-        this.localMessage= Property.MESSAGES_P.get("cancel");
+        this.localMessage = Property.MESSAGES_P.get("cancel");
     }
 
 

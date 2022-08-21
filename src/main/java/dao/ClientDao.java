@@ -13,8 +13,7 @@ public class ClientDao {
     private static ClientDao instance;
 
     public static ClientDao getInstance() {
-        if (instance == null)
-            instance = new ClientDao();
+        if (instance == null) instance = new ClientDao();
         return instance;
     }
 
@@ -27,6 +26,7 @@ public class ClientDao {
 
     /**
      * add client
+     *
      * @param client the client
      * @return the result as int
      */
@@ -36,6 +36,7 @@ public class ClientDao {
 
     /**
      * check the existence of client with the specific id
+     *
      * @param id the client id.
      * @return existence boolean
      */
@@ -45,6 +46,7 @@ public class ClientDao {
 
     /**
      * search for a client
+     *
      * @param id the client id
      * @return the client
      */
@@ -54,6 +56,7 @@ public class ClientDao {
 
     /**
      * search for a client
+     *
      * @param username the client username
      * @return the client
      */
@@ -63,6 +66,7 @@ public class ClientDao {
 
     /**
      * search for a client
+     *
      * @param shortDeepLink the client's short deeplink
      * @return the client.
      */
@@ -72,8 +76,9 @@ public class ClientDao {
 
     /**
      * set new deeplink for the client.
-     * @param id the client's id.
-     * @param dee long deeplink
+     *
+     * @param id         the client's id.
+     * @param dee        long deeplink
      * @param shDeepLink short deeplink
      * @return the result as int
      */
@@ -83,7 +88,8 @@ public class ClientDao {
 
     /**
      * set admin ability boolean
-     * @param id the client's id
+     *
+     * @param id    the client's id
      * @param admin the admin ability boolean
      * @return the result as int
      */
@@ -93,7 +99,8 @@ public class ClientDao {
 
     /**
      * set contact for the client
-     * @param id the client's id
+     *
+     * @param id        the client's id
      * @param contactId the contact id
      * @return the result as int
      */
@@ -103,7 +110,8 @@ public class ClientDao {
 
     /**
      * set the client's state
-     * @param id the client's id
+     *
+     * @param id          the client's id
      * @param clientState the client state
      * @return the result as int
      */
@@ -113,7 +121,8 @@ public class ClientDao {
 
     /**
      * set the client's contact message id
-     * @param id the client's id
+     *
+     * @param id        the client's id
      * @param messageId the messgae id
      * @return the result as int
      */

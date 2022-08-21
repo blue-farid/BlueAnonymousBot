@@ -3,7 +3,6 @@ package telegram.command;
 import menu.CancelMenu;
 import model.Client;
 import model.ClientState;
-import org.apache.log4j.MDC;
 import properties.Property;
 import service.ClientService;
 import telegram.BlueAnonymousBot;

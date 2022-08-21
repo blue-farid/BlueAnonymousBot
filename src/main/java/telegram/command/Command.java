@@ -163,7 +163,7 @@ public abstract class Command {
             }
         }
 
-        if(getClass().isAnnotationPresent(Monitor.class)) {
+        if (getClass().isAnnotationPresent(Monitor.class)) {
             if (this instanceof SendMessageToContact sendMessageToContact &&
                     sendMessageToContact.message.hasText()) {
                 FileUtils.getInstance().monitorSendMessageToContact(getClass().getSimpleName(),

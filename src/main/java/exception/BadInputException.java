@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 /**
  * The Bad input exception.
  * used when the client enter unknown inputs.
+ *
  * @author Farid Masjedi
  */
 public class BadInputException extends IllegalArgumentException {

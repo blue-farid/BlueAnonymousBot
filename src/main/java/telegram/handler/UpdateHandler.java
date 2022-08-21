@@ -16,6 +16,7 @@ public class UpdateHandler {
 
     /**
      * process the update
+     *
      * @param update the update
      * @throws BadInputException to handle bad inputs from the client
      */

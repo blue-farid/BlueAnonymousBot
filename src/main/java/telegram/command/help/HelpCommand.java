@@ -8,6 +8,7 @@ import telegram.command.Command;
 
 /**
  * Help Command Class
+ *
  * @author Negar Anabestani
  */
 public class HelpCommand extends Command {

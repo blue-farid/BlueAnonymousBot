@@ -24,6 +24,7 @@ public class RandomUtils {
 
     /**
      * generates a string of random digits.
+     *
      * @param len the length of the string.
      * @return the string.
      */
@@ -39,6 +40,7 @@ public class RandomUtils {
 
     /**
      * generates a string of ascii letters.
+     *
      * @param len the length of the string.
      * @return the string.
      */

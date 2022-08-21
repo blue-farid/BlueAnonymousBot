@@ -11,6 +11,7 @@ import java.util.Date;
 public class TimeUtils {
     private static TimeUtils instance;
     private final SimpleDateFormat formatter;
+
     private TimeUtils() {
         formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     }

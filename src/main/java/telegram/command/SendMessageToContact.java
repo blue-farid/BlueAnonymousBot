@@ -9,8 +9,8 @@ import org.apache.log4j.MDC;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import service.ClientService;
 import properties.Property;
+import service.ClientService;
 import telegram.BlueAnonymousBot;
 
 @Monitor
@@ -26,7 +26,7 @@ public class SendMessageToContact extends Command {
     @Override
     public void execute() throws IllegalAccessException {
         super.execute();
-        if (message == null){
+        if (message == null) {
             ClientService.getInstance().setClientState(client, ClientState.NORMAL);
             return;
         }
@@ -42,7 +42,7 @@ public class SendMessageToContact extends Command {
         }
         addBaseLog();
         notifyNewMessage();
-        if (message.hasText()){
+        if (message.hasText()) {
             String text = message.getText();
             SendMessage contactSendMessage = new SendMessage();
             contactSendMessage.setChatId(contactChatId);
@@ -51,7 +51,7 @@ public class SendMessageToContact extends Command {
             contactSendMessage.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendMessage.setReplyToMessageId(client.getContactMessageId());
             int res = BlueAnonymousBot.getInstance().executeSendMessage(contactSendMessage);
-            if(res != 0) {
+            if (res != 0) {
                 if (res == 400) {
                     // reply not found
                     contactSendMessage.setReplyToMessageId(null);
@@ -63,21 +63,18 @@ public class SendMessageToContact extends Command {
                     return;
                 }
             }
-        }
-        else if (message.hasSticker()){
+        } else if (message.hasSticker()) {
             InputFile sticker = new InputFile(message.getSticker().getFileId());
             SendSticker contactSendSticker = new SendSticker(contactChatId, sticker);
             contactSendSticker.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendSticker.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendSticker);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-        }
-        else if (message.hasVoice()){
+        } else if (message.hasVoice()) {
             InputFile voice = new InputFile(message.getVoice().getFileId());
             SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
             contactSendVoice.setCaption(message.getCaption());
@@ -86,13 +83,11 @@ public class SendMessageToContact extends Command {
             contactSendVoice.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendVoice);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-        }
-        else if (message.hasDocument()){
+        } else if (message.hasDocument()) {
             InputFile document = new InputFile(message.getDocument().getFileId());
             SendDocument contactSendDocument = new SendDocument(contactChatId, document);
             contactSendDocument.setCaption(message.getCaption());
@@ -101,13 +96,11 @@ public class SendMessageToContact extends Command {
             contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendDocument);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-        }
-        else if (message.hasPhoto()){
+        } else if (message.hasPhoto()) {
             InputFile photo = new InputFile(message.getPhoto().get(0).getFileId());
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
@@ -116,13 +109,11 @@ public class SendMessageToContact extends Command {
             contactSendPhoto.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendPhoto);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-        }
-        else if (message.hasVideo()){
+        } else if (message.hasVideo()) {
             InputFile video = new InputFile(message.getVideo().getFileId());
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
@@ -131,13 +122,11 @@ public class SendMessageToContact extends Command {
             contactSendVideo.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendVideo);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-        }
-        else if (message.hasAudio()){
+        } else if (message.hasAudio()) {
             InputFile audio = new InputFile(message.getAudio().getFileId());
             SendAudio contactSendAudio = new SendAudio(contactChatId, audio);
             contactSendAudio.setCaption(message.getCaption());
@@ -146,21 +135,18 @@ public class SendMessageToContact extends Command {
             contactSendAudio.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendAudio);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-        }
-        else if (message.hasVideoNote()){
+        } else if (message.hasVideoNote()) {
             InputFile videoNote = new InputFile(message.getVideoNote().getFileId());
             SendVideoNote contactSendVideoNote = new SendVideoNote(contactChatId, videoNote);
             contactSendVideoNote.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendVideoNote.setReplyToMessageId(client.getContactMessageId());
             try {
                 BlueAnonymousBot.getInstance().execute(contactSendVideoNote);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -184,7 +170,7 @@ public class SendMessageToContact extends Command {
         ClientService.getInstance().setClientState(client, ClientState.NORMAL);
     }
 
-    private void notifyNewMessage(){
+    private void notifyNewMessage() {
         String contactChatId = String.valueOf(ClientService.getInstance().getContact(client).getId());
         SendMessage contactSendMessage = new SendMessage();
         contactSendMessage.setChatId(contactChatId);
