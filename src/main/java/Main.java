@@ -25,7 +25,7 @@ import java.util.Properties;
  * @version 7.1.0
  * <p>
  * Telegram_id: @blue_farid
- * github: https://github.com/blue-farid
+ * github: <a href="https://github.com/blue-farid">...</a>
  * @since 2021/8
  */
 public class Main {
