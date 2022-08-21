@@ -1,6 +1,7 @@
 package console;
 
 import dao.ClientDao;
+import lombok.extern.slf4j.Slf4j;
 import model.Client;
 import service.ClientService;
 
@@ -12,6 +13,7 @@ import java.util.Scanner;
  *
  * @author Farid Masjedi
  */
+@Slf4j
 public class ConsoleReader implements Runnable {
     /**
      * commands {
@@ -57,7 +59,7 @@ public class ConsoleReader implements Runnable {
                 throw new Exception();
             }
         } catch (Exception e) {
-            ConsoleWriter.println("- console.ConsoleReader: bad input!");
+            log.error("Bad Input!");
             return -1;
         }
         return 1;
