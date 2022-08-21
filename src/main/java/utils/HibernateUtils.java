@@ -52,6 +52,13 @@ public class HibernateUtils {
         }
     }
 
+    public int selectClientsCount() {
+        try (Session session = this.factory.openSession()) {
+            String hql = "SELECT COUNT(*) FROM Client";
+            return Integer.parseInt(String.valueOf(session.createQuery(hql).uniqueResult()));
+        }
+    }
+
     /**
      * select a client by its id.
      *

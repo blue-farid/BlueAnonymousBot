@@ -34,8 +34,10 @@ public class ConsoleReader implements Runnable {
             } else if (commands[0].equals("print")) {
                 if (commands[1].equals("all")) {
                     ConsoleWriter.printAllClients(ClientService.getInstance().getClients());
-                } else if (commands[1].matches("\\d*}")) {
+                } else if (commands[1].matches("^\\d*$")) {
                     ConsoleWriter.println(ClientService.getInstance().getClientById(Long.parseLong(commands[1])));
+                } else if (commands[1].equals("count")) {
+                    ConsoleWriter.println(ClientService.getInstance().getClientsCount());
                 } else {
                     throw new NumberFormatException();
                 }
