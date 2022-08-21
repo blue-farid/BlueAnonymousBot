@@ -121,4 +121,8 @@ public class ClientService {
     public Client getClientByDeepLink(String deepLink) {
         return ClientDao.getInstance().searchByDeepLink(deepLink);
     }
+
+    public int getClientsCount() {
+        return ClientDao.getInstance().countClients();
+    }
 }

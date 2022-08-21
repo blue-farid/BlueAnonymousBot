@@ -1,6 +1,7 @@
 package console;
 
 import dao.ClientDao;
+import lombok.extern.slf4j.Slf4j;
 import model.Client;
 import service.ClientService;
 
@@ -12,6 +13,7 @@ import java.util.Scanner;
  *
  * @author Farid Masjedi
  */
+@Slf4j
 public class ConsoleReader implements Runnable {
     /**
      * commands {
@@ -34,8 +36,10 @@ public class ConsoleReader implements Runnable {
             } else if (commands[0].equals("print")) {
                 if (commands[1].equals("all")) {
                     ConsoleWriter.printAllClients(ClientService.getInstance().getClients());
-                } else if (commands[1].matches("\\d*}")) {
+                } else if (commands[1].matches("^\\d*$")) {
                     ConsoleWriter.println(ClientService.getInstance().getClientById(Long.parseLong(commands[1])));
+                } else if (commands[1].equals("count")) {
+                    ConsoleWriter.println(ClientService.getInstance().getClientsCount());
                 } else {
                     throw new NumberFormatException();
                 }
@@ -55,7 +59,7 @@ public class ConsoleReader implements Runnable {
                 throw new Exception();
             }
         } catch (Exception e) {
-            ConsoleWriter.println("- console.ConsoleReader: bad input!");
+            log.error("Bad Input!");
             return -1;
         }
         return 1;

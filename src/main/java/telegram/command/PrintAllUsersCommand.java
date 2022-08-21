@@ -21,6 +21,7 @@ public class PrintAllUsersCommand extends Command {
         addBaseLog();
         String result = "";
         Collection<Client> clientsCollection = ClientDao.getInstance().getClients();
+        result = "total number: ".concat(String.valueOf(clientsCollection.size()).concat("\n"));
         for (Client client : clientsCollection) {
             result = result.concat("\n".concat(client.
                     toString().concat("\n")));

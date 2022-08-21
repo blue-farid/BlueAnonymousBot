@@ -78,8 +78,7 @@ public class ClientDao {
      * set new deeplink for the client.
      *
      * @param id         the client's id.
-     * @param dee        long deeplink
-     * @param shDeepLink short deeplink
+     * @param deepLink   the deep link
      * @return the result as int
      */
     public int setDeepLink(long id, String deepLink) {
@@ -132,5 +131,9 @@ public class ClientDao {
 
     public int updateClient(Client client) {
         return HibernateUtils.getInstance().updateClient(client);
+    }
+
+    public int countClients() {
+        return HibernateUtils.getInstance().selectClientsCount();
     }
 }
