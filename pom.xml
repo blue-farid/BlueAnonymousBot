@@ -6,7 +6,7 @@
 
     <groupId>org.bluefarid</groupId>
     <artifactId>BlueAnonymousBot</artifactId>
-    <version>7.1.0</version>
+    <version>7.15.0</version>
     <build>
 <!--        <plugins>-->
 <!--            <plugin>-->
