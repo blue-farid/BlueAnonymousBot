@@ -55,6 +55,7 @@ public class Client implements Serializable {
     private User telegramUser;
     @Transient
     @ToString.Exclude
+    @Setter(AccessLevel.PRIVATE)
     private String clientInfo;
 
 
