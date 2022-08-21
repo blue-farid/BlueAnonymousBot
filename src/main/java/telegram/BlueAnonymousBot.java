@@ -95,7 +95,6 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             execute(sendMessage);
             return 0;
         } catch (TelegramApiRequestException e) {
-            e.printStackTrace();
             return e.getErrorCode();
         } catch (TelegramApiException e) {
             e.printStackTrace();

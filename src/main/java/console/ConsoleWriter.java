@@ -10,6 +10,7 @@ import utils.TimeUtils;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Console class
@@ -26,6 +27,7 @@ public class ConsoleWriter {
      * @param message   the message
      * @param printTime print time boolean
      */
+    @Deprecated
     public static void printNewRequestInfo(Message message, boolean printTime) {
         System.out.print("- new Request: " +
                 "\n" + "\t" + "from: " +
@@ -44,6 +46,7 @@ public class ConsoleWriter {
      * @param command   the command
      * @param printTime print time boolean
      */
+    @Deprecated
     public static void printNewRequestInfo(Message message, Command command
             , boolean printTime) {
         if (cleanUpMessage(message, command) < 0) {
@@ -74,27 +77,6 @@ public class ConsoleWriter {
             return -1;
         }
         return 0;
-    }
-
-    /**
-     * print all the clients.
-     */
-    public static void printAllUsers() {
-        Collection<Client> clientsCollection = ClientService.getInstance().getClients();
-        for (Client client : clientsCollection) {
-            System.out.println("##############\n");
-            System.out.println(client.getTelegramUser());
-            System.out.println("\n##############");
-        }
-    }
-
-    /**
-     * print a client info
-     *
-     * @param client the client.
-     */
-    public static void printUser(Client client) {
-        System.out.println(client.getTelegramUser());
     }
 
     /**
@@ -184,5 +166,11 @@ public class ConsoleWriter {
 
     public static String readyForLog(String str) {
         return "\t- " + str + "\n";
+    }
+
+    public static void printAllClients(Collection<Client> clients) {
+        for (Client client : clients) {
+            System.out.println(client);
+        }
     }
 }

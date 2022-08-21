@@ -3,34 +3,24 @@ package console;
 import dao.ClientDao;
 import model.Client;
 import service.ClientService;
-import utils.FileUtils;
 
 import java.util.Scanner;
 
 /**
  * Console Reader class.
  * reads console inputs to interact with the admin.
+ *
  * @author Farid Masjedi
  */
 public class ConsoleReader implements Runnable {
-    @Override
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            int res = read(scanner.nextLine());
-            if (res == 0) {
-                return;
-            }
-        }
-    }
-
     /**
      * commands {
-     *     exit -> terminate the bot
-     *     set admin [client_id] [boolean] -> set admin true or false
-     *     clear -> clear the screen
-     *     set deeplink [client_id] [deeplink] -> set deeplink
+     * exit -> terminate the bot
+     * set admin [client_id] [boolean] -> set admin true or false
+     * clear -> clear the screen
+     * set deeplink [client_id] [deeplink] -> set deeplink
      * }
+     *
      * @param in the input
      * @return the result as int.
      */
@@ -41,6 +31,14 @@ public class ConsoleReader implements Runnable {
                 System.exit(0);
             } else if (commands[0].equals("clear")) {
                 ConsoleWriter.clearScreen();
+            } else if (commands[0].equals("print")) {
+                if (commands[1].equals("all")) {
+                    ConsoleWriter.printAllClients(ClientService.getInstance().getClients());
+                } else if (commands[1].matches("\\d*}")) {
+                    ConsoleWriter.println(ClientService.getInstance().getClientById(Long.parseLong(commands[1])));
+                } else {
+                    throw new NumberFormatException();
+                }
             } else if (commands[0].equals("set")) {
                 if (commands[1].equals("admin")) {
                     long id = Long.parseLong(commands[2]);
@@ -61,5 +59,16 @@ public class ConsoleReader implements Runnable {
             return -1;
         }
         return 1;
+    }
+
+    @Override
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            int res = read(scanner.nextLine());
+            if (res == 0) {
+                return;
+            }
+        }
     }
 }

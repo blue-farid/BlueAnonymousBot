@@ -1,6 +1,5 @@
 package telegram.command;
 
-import console.ConsoleWriter;
 import dao.ClientDao;
 import model.Client;
 import telegram.BlueAnonymousBot;
@@ -22,8 +21,7 @@ public class PrintAllUsersCommand extends Command {
         addBaseLog();
         String result = "";
         Collection<Client> clientsCollection = ClientDao.getInstance().getClients();
-        for (Client client: clientsCollection) {
-            ConsoleWriter.printUser(client);
+        for (Client client : clientsCollection) {
             result = result.concat("\n".concat(client.
                     toString().concat("\n")));
         }
