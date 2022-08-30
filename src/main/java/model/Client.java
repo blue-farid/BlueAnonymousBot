@@ -51,6 +51,7 @@ public class Client implements Serializable {
     @Column(name = "ADMIN")
     private boolean admin;
     @NotNull
+    @ToString.Exclude
     @Column(name = "TELEGRAM_USER")
     private User telegramUser;
     @Transient
