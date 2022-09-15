@@ -12,7 +12,6 @@ import java.io.Serializable;
  * The Client class
  *
  * @author Farid Masjedi
- *
  */
 @Entity
 @Table(name = "CLIENT")

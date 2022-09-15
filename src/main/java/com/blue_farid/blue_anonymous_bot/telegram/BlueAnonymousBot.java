@@ -3,7 +3,6 @@ package com.blue_farid.blue_anonymous_bot.telegram;
 import com.blue_farid.blue_anonymous_bot.exception.ConfigException;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -20,12 +19,11 @@ import javax.annotation.PostConstruct;
 @Component
 @RequiredArgsConstructor
 public class BlueAnonymousBot extends TelegramLongPollingBot {
+    private final Environment environment;
     @Value("${bot.username}")
     private String botUsername;
     @Value("${bot.token}")
     private String botToken;
-
-    private final Environment environment;
 
     @PostConstruct
     private void init() {
