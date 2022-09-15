@@ -31,8 +31,6 @@ public class BlueAnonymousBotApplication {
      */
     public static void main(String[] args) {
         SpringApplication.run(BlueAnonymousBotApplication.class, args);
-        log.info(BlueStringUtils.asciiBlueAnonymousBot());
-        log.info(BlueStringUtils.asciiLogo());
-        log.info(BlueStringUtils.initMessage("8.0.0"));
+        log.info("\n" + BlueStringUtils.asciiBlueAnonymousBot() + "\n" + BlueStringUtils.asciiLogo() + "\n" + BlueStringUtils.initMessage("8.0.0"));
     }
 }
