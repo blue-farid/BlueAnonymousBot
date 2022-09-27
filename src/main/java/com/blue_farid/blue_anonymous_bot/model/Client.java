@@ -69,17 +69,6 @@ public class Client implements Serializable {
         this.telegramUser = user;
     }
 
-    public Client(long id, User telegramUser, String deepLink, ClientState clientState, boolean admin, long contactId) {
-        this.id = id;
-        this.username = telegramUser.getUserName();
-        this.firstname = telegramUser.getFirstName();
-        this.lastname = telegramUser.getLastName();
-        this.deepLink = deepLink;
-        this.clientState = clientState;
-        this.admin = admin;
-        this.contactId = contactId;
-    }
-
     public boolean hasDeepLink() {
         return Strings.isNotEmpty(this.deepLink);
     }

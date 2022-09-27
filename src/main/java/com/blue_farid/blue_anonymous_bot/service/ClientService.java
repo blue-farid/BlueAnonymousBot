@@ -132,4 +132,8 @@ public class ClientService {
     public long getClientsCount() {
         return repository.count();
     }
+
+    public boolean exists(Long id) {
+        return repository.existsById(id);
+    }
 }
