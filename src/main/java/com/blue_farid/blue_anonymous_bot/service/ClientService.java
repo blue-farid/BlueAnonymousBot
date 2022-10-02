@@ -4,6 +4,7 @@ import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * The Client service.
  */
 @RequiredArgsConstructor
+@Service
 public class ClientService {
 
     private final ClientRepository repository;
@@ -96,6 +98,10 @@ public class ClientService {
      */
     public void addClient(Client client) {
         repository.save(client);
+    }
+
+    public void updateClient(Client client) {
+        repository.updateFirstnameAndLastnameAndTelegramUserAndUsername(client);
     }
 
     /**

@@ -4,7 +4,6 @@ import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.exception.ConfigException;
 import com.blue_farid.blue_anonymous_bot.model.Client;
-import com.blue_farid.blue_anonymous_bot.model.RequestType;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
 import lombok.RequiredArgsConstructor;
@@ -79,6 +78,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             if (!clientService.exists(id))
                 clientService.addClient(new Client(update.getMessage().getFrom()));
+            else
+                clientService.updateClient(new Client(update.getMessage().getFrom()));
             caseValue = update.getMessage().getText();
             message = update.getMessage();
         } else {
