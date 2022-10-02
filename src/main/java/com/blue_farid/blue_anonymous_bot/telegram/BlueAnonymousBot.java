@@ -15,15 +15,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.annotation.PostConstruct;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
 @PropertySource("classpath:bot_config.properties")
@@ -92,12 +91,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                 Client client = clientService.getClientById(id);
                 if (response.value().equals(caseValue) &&
                         response.acceptedState().equals(client.getClientState())) {
-                    if (method.getReturnType().equals(SendMessage.class))
-                        this.execute((SendMessage) method.invoke(this.commandService, new RequestDto(client, message)));
-                    else if (method.getReturnType().equals(SendAudio.class))
-                        this.execute((SendAudio) method.invoke(this.commandService, new RequestDto(client, message)));
-                    else if (method.getReturnType().equals(SendSticker.class))
-                        this.execute((SendSticker) method.invoke(this.commandService, new RequestDto(client, message)));
+                    this.execute((BotApiMethod<? extends Serializable>) method.invoke(this.commandService, new RequestDto(client, message)));
                 }
             }
         }
