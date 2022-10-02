@@ -91,13 +91,11 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                 Client client = clientService.getClientById(id);
                 if (response.value().equals(caseValue) &&
                         response.acceptedState().equals(client.getClientState())) {
-                    if (response.acceptedType().equals(RequestType.CLIENT))
+                    if (method.getReturnType().equals(SendMessage.class))
                         this.execute((SendMessage) method.invoke(this.commandService, new RequestDto(client, message)));
-                    else if (response.acceptedType().equals(RequestType.TEXT))
-                        this.execute((SendMessage) method.invoke(this.commandService, new RequestDto(client, message)));
-                    else if (response.acceptedType().equals(RequestType.AUDIO))
+                    else if (method.getReturnType().equals(SendAudio.class))
                         this.execute((SendAudio) method.invoke(this.commandService, new RequestDto(client, message)));
-                    else if (response.acceptedType().equals(RequestType.STICKER))
+                    else if (method.getReturnType().equals(SendSticker.class))
                         this.execute((SendSticker) method.invoke(this.commandService, new RequestDto(client, message)));
                 }
             }

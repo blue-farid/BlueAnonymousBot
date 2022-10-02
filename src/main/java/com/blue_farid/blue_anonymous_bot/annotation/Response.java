@@ -15,5 +15,5 @@ public @interface Response {
 
     ClientState acceptedState() default ClientState.NORMAL;
 
-    RequestType acceptedType() default RequestType.CLIENT;
+    RequestType acceptedType() default RequestType.COMMAND;
 }
