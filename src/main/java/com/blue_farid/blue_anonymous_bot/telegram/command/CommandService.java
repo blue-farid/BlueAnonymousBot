@@ -3,7 +3,6 @@ package com.blue_farid.blue_anonymous_bot.telegram.command;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
-import com.blue_farid.blue_anonymous_bot.model.RequestType;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
@@ -34,17 +33,17 @@ public class CommandService {
         return new SendMessage(requestDto.client().getTelegramUser().getId().toString(), Objects.requireNonNull(env.getProperty("answer")));
     }
 
-    @Response(acceptedType = RequestType.TEXT, acceptedState = ClientState.SENDING_MESSAGE_TO_CONTACT)
+    @Response(acceptedState = ClientState.SENDING_MESSAGE_TO_CONTACT)
     public SendMessage sendText(RequestDto requestDto) {
         return new SendMessage(requestDto.client().getTelegramUser().getId().toString(), requestDto.value().getText());
     }
 
-    @Response(acceptedType = RequestType.AUDIO, acceptedState = ClientState.SENDING_MESSAGE_TO_CONTACT)
+    @Response(acceptedState = ClientState.SENDING_MESSAGE_TO_CONTACT)
     public SendAudio sendAudio(RequestDto requestDto) {
         return new SendAudio(requestDto.client().getTelegramUser().getId().toString(), new InputFile(requestDto.value().getAudio().getFileId()));
     }
 
-    @Response(acceptedType = RequestType.STICKER, acceptedState = ClientState.SENDING_MESSAGE_TO_CONTACT)
+    @Response(acceptedState = ClientState.SENDING_MESSAGE_TO_CONTACT)
     public SendSticker sendSticker(RequestDto requestDto) {
         return new SendSticker(requestDto.client().getTelegramUser().getId().toString(), new InputFile(requestDto.value().getSticker().getFileId()));
     }

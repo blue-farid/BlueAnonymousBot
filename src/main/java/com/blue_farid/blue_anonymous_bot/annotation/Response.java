@@ -14,6 +14,4 @@ public @interface Response {
     String value() default "";
 
     ClientState acceptedState() default ClientState.NORMAL;
-
-    RequestType acceptedType() default RequestType.COMMAND;
 }
