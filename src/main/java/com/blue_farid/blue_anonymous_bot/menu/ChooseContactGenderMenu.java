@@ -1,5 +1,6 @@
 package com.blue_farid.blue_anonymous_bot.menu;
 
+import com.blue_farid.blue_anonymous_bot.telegram.command.CommandConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -33,9 +34,9 @@ public class ChooseContactGenderMenu extends Menu {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         KeyboardRow keyboardRow2 = new KeyboardRow();
-        keyboardFirstRow.add(env.getProperty("choose_contact_gender_male"));
-        keyboardFirstRow.add(env.getProperty("choose_contact_gender_female"));
-        keyboardRow2.add(env.getProperty("choose_contact_gender_bi"));
+        keyboardFirstRow.add(CommandConstant.CHOOSE_GENDER_MALE);
+        keyboardFirstRow.add(CommandConstant.CHOOSE_GENDER_FEMALE);
+        keyboardRow2.add(CommandConstant.CHOOSE_GENDER_BI);
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardRow2);
         return keyboard;
