@@ -204,6 +204,7 @@ public class CommandService {
     @SneakyThrows
     public void chooseContactGender(RequestDto requestDto) {
         SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setText(Objects.requireNonNull(env.getProperty("choose_contact_sex")));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         bot.execute(sendMessage);
@@ -214,6 +215,7 @@ public class CommandService {
     public void anonymousConnection(RequestDto requestDto) {
         clientService.setClientState(requestDto.client(), ClientState.CHOOSING_CONTACT_GENDER);
         SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_connection")));
         sendMessage.setReplyMarkup(bot.getChooseContactGenderMenu());
         bot.execute(sendMessage);

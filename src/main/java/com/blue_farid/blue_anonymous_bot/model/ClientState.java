@@ -1,7 +1,5 @@
 package com.blue_farid.blue_anonymous_bot.model;
 
-import java.util.function.Predicate;
-
 /**
  * the Client State class
  */
