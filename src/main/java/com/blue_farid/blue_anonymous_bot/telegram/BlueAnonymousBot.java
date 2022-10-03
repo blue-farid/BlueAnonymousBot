@@ -3,6 +3,7 @@ package com.blue_farid.blue_anonymous_bot.telegram;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.exception.ConfigException;
+import com.blue_farid.blue_anonymous_bot.menu.CancelMenu;
 import com.blue_farid.blue_anonymous_bot.menu.MainMenu;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
@@ -14,7 +15,6 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -33,15 +33,14 @@ import java.lang.reflect.Method;
 @RequiredArgsConstructor
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final Environment environment;
-
+    private final ClientService clientService;
+    @Getter
+    private final MainMenu mainMenu;
+    @Getter
+    private final CancelMenu cancelMenu;
     @Lazy
     @Autowired
     private CommandService commandService;
-
-    private final ClientService clientService;
-
-    @Getter
-    private final MainMenu mainMenu;
     @Value("${bot.username}")
     private String botUsername;
     @Value("${bot.token}")

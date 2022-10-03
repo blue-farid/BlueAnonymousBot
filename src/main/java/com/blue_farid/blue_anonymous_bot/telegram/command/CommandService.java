@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class CommandService {
     private final BlueAnonymousBot bot;
 
     @SneakyThrows
-    @Response(value = "/start")
+    @Response(value = CommandConstant.START)
     public void start(RequestDto requestDto) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(env.getProperty("start")));
@@ -138,5 +139,72 @@ public class CommandService {
         clientService.setContactMessageId(client, 0);
         clientService.setContact(client, 0);
         clientService.setClientState(client, ClientState.NORMAL);
+    }
+
+    @Response(value = CommandConstant.SPECIFIC_CONNECTION)
+    @SneakyThrows
+    public void specificConnection(RequestDto requestDto) {
+        clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("specific_connection")));
+        sendMessage.setReplyMarkup(bot.getCancelMenu());
+        bot.executeSendMessage(sendMessage);
+    }
+
+    @Response(acceptedState = ClientState.SENDING_CONTACT_INFO)
+    @SneakyThrows
+    public void findContact(RequestDto requestDto) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        Client contact;
+        contact = findWithForwarded(requestDto.value());
+        if (contact == null && !isUsername(requestDto.value().getText())) {
+            sendMessage.setText(Objects.requireNonNull(env.getProperty("send_forwarded_message")));
+            bot.executeSendMessage(sendMessage);
+        } else {
+            if (contact == null)
+                contact = findWithUsername(requestDto.value());
+        }
+        if (contact != null) {
+            if (contact.equals(requestDto.client())) {
+                sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
+                sendMessage.setReplyMarkup(bot.getMainMenu());
+                bot.executeSendMessage(sendMessage);
+                clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+            } else {
+                sendMessage.setText(Objects.requireNonNull(env.getProperty("find_contact_1")).replace("?name",
+                        contact.getFirstname()));
+                bot.executeSendMessage(sendMessage);
+                clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+                clientService.setContact(requestDto.client(), contact.getId());
+            }
+
+        } else {
+            sendMessage.setText(Objects.requireNonNull(env.getProperty("find_contact_2")));
+            sendMessage.setReplyMarkup(bot.getMainMenu());
+            bot.executeSendMessage(sendMessage);
+            clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+        }
+    }
+
+    private Client findWithForwarded(Message message) {
+        User forwardedFrom = message.getForwardFrom();
+        if (forwardedFrom != null) {
+            return clientService.getClientById(forwardedFrom.getId());
+        }
+        return null;
+    }
+
+    private boolean isUsername(String username) {
+        return username.charAt(0) == '@';
+    }
+
+    private Client findWithUsername(Message message) {
+        String text = message.getText();
+        String username = text.replaceFirst("@", "");
+        if (!username.contains(" ")) {
+            return clientService.getClientByUsername(username);
+        }
+        return null;
     }
 }

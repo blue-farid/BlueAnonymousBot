@@ -1,5 +1,7 @@
 package com.blue_farid.blue_anonymous_bot.menu;
 
+import com.blue_farid.blue_anonymous_bot.telegram.command.CommandConstant;
+import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -34,8 +36,8 @@ public class MainMenu extends Menu {
         KeyboardRow keyboardRow2 = new KeyboardRow();
         KeyboardRow keyboardRow3 = new KeyboardRow();
         KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardFirstRow.add(env.getProperty("button.anonymous_connection"));
-        keyboardRow2.add(env.getProperty("button.specific_connection"));
+        keyboardFirstRow.add(env.getProperty("button.anonymous_connection") + "::" + CommandConstant.ANONYMOUS_CONNECTION);
+        keyboardRow2.add(env.getProperty("button.specific_connection") + "::" + CommandConstant.SPECIFIC_CONNECTION);
         keyboardRow3.add(env.getProperty("button.anonymous_link"));
         keyboardRow3.add(env.getProperty("button.anonymous_to_group"));
         keyboardRow4.add(env.getProperty("button.help"));
