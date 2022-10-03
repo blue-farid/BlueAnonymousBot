@@ -16,7 +16,6 @@ import java.util.List;
  * @author Farid Masjedi
  */
 @Component
-@PropertySource("classpath:buttons.properties")
 @RequiredArgsConstructor
 public class ChooseContactGenderMenu extends Menu {
     private final Environment env;

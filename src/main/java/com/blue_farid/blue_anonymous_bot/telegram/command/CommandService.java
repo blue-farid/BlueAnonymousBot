@@ -20,7 +20,6 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@PropertySource("classpath:messages.properties")
 public class CommandService {
     private final ClientService clientService;
     private final Environment env;
@@ -30,7 +29,11 @@ public class CommandService {
     @SneakyThrows
     @Response(value = "/start")
     public void start(RequestDto requestDto) {
-        bot.execute(new SendMessage(requestDto.client().getTelegramUser().getId().toString(), Objects.requireNonNull(env.getProperty("start"))));
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("start")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        sendMessage.setChatId(requestDto.client().getId());
+        bot.execute(sendMessage);
     }
 
     @SneakyThrows

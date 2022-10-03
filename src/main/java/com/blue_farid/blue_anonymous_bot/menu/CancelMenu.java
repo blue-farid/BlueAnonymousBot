@@ -15,7 +15,6 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-@PropertySource("classpath:buttons.properties")
 public class CancelMenu extends Menu {
     private final Environment env;
 

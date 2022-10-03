@@ -14,7 +14,6 @@ import java.util.List;
  * @author Negar Anabestani
  */
 
-@PropertySource("classpath:buttons.properties")
 @RequiredArgsConstructor
 @Component
 public class MainMenu extends Menu {

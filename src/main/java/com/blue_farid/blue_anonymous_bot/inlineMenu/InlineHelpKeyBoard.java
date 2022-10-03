@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
  */
 
 @Component
-@PropertySource("classpath:buttons.properties")
 @RequiredArgsConstructor
 public class InlineHelpKeyBoard extends InlineBlueKeyBoard {
     private final Environment env;

@@ -29,7 +29,6 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 
-@PropertySource("classpath:bot_config.properties")
 @Component
 @RequiredArgsConstructor
 public class BlueAnonymousBot extends TelegramLongPollingBot {
