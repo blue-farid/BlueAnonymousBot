@@ -9,7 +9,6 @@ import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.*;
@@ -40,7 +39,11 @@ public class CommandService {
     @Response(value = "answer")
     public void answer(RequestDto requestDto) {
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
-        bot.execute(new SendMessage(requestDto.client().getTelegramUser().getId().toString(), Objects.requireNonNull(env.getProperty("answer"))));
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("answer")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        sendMessage.setChatId(requestDto.client().getId());
+        bot.execute(sendMessage);
     }
 
     @SneakyThrows
