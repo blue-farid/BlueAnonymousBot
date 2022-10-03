@@ -65,7 +65,7 @@ public class CommandService {
             contactSendMessage.setEntities(message.getEntities());
             contactSendMessage.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendMessage.setReplyToMessageId(client.getContactMessageId());
-            bot.executeSendMessage(contactSendMessage);
+            bot.execute(contactSendMessage);
         } else if (message.hasSticker()) {
             InputFile sticker = new InputFile(message.getSticker().getFileId());
             SendSticker contactSendSticker = new SendSticker(contactChatId, sticker);
@@ -129,13 +129,13 @@ public class CommandService {
                     "username: " + client.getUsername()
                     + "\nfirstname: " + client.getFirstname()
                     + "\nlastname: " + client.getLastname());
-            bot.executeSendMessage(adminSendMessage);
+            bot.execute(adminSendMessage);
         }
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(client.getId()));
         sendMessage.setText(Objects.requireNonNull(env.getProperty("send_message_done")));
         sendMessage.setReplyMarkup(bot.getMainMenu());
-        bot.executeSendMessage(sendMessage);
+        bot.execute(sendMessage);
         clientService.setContactMessageId(client, 0);
         clientService.setContact(client, 0);
         clientService.setClientState(client, ClientState.NORMAL);
@@ -148,7 +148,7 @@ public class CommandService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(env.getProperty("specific_connection")));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
-        bot.executeSendMessage(sendMessage);
+        bot.execute(sendMessage);
     }
 
     @Response(acceptedState = ClientState.SENDING_CONTACT_INFO)
@@ -160,7 +160,7 @@ public class CommandService {
         contact = findWithForwarded(requestDto.value());
         if (contact == null && !isUsername(requestDto.value().getText())) {
             sendMessage.setText(Objects.requireNonNull(env.getProperty("send_forwarded_message")));
-            bot.executeSendMessage(sendMessage);
+            bot.execute(sendMessage);
         } else {
             if (contact == null)
                 contact = findWithUsername(requestDto.value());
@@ -169,12 +169,12 @@ public class CommandService {
             if (contact.equals(requestDto.client())) {
                 sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
                 sendMessage.setReplyMarkup(bot.getMainMenu());
-                bot.executeSendMessage(sendMessage);
+                bot.execute(sendMessage);
                 clientService.setClientState(requestDto.client(), ClientState.NORMAL);
             } else {
                 sendMessage.setText(Objects.requireNonNull(env.getProperty("find_contact_1")).replace("?name",
                         contact.getFirstname()));
-                bot.executeSendMessage(sendMessage);
+                bot.execute(sendMessage);
                 clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
                 clientService.setContact(requestDto.client(), contact.getId());
             }
@@ -182,9 +182,28 @@ public class CommandService {
         } else {
             sendMessage.setText(Objects.requireNonNull(env.getProperty("find_contact_2")));
             sendMessage.setReplyMarkup(bot.getMainMenu());
-            bot.executeSendMessage(sendMessage);
+            bot.execute(sendMessage);
             clientService.setClientState(requestDto.client(), ClientState.NORMAL);
         }
+    }
+
+    @Response(acceptedState = ClientState.CHOOSING_CONTACT_GENDER)
+    @SneakyThrows
+    public void chooseContactGender(RequestDto requestDto) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("choose_contact_sex")));
+        sendMessage.setReplyMarkup(bot.getCancelMenu());
+        bot.execute(sendMessage);
+    }
+
+    @Response(value = CommandConstant.ANONYMOUS_CONNECTION)
+    @SneakyThrows
+    public void anonymousConnection(RequestDto requestDto) {
+        clientService.setClientState(requestDto.client(), ClientState.CHOOSING_CONTACT_GENDER);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_connection")));
+        sendMessage.setReplyMarkup(bot.getChooseContactGenderMenu());
+        bot.execute(sendMessage);
     }
 
     private Client findWithForwarded(Message message) {
