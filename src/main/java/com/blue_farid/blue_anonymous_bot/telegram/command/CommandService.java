@@ -48,7 +48,7 @@ public class CommandService {
     }
 
     @SneakyThrows
-    @Response(acceptedState = ClientState.SENDING_MESSAGE_TO_CONTACT)
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT)
     public void sendMessage(RequestDto requestDto) {
         Client client = requestDto.client();
         Message message = requestDto.value();
@@ -141,17 +141,30 @@ public class CommandService {
         clientService.setClientState(client, ClientState.NORMAL);
     }
 
+    @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
+            ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL})
+    @SneakyThrows
+    public void cancel(RequestDto requestDto) {
+        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("cancel")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
+    }
+
     @Response(value = CommandConstant.SPECIFIC_CONNECTION)
     @SneakyThrows
     public void specificConnection(RequestDto requestDto) {
         clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
         SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setText(Objects.requireNonNull(env.getProperty("specific_connection")));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         bot.execute(sendMessage);
     }
 
-    @Response(acceptedState = ClientState.SENDING_CONTACT_INFO)
+    @Response(acceptedStates = ClientState.SENDING_CONTACT_INFO)
     @SneakyThrows
     public void findContact(RequestDto requestDto) {
         SendMessage sendMessage = new SendMessage();
@@ -166,7 +179,7 @@ public class CommandService {
                 contact = findWithUsername(requestDto.value());
         }
         if (contact != null) {
-            if (contact.equals(requestDto.client())) {
+            if (contact.getId() == requestDto.client().getId()) {
                 sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
                 sendMessage.setReplyMarkup(bot.getMainMenu());
                 bot.execute(sendMessage);
@@ -187,7 +200,7 @@ public class CommandService {
         }
     }
 
-    @Response(acceptedState = ClientState.CHOOSING_CONTACT_GENDER)
+    @Response(acceptedStates = ClientState.CHOOSING_CONTACT_GENDER)
     @SneakyThrows
     public void chooseContactGender(RequestDto requestDto) {
         SendMessage sendMessage = new SendMessage();

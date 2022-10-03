@@ -29,6 +29,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -102,7 +103,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             if (method.isAnnotationPresent(Response.class)) {
                 Response response = method.getAnnotation(Response.class);
                 if ((Strings.isEmpty(response.value()) || response.value().equals(caseValue)) &&
-                        response.acceptedState().equals(client.getClientState())) {
+                        Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState()))) {
                     method.invoke(this.commandService, new RequestDto(client, message));
                     break;
                 }

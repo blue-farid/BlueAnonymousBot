@@ -1,5 +1,6 @@
 package com.blue_farid.blue_anonymous_bot.menu;
 
+import com.blue_farid.blue_anonymous_bot.telegram.command.CommandConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -30,7 +31,7 @@ public class CancelMenu extends Menu {
     protected List<KeyboardRow> creatKeyBoard() {
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(env.getProperty("button.cancel"));
+        keyboardFirstRow.add(CommandConstant.CANCEL);
         keyboard.add(keyboardFirstRow);
         return keyboard;
     }

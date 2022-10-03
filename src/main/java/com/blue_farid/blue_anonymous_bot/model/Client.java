@@ -18,13 +18,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class Client implements Serializable {
     @Id
     @NotNull
     @Column(name = "ID")
-    @EqualsAndHashCode.Include
     private long id;
     @NotNull
     @Column(name = "USERNAME", unique = true)
