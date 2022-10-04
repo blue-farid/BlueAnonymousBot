@@ -32,11 +32,28 @@ public class CommandService {
     @SneakyThrows
     @Response(value = CommandConstant.START)
     public void start(RequestDto requestDto) {
+        String[] commands = requestDto.value().getText().split(" ");
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("start")));
-        sendMessage.setReplyMarkup(bot.getMainMenu());
-        sendMessage.setChatId(requestDto.client().getId());
-        bot.execute(sendMessage);
+        if (commands.length == 2) {
+            String link  = getAnonymousLinkPrefix() + commands[1];
+            Client contact = clientService.getClientByDeepLink(link);
+            if (requestDto.client().equals(contact)) {
+                sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
+                bot.executeSendMessage(sendMessage);
+                return;
+            }
+            sendMessage.setText(Objects.requireNonNull(env.getProperty("start_2")).replace("?name",
+                    contact.getFirstname()));
+            sendMessage.setReplyMarkup(bot.getCancelMenu());
+            bot.executeSendMessage(sendMessage);
+            clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+            clientService.setContact(requestDto.client(), contact.getId());
+        } else {
+            sendMessage.setText(Objects.requireNonNull(env.getProperty("start")));
+            sendMessage.setReplyMarkup(bot.getMainMenu());
+            sendMessage.setChatId(requestDto.client().getId());
+            bot.execute(sendMessage);
+        }
     }
 
     @SneakyThrows
@@ -259,10 +276,8 @@ public class CommandService {
     }
 
     private String generateAnonymousLink() {
-        String anonymousLinkPrefix = "https://t.me/" +
-                bot.getBotUsername() + "?start=";
         while (true) {
-            String anonymousLink = anonymousLinkPrefix + "sc";
+            String anonymousLink = getAnonymousLinkPrefix() + "sc";
             anonymousLink += "-";
             anonymousLink += randomUtils.generateRandomNumber(5);
             anonymousLink += "-";
@@ -271,5 +286,9 @@ public class CommandService {
                 return anonymousLink;
             }
         }
+    }
+
+    private String getAnonymousLinkPrefix() {
+        return "https://t.me/" + bot.getBotUsername() + "?start=";
     }
 }
