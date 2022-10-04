@@ -24,12 +24,12 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -99,27 +99,19 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         }
 
         Client client = clientService.getClientById(id);
+        boolean flag = true;
         for (Method method : CommandService.class.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Response.class)) {
                 Response response = method.getAnnotation(Response.class);
                 if ((Strings.isEmpty(response.value()) || response.value().contains(caseValue)) &&
                         Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState()))) {
                     method.invoke(this.commandService, new RequestDto(client, message));
+                    flag = false;
                     break;
                 }
             }
         }
-    }
-
-    public int executeSendMessage(SendMessage sendMessage) {
-        try {
-            execute(sendMessage);
-            return 0;
-        } catch (TelegramApiRequestException e) {
-            return e.getErrorCode();
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-            return -1;
-        }
+        if (flag)
+            execute(new SendMessage(id.toString(), Objects.requireNonNull(environment.getProperty("bad_input"))));
     }
 }

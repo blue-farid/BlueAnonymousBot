@@ -39,13 +39,13 @@ public class CommandService {
             Client contact = clientService.getClientByDeepLink(link);
             if (requestDto.client().equals(contact)) {
                 sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
-                bot.executeSendMessage(sendMessage);
+                bot.execute(sendMessage);
                 return;
             }
             sendMessage.setText(Objects.requireNonNull(env.getProperty("start_2")).replace("?name",
                     contact.getFirstname()));
             sendMessage.setReplyMarkup(bot.getCancelMenu());
-            bot.executeSendMessage(sendMessage);
+            bot.execute(sendMessage);
             clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
             clientService.setContact(requestDto.client(), contact.getId());
         } else {
