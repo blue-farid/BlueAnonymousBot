@@ -7,6 +7,7 @@ import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
+import com.blue_farid.blue_anonymous_bot.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.env.Environment;
@@ -25,6 +26,8 @@ public class CommandService {
     private final Environment env;
 
     private final BlueAnonymousBot bot;
+
+    private final RandomUtils randomUtils;
 
     @SneakyThrows
     @Response(value = CommandConstant.START)
@@ -221,6 +224,19 @@ public class CommandService {
         bot.execute(sendMessage);
     }
 
+    @Response(value = CommandConstant.ANONYMOUS_LINK)
+    @SneakyThrows
+    public void anonymousLink(RequestDto requestDto) {
+        SendMessage sendMessage = new SendMessage();
+        if (!requestDto.client().hasDeepLink()) {
+            clientService.setDeepLink(requestDto.client(), generateAnonymousLink());
+        }
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_link")).replace("?name",
+                        requestDto.client().getFirstname())
+                .concat("\n" + requestDto.client().getDeepLink()));
+        bot.execute(sendMessage);
+    }
+
     private Client findWithForwarded(Message message) {
         User forwardedFrom = message.getForwardFrom();
         if (forwardedFrom != null) {
@@ -240,5 +256,20 @@ public class CommandService {
             return clientService.getClientByUsername(username);
         }
         return null;
+    }
+
+    private String generateAnonymousLink() {
+        String anonymousLinkPrefix = "https://t.me/" +
+                bot.getBotUsername() + "?start=";
+        while (true) {
+            String anonymousLink = anonymousLinkPrefix + "sc";
+            anonymousLink += "-";
+            anonymousLink += randomUtils.generateRandomNumber(5);
+            anonymousLink += "-";
+            anonymousLink += randomUtils.generateRandomString(8);
+            if (clientService.getClientByDeepLink(anonymousLink) == null) {
+                return anonymousLink;
+            }
+        }
     }
 }
