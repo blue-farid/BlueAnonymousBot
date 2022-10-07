@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logging.log</file>
+        <file>/var/log/blue-anonymous-bot/logging.log</file>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] %-5p %c %x %{method} {\n%m%n%X{others}}\n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] %-5p %logger{0}.%X{method} {\n%m%n%X{others}}\n</pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">

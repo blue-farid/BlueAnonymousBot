@@ -84,10 +84,11 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     @Override
     @SneakyThrows
     public void onUpdateReceived(Update update) {
-        Long id = update.getMessage().getChatId();
         String caseValue;
         Message message = null;
+        Client client;
         if (update.hasMessage()) {
+            Long id = update.getMessage().getChatId();
             if (!clientService.exists(id)) {
                 clientService.addClient(new Client(update.getMessage().getFrom()));
             } else {
@@ -95,11 +96,15 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             }
             caseValue = update.getMessage().getText();
             message = update.getMessage();
+            client = clientService.getClientById(id);
         } else {
-            caseValue = update.getCallbackQuery().getData();
+            String[] callBack = update.getCallbackQuery().getData().split(" ");
+            caseValue = callBack[0];
+            message = new Message();
+            message.setText(callBack[1]);
+            client = new Client(update.getCallbackQuery().getFrom());
         }
 
-        Client client = clientService.getClientById(id);
         boolean flag = true;
         for (Method method : CommandService.class.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Response.class)) {

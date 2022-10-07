@@ -66,6 +66,7 @@ public class CommandService {
     public void answer(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+        clientService.setContact(requestDto.client(), Long.parseLong(requestDto.value().getText()));
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(env.getProperty("answer")));
         sendMessage.setReplyMarkup(bot.getMainMenu());
@@ -78,7 +79,7 @@ public class CommandService {
     public void sendMessage(RequestDto requestDto) {
         Client client = requestDto.client();
         Message message = requestDto.value();
-        String contactChatId = String.valueOf(clientService.getContact(client).getContactId());
+        String contactChatId = String.valueOf(clientService.getContact(client).getId());
         if (message == null) {
             clientService.setClientState(client, ClientState.NORMAL);
             return;
