@@ -26,4 +26,8 @@ public class CommonUtils {
         }
         return botRunsOnWindows;
     }
+
+    public static String readyForLog(String str) {
+        return "\t- " + str + "\n";
+    }
 }

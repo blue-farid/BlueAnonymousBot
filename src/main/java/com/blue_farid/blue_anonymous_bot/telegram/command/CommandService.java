@@ -7,9 +7,12 @@ import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
+import com.blue_farid.blue_anonymous_bot.utils.CommonUtils;
 import com.blue_farid.blue_anonymous_bot.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.*;
@@ -21,6 +24,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommandService {
     private final ClientService clientService;
     private final Environment env;
@@ -32,6 +36,7 @@ public class CommandService {
     @SneakyThrows
     @Response(value = CommandConstant.START)
     public void start(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         String[] commands = requestDto.value().getText().split(" ");
         SendMessage sendMessage = new SendMessage();
         if (commands.length == 2) {
@@ -59,6 +64,7 @@ public class CommandService {
     @SneakyThrows
     @Response(value = "answer")
     public void answer(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(env.getProperty("answer")));
@@ -77,7 +83,11 @@ public class CommandService {
             clientService.setClientState(client, ClientState.NORMAL);
             return;
         }
+
         if (message.hasText()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {" + message.getText().replace("\n", " ") + "}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             String text = message.getText();
             SendMessage contactSendMessage = new SendMessage();
             contactSendMessage.setChatId(contactChatId);
@@ -87,12 +97,18 @@ public class CommandService {
             contactSendMessage.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendMessage);
         } else if (message.hasSticker()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {Sticker}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             InputFile sticker = new InputFile(message.getSticker().getFileId());
             SendSticker contactSendSticker = new SendSticker(contactChatId, sticker);
             contactSendSticker.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendSticker.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendSticker);
         } else if (message.hasVoice()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {Voice}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             InputFile voice = new InputFile(message.getVoice().getFileId());
             SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
             contactSendVoice.setCaption(message.getCaption());
@@ -101,6 +117,9 @@ public class CommandService {
             contactSendVoice.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVoice);
         } else if (message.hasDocument()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {Document}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             InputFile document = new InputFile(message.getDocument().getFileId());
             SendDocument contactSendDocument = new SendDocument(contactChatId, document);
             contactSendDocument.setCaption(message.getCaption());
@@ -109,6 +128,9 @@ public class CommandService {
             contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendDocument);
         } else if (message.hasPhoto()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {Photo}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             InputFile photo = new InputFile(message.getPhoto().get(0).getFileId());
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
@@ -117,6 +139,9 @@ public class CommandService {
             contactSendPhoto.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendPhoto);
         } else if (message.hasVideo()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {Video}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             InputFile video = new InputFile(message.getVideo().getFileId());
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
@@ -125,6 +150,9 @@ public class CommandService {
             contactSendVideo.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVideo);
         } else if (message.hasAudio()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {Audio}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             InputFile audio = new InputFile(message.getAudio().getFileId());
             SendAudio contactSendAudio = new SendAudio(contactChatId, audio);
             contactSendAudio.setCaption(message.getCaption());
@@ -133,6 +161,9 @@ public class CommandService {
             contactSendAudio.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendAudio);
         } else if (message.hasVideoNote()) {
+            MDC.put("others", CommonUtils.readyForLog("message: {Video Message}") + CommonUtils.readyForLog(
+                    "contactId: {" + contactChatId + "}"
+            ));
             InputFile videoNote = new InputFile(message.getVideoNote().getFileId());
             SendVideoNote contactSendVideoNote = new SendVideoNote(contactChatId, videoNote);
             contactSendVideoNote.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
@@ -141,6 +172,8 @@ public class CommandService {
         } else {
             throw new IllegalStateException();
         }
+
+        log.info(requestDto.client().getClientInfo());
 
         if (clientService.getContact(client).isAdmin()) {
             SendMessage adminSendMessage = new SendMessage();
@@ -165,6 +198,7 @@ public class CommandService {
             ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL})
     @SneakyThrows
     public void cancel(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
@@ -176,6 +210,7 @@ public class CommandService {
     @Response(value = CommandConstant.SPECIFIC_CONNECTION)
     @SneakyThrows
     public void specificConnection(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
@@ -187,6 +222,7 @@ public class CommandService {
     @Response(acceptedStates = ClientState.SENDING_CONTACT_INFO)
     @SneakyThrows
     public void findContact(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
         Client contact;
@@ -223,6 +259,7 @@ public class CommandService {
     @Response(acceptedStates = ClientState.CHOOSING_CONTACT_GENDER)
     @SneakyThrows
     public void chooseContactGender(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setText(Objects.requireNonNull(env.getProperty("choose_contact_sex")));
@@ -233,6 +270,7 @@ public class CommandService {
     @Response(value = CommandConstant.ANONYMOUS_CONNECTION)
     @SneakyThrows
     public void anonymousConnection(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.CHOOSING_CONTACT_GENDER);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
@@ -244,6 +282,7 @@ public class CommandService {
     @Response(value = CommandConstant.ANONYMOUS_LINK)
     @SneakyThrows
     public void anonymousLink(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
         if (!requestDto.client().hasDeepLink()) {
             clientService.setDeepLink(requestDto.client(), generateAnonymousLink());
@@ -252,6 +291,12 @@ public class CommandService {
                         requestDto.client().getFirstname())
                 .concat("\n" + requestDto.client().getDeepLink()));
         bot.execute(sendMessage);
+    }
+
+    @SneakyThrows
+    public void badInput(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        bot.execute(new SendMessage(String.valueOf(requestDto.client().getId()), Objects.requireNonNull(env.getProperty("bad_input"))));
     }
 
     private Client findWithForwarded(Message message) {

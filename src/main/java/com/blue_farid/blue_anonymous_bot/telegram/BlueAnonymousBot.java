@@ -12,7 +12,9 @@ import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +22,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -29,10 +30,10 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final Environment environment;
     private final ClientService clientService;
@@ -105,13 +106,18 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                 Response response = method.getAnnotation(Response.class);
                 if ((Strings.isEmpty(response.value()) || response.value().contains(caseValue)) &&
                         Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState()))) {
+                    MDC.put("method", method.getName());
                     method.invoke(this.commandService, new RequestDto(client, message));
+                    MDC.clear();
                     flag = false;
                     break;
                 }
             }
         }
-        if (flag)
-            execute(new SendMessage(id.toString(), Objects.requireNonNull(environment.getProperty("bad_input"))));
+        if (flag) {
+            MDC.put("method", "badInput");
+            this.commandService.badInput(new RequestDto(client, message));
+            MDC.clear();
+        }
     }
 }
