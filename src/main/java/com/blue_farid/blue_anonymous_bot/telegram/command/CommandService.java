@@ -291,6 +291,7 @@ public class CommandService {
         sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_link")).replace("?name",
                         requestDto.client().getFirstname())
                 .concat("\n" + requestDto.client().getDeepLink()));
+        sendMessage.setChatId(requestDto.client().getId());
         bot.execute(sendMessage);
     }
 
