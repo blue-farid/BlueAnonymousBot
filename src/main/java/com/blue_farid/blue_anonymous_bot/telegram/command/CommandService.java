@@ -40,9 +40,10 @@ public class CommandService {
         String[] commands = requestDto.value().getText().split(" ");
         SendMessage sendMessage = new SendMessage();
         if (commands.length == 2) {
-            String link  = getAnonymousLinkPrefix() + commands[1];
+            String link = getAnonymousLinkPrefix() + commands[1];
             Client contact = clientService.getClientByDeepLink(link);
-            if (requestDto.client().equals(contact)) {
+            sendMessage.setChatId(requestDto.client().getId());
+            if (requestDto.client().getId() == contact.getId()) {
                 sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
                 bot.execute(sendMessage);
                 return;
