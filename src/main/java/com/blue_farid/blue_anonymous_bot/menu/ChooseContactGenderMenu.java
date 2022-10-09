@@ -2,8 +2,6 @@ package com.blue_farid.blue_anonymous_bot.menu;
 
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandConstant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -19,7 +17,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ChooseContactGenderMenu extends Menu {
-    private final Environment env;
 
     @PostConstruct
     public void init() {

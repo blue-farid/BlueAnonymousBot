@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 @Component
 @RequiredArgsConstructor
 public class InlineBackToHelpMainMenuKeyBoard extends InlineBlueKeyBoard {
-    private final Environment env;
 
     @PostConstruct
     public void init() {

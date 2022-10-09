@@ -2,7 +2,6 @@ package com.blue_farid.blue_anonymous_bot.inlineMenu;
 
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandConstant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,7 +13,6 @@ import javax.annotation.PostConstruct;
 @Component
 @RequiredArgsConstructor
 public class InlineHelpKeyBoard extends InlineBlueKeyBoard {
-    private final Environment env;
 
     @PostConstruct
     public void init() {

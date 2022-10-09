@@ -17,7 +17,7 @@ public class AdminController {
     @Admin
     @PutMapping("set")
     @SneakyThrows
-    public void addAdmin(String password, long id, boolean value) {
+    public void setAdmin(String password, long id, boolean value) {
         clientService.setAdmin(clientService.getClientById(id), value);
     }
 }
