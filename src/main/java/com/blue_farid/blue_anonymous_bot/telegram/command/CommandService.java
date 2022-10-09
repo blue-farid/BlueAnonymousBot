@@ -63,7 +63,7 @@ public class CommandService {
     }
 
     @SneakyThrows
-    @Response(value = "answer")
+    @Response(value = CommandConstant.ANSWER)
     public void answer(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
