@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.*;
@@ -29,12 +28,14 @@ import java.util.Objects;
 @Slf4j
 public class CommandService {
     private final ClientService clientService;
+
     private final Environment env;
 
     private final BlueAnonymousBot bot;
+
     private final RandomUtils randomUtils;
-    @Autowired
-    private InlineHelpKeyBoard helpKeyBoard;
+
+    private final InlineHelpKeyBoard helpKeyBoard;
 
     @SneakyThrows
     @Response(value = CommandConstant.START)
@@ -76,6 +77,18 @@ public class CommandService {
         sendMessage.setReplyMarkup(bot.getMainMenu());
         sendMessage.setChatId(requestDto.client().getId());
         bot.execute(sendMessage);
+    }
+
+    @SneakyThrows
+    @Response(value = CommandConstant.ANONYMOUS_TO_GROUP)
+    public void anonymousToGroup(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @SneakyThrows
+    @Response(value = CommandConstant.SCORE)
+    public void score(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
     }
 
     @SneakyThrows
@@ -130,7 +143,12 @@ public class CommandService {
     public void sendMessage(RequestDto requestDto) {
         Client client = requestDto.client();
         Message message = requestDto.value();
+        SendMessage sendMessage = new SendMessage();
         String contactChatId = String.valueOf(clientService.getContact(client).getId());
+        sendMessage.setChatId(String.valueOf(client.getContactId()));
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("new_anonymous_message")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
         if (message == null) {
             clientService.setClientState(client, ClientState.NORMAL);
             return;
@@ -224,7 +242,6 @@ public class CommandService {
         } else {
             throw new IllegalStateException();
         }
-
         log.info(requestDto.client().getClientInfo());
 
         if (clientService.getContact(client).isAdmin()) {
@@ -236,10 +253,8 @@ public class CommandService {
                     + "\nlastname: " + client.getLastname());
             bot.execute(adminSendMessage);
         }
-        SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(client.getId()));
         sendMessage.setText(Objects.requireNonNull(env.getProperty("send_message_done")));
-        sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
         clientService.setContactMessageId(client, 0);
         clientService.setContact(client, 0);
