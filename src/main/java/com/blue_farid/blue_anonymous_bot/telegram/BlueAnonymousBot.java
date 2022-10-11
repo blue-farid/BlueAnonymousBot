@@ -100,8 +100,10 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         } else {
             String[] callBack = update.getCallbackQuery().getData().split(" ");
             caseValue = callBack[0];
-            message = new Message();
-            message.setText(callBack[1]);
+            if (callBack.length > 1) {
+                message = new Message();
+                message.setText(callBack[1]);
+            }
             client = new Client(update.getCallbackQuery().getFrom());
         }
 

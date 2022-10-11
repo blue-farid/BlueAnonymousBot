@@ -1,8 +1,10 @@
 package com.blue_farid.blue_anonymous_bot.telegram.command;
 
+import com.blue_farid.blue_anonymous_bot.annotation.AdminCommand;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineAMB;
+import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineHelpKeyBoard;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
@@ -27,11 +29,14 @@ import java.util.Objects;
 @Slf4j
 public class CommandService {
     private final ClientService clientService;
+
     private final Environment env;
 
     private final BlueAnonymousBot bot;
 
     private final RandomUtils randomUtils;
+
+    private final InlineHelpKeyBoard helpKeyBoard;
 
     @SneakyThrows
     @Response(value = CommandConstant.START)
@@ -76,11 +81,101 @@ public class CommandService {
     }
 
     @SneakyThrows
+    @Response(value = CommandConstant.ANONYMOUS_TO_GROUP)
+    public void anonymousToGroup(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @SneakyThrows
+    @Response(value = CommandConstant.ADMIN_CONNECT)
+    @AdminCommand
+    public void adminConnect(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText("OK!, now send the contact ID!");
+        sendMessage.setChatId(requestDto.client().getId());
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = ClientState.SENDING_CONTACT_INFO)
+    @SneakyThrows
+    @AdminCommand
+    public void adminFindContact(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        requestDto.client().setContactId(clientService.getClientById(Long.parseLong(requestDto.value().getText())).getId());
+        sendMessage.setReplyMarkup(bot.getCancelMenu());
+        clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+        sendMessage.setText("OK! Send your message!");
+        bot.execute(sendMessage);
+    }
+
+    @SneakyThrows
+    @Response(value = CommandConstant.SCORE)
+    public void score(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @SneakyThrows
+    @Response(value = CommandConstant.HELP)
+    public void help(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("help")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        sendMessage.setReplyMarkup(helpKeyBoard);
+        sendMessage.setChatId(requestDto.client().getId());
+        bot.execute(sendMessage);
+    }
+
+    @Response(value = CommandConstant.SEND_ANONYMOUS_MESSAGE_GROUP_HELP)
+    public void helpAnonymousToGroup(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @Response(value = CommandConstant.WHAT_FOR_HELP)
+    public void helpWhatFor(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @Response(value = CommandConstant.CONNECT_RANDOM_ANONYMOUS_HELP)
+    public void helpRandomAnonymous(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @Response(value = CommandConstant.FREE_VIP_HELP)
+    public void helpFreeVIP(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @Response(value = CommandConstant.SPECIFIC_CONNECTION_HELP)
+    public void helpSpecificConnection(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @Response(value = CommandConstant.RECEIVE_ANONYMOUS_MESSAGE_HELP)
+    public void helpReceiveAnonymousMessage(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @Response(value = CommandConstant.BACK_HELP_MAIN_MENU)
+    public void backHelpMainMenu(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+    }
+
+    @SneakyThrows
     @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT)
     public void sendMessage(RequestDto requestDto) {
         Client client = requestDto.client();
         Message message = requestDto.value();
+        SendMessage sendMessage = new SendMessage();
         String contactChatId = String.valueOf(clientService.getContact(client).getId());
+        sendMessage.setChatId(String.valueOf(client.getContactId()));
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("new_anonymous_message")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
         if (message == null) {
             clientService.setClientState(client, ClientState.NORMAL);
             return;
@@ -174,7 +269,6 @@ public class CommandService {
         } else {
             throw new IllegalStateException();
         }
-
         log.info(requestDto.client().getClientInfo());
 
         if (clientService.getContact(client).isAdmin()) {
@@ -186,10 +280,8 @@ public class CommandService {
                     + "\nlastname: " + client.getLastname());
             bot.execute(adminSendMessage);
         }
-        SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(client.getId()));
         sendMessage.setText(Objects.requireNonNull(env.getProperty("send_message_done")));
-        sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
         clientService.setContactMessageId(client, 0);
         clientService.setContact(client, 0);
