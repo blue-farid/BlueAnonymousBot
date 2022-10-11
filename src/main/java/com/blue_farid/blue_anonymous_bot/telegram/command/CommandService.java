@@ -3,6 +3,7 @@ package com.blue_farid.blue_anonymous_bot.telegram.command;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineAMB;
+import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineHelpKeyBoard;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
@@ -12,7 +13,9 @@ import com.blue_farid.blue_anonymous_bot.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.*;
@@ -30,6 +33,9 @@ public class CommandService {
     private final Environment env;
 
     private final BlueAnonymousBot bot;
+
+    @Autowired
+    private InlineHelpKeyBoard helpKeyBoard;
 
     private final RandomUtils randomUtils;
 
@@ -73,6 +79,49 @@ public class CommandService {
         sendMessage.setReplyMarkup(bot.getMainMenu());
         sendMessage.setChatId(requestDto.client().getId());
         bot.execute(sendMessage);
+    }
+
+    @SneakyThrows
+    @Response(value = CommandConstant.HELP)
+    public void help(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+        clientService.setContact(requestDto.client(), Long.parseLong(requestDto.value().getText()));
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("help")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        sendMessage.setReplyMarkup(helpKeyBoard);
+        sendMessage.setChatId(requestDto.client().getId());
+        bot.execute(sendMessage);
+    }
+
+    @Response(value = CommandConstant.SEND_ANONYMOUS_MESSAGE_GROUP_HELP)
+    public void helpAnonymousToGroup(RequestDto requestDto){
+
+    }
+    @Response(value = CommandConstant.WHAT_FOR_HELP)
+    public void helpWhatFor(RequestDto requestDto){
+
+    }
+    @Response(value = CommandConstant.CONNECT_RANDOM_ANONYMOUS_HELP)
+    public void helpRandomAnonymous(RequestDto requestDto){
+
+    }
+    @Response(value = CommandConstant.FREE_VIP_HELP)
+    public void helpFreeVIP(RequestDto requestDto){
+
+    }
+    @Response(value = CommandConstant.SPECIFIC_CONNECTION_HELP)
+    public void helpSpecificConnection(RequestDto requestDto){
+
+    }
+    @Response(value = CommandConstant.RECEIVE_ANONYMOUS_MESSAGE_HELP)
+    public void helpReceiveAnonymousMessage(RequestDto requestDto){
+
+    }
+    @Response(value = CommandConstant.BACK_HELP_MAIN_MENU)
+    public void backHelpMainMenu(RequestDto requestDto){
+
     }
 
     @SneakyThrows
