@@ -92,37 +92,37 @@ public class CommandService {
 
     @Response(value = CommandConstant.SEND_ANONYMOUS_MESSAGE_GROUP_HELP)
     public void helpAnonymousToGroup(RequestDto requestDto) {
-
+        log.info(requestDto.client().getClientInfo());
     }
 
     @Response(value = CommandConstant.WHAT_FOR_HELP)
     public void helpWhatFor(RequestDto requestDto) {
-
+        log.info(requestDto.client().getClientInfo());
     }
 
     @Response(value = CommandConstant.CONNECT_RANDOM_ANONYMOUS_HELP)
     public void helpRandomAnonymous(RequestDto requestDto) {
-
+        log.info(requestDto.client().getClientInfo());
     }
 
     @Response(value = CommandConstant.FREE_VIP_HELP)
     public void helpFreeVIP(RequestDto requestDto) {
-
+        log.info(requestDto.client().getClientInfo());
     }
 
     @Response(value = CommandConstant.SPECIFIC_CONNECTION_HELP)
     public void helpSpecificConnection(RequestDto requestDto) {
-
+        log.info(requestDto.client().getClientInfo());
     }
 
     @Response(value = CommandConstant.RECEIVE_ANONYMOUS_MESSAGE_HELP)
     public void helpReceiveAnonymousMessage(RequestDto requestDto) {
-
+        log.info(requestDto.client().getClientInfo());
     }
 
     @Response(value = CommandConstant.BACK_HELP_MAIN_MENU)
     public void backHelpMainMenu(RequestDto requestDto) {
-
+        log.info(requestDto.client().getClientInfo());
     }
 
     @SneakyThrows
