@@ -13,7 +13,6 @@ import com.blue_farid.blue_anonymous_bot.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -33,11 +32,9 @@ public class CommandService {
     private final Environment env;
 
     private final BlueAnonymousBot bot;
-
+    private final RandomUtils randomUtils;
     @Autowired
     private InlineHelpKeyBoard helpKeyBoard;
-
-    private final RandomUtils randomUtils;
 
     @SneakyThrows
     @Response(value = CommandConstant.START)
@@ -96,31 +93,37 @@ public class CommandService {
     }
 
     @Response(value = CommandConstant.SEND_ANONYMOUS_MESSAGE_GROUP_HELP)
-    public void helpAnonymousToGroup(RequestDto requestDto){
+    public void helpAnonymousToGroup(RequestDto requestDto) {
 
     }
+
     @Response(value = CommandConstant.WHAT_FOR_HELP)
-    public void helpWhatFor(RequestDto requestDto){
+    public void helpWhatFor(RequestDto requestDto) {
 
     }
+
     @Response(value = CommandConstant.CONNECT_RANDOM_ANONYMOUS_HELP)
-    public void helpRandomAnonymous(RequestDto requestDto){
+    public void helpRandomAnonymous(RequestDto requestDto) {
 
     }
+
     @Response(value = CommandConstant.FREE_VIP_HELP)
-    public void helpFreeVIP(RequestDto requestDto){
+    public void helpFreeVIP(RequestDto requestDto) {
 
     }
+
     @Response(value = CommandConstant.SPECIFIC_CONNECTION_HELP)
-    public void helpSpecificConnection(RequestDto requestDto){
+    public void helpSpecificConnection(RequestDto requestDto) {
 
     }
+
     @Response(value = CommandConstant.RECEIVE_ANONYMOUS_MESSAGE_HELP)
-    public void helpReceiveAnonymousMessage(RequestDto requestDto){
+    public void helpReceiveAnonymousMessage(RequestDto requestDto) {
 
     }
+
     @Response(value = CommandConstant.BACK_HELP_MAIN_MENU)
-    public void backHelpMainMenu(RequestDto requestDto){
+    public void backHelpMainMenu(RequestDto requestDto) {
 
     }
 
