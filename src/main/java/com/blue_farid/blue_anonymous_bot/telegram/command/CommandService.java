@@ -82,8 +82,6 @@ public class CommandService {
     @Response(value = CommandConstant.HELP)
     public void help(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
-        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
-        clientService.setContact(requestDto.client(), Long.parseLong(requestDto.value().getText()));
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(env.getProperty("help")));
         sendMessage.setReplyMarkup(bot.getMainMenu());
