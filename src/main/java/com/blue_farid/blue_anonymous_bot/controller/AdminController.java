@@ -1,6 +1,6 @@
 package com.blue_farid.blue_anonymous_bot.controller;
 
-import com.blue_farid.blue_anonymous_bot.annotation.Admin;
+import com.blue_farid.blue_anonymous_bot.annotation.AdminApi;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     private final ClientService clientService;
 
-    @Admin
+    @AdminApi
     @PutMapping("set")
     @SneakyThrows
     public void addAdmin(String password, long id, boolean value) {

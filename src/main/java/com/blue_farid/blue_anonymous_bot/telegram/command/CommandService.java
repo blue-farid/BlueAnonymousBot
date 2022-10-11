@@ -1,5 +1,6 @@
 package com.blue_farid.blue_anonymous_bot.telegram.command;
 
+import com.blue_farid.blue_anonymous_bot.annotation.AdminCommand;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineAMB;
@@ -83,6 +84,32 @@ public class CommandService {
     @Response(value = CommandConstant.ANONYMOUS_TO_GROUP)
     public void anonymousToGroup(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
+    }
+
+    @SneakyThrows
+    @Response(value = CommandConstant.ADMIN_CONNECT)
+    @AdminCommand
+    public void adminConnect(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText("OK!, now send the contact ID!");
+        sendMessage.setChatId(requestDto.client().getId());
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = ClientState.SENDING_CONTACT_INFO)
+    @SneakyThrows
+    @AdminCommand
+    public void adminFindContact(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        requestDto.client().setContactId(clientService.getClientById(Long.parseLong(requestDto.value().getText())).getId());
+        sendMessage.setReplyMarkup(bot.getCancelMenu());
+        clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+        sendMessage.setText("OK! Send your message!");
+        bot.execute(sendMessage);
     }
 
     @SneakyThrows
