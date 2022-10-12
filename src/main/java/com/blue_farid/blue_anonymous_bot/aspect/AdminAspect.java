@@ -1,18 +1,21 @@
 package com.blue_farid.blue_anonymous_bot.aspect;
 
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
-import com.blue_farid.blue_anonymous_bot.utils.BlueStringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class AdminAspect {
+    @Value("${api.password:default}")
+    private String password;
+
     @Before("@annotation(com.blue_farid.blue_anonymous_bot.annotation.AdminApi)")
     public void authorize(JoinPoint joinPoint) throws IllegalAccessException {
-        if (!String.valueOf(joinPoint.getArgs()[0]).equals(BlueStringUtils.getRuntimePassword()))
+        if (!String.valueOf(joinPoint.getArgs()[0]).equals(password))
             throw new IllegalAccessException("Api Access Denied!");
     }
 

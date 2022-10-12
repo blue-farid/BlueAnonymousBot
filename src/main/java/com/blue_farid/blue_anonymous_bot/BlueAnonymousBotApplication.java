@@ -35,8 +35,6 @@ public class BlueAnonymousBotApplication {
      */
     public static void main(String[] args) {
         SpringApplication.run(BlueAnonymousBotApplication.class, args);
-        if (args.length > 0)
-            BlueStringUtils.setRuntimePassword(args[0]);
         System.out.println("\n" + BlueStringUtils.asciiBlueAnonymousBot() + "\n" + BlueStringUtils.asciiLogo() + "\n" + BlueStringUtils.initMessage("8.0.1"));
     }
 }

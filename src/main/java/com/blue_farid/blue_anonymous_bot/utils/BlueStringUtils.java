@@ -2,8 +2,6 @@ package com.blue_farid.blue_anonymous_bot.utils;
 
 public class BlueStringUtils {
 
-    private static String runtimePassword = "default";
-
     /**
      * returns the initial message after running the bot.
      *
@@ -36,13 +34,5 @@ public class BlueStringUtils {
                 "   dKKKo,cl::OKKo  '  xK0       .   kKKd       \n" + "       xlc00OOl,lKKo  ,  :K0  .  ..    xKKc       \n" + "       " +
                 ".:dl;.'d00KKl  c. .00.          xOK.       \n" + "         ,dccl..:okc      dK0kkxxddooloOoO        \n" + "                     " +
                 "     .''',;:codxO0:Ol        \n" + "                                       .;   ";
-    }
-
-    public static void setRuntimePassword(String runtimePassword) {
-        BlueStringUtils.runtimePassword = runtimePassword;
-    }
-
-    public static String getRuntimePassword() {
-        return runtimePassword;
     }
 }
