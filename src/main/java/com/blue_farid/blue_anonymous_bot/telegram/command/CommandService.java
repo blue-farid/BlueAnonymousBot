@@ -21,6 +21,7 @@ import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.util.Objects;
 
@@ -87,11 +88,14 @@ public class CommandService {
     public void answer(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
-        clientService.setContact(requestDto.client(), Long.parseLong(requestDto.value().getText()));
+        String[] texts = requestDto.value().getText().split(" ");
+        clientService.setContact(requestDto.client(), Long.parseLong(texts[0]));
+        clientService.setContactMessageId(requestDto.client(), Integer.parseInt(texts[1]));
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(env.getProperty("answer")));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setReplyToMessageId(requestDto.value().getMessageId());
         bot.execute(sendMessage);
     }
 
@@ -208,7 +212,15 @@ public class CommandService {
             contactSendMessage.setEntities(message.getEntities());
             contactSendMessage.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendMessage.setReplyToMessageId(client.getContactMessageId());
-            bot.execute(contactSendMessage);
+            try {
+                bot.execute(contactSendMessage);
+            } catch (TelegramApiRequestException e) {
+                if (e.getErrorCode() == 400) {
+                    // reply not found!
+                    contactSendMessage.setReplyToMessageId(null);
+                    bot.execute(contactSendMessage);
+                }
+            }
         } else if (message.hasSticker()) {
             MDC.put("others", CommonUtils.readyForLog("message: {Sticker}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
