@@ -18,7 +18,8 @@ import org.springframework.context.annotation.PropertySources;
  *
  * @author Farid Masjedi
  * @author Negar Anabestani
- * @version 8.0.0
+ * @author Alireza Jabbari
+ * @version 8.0.1
  * <p>
  * Telegram_id: @blue_farid
  * github: <a href="https://github.com/blue-farid/BlueAnonymousBot">...</a>
@@ -36,6 +37,6 @@ public class BlueAnonymousBotApplication {
         SpringApplication.run(BlueAnonymousBotApplication.class, args);
         if (args.length > 0)
             BlueStringUtils.setRuntimePassword(args[0]);
-        System.out.println("\n" + BlueStringUtils.asciiBlueAnonymousBot() + "\n" + BlueStringUtils.asciiLogo() + "\n" + BlueStringUtils.initMessage("8.0.0"));
+        System.out.println("\n" + BlueStringUtils.asciiBlueAnonymousBot() + "\n" + BlueStringUtils.asciiLogo() + "\n" + BlueStringUtils.initMessage("8.0.1"));
     }
 }
