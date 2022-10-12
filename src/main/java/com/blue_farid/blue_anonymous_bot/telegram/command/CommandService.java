@@ -91,14 +91,15 @@ public class CommandService {
     @AdminCommand
     public void adminConnect(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
-        clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
+        clientService.setClientState(requestDto.client(), ClientState.ADMIN_SENDING_CONTACT_INFO);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("OK!, now send the contact ID!");
         sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setReplyMarkup(bot.getCancelMenu());
         bot.execute(sendMessage);
     }
 
-    @Response(acceptedStates = ClientState.SENDING_CONTACT_INFO)
+    @Response(acceptedStates = ClientState.ADMIN_SENDING_CONTACT_INFO)
     @SneakyThrows
     @AdminCommand
     public void adminFindContact(RequestDto requestDto) {
