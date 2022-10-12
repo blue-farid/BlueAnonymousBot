@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class AdminAspect {
     @Before("@annotation(com.blue_farid.blue_anonymous_bot.annotation.AdminApi)")
     public void authorize(JoinPoint joinPoint) throws IllegalAccessException {
-        if (!joinPoint.getArgs()[0].equals(BlueStringUtils.getRuntimePassword()))
+        if (!String.valueOf(joinPoint.getArgs()[0]).equals(BlueStringUtils.getRuntimePassword()))
             throw new IllegalAccessException("Api Access Denied!");
     }
 

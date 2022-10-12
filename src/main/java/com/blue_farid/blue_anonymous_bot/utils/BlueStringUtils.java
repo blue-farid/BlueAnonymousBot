@@ -2,7 +2,7 @@ package com.blue_farid.blue_anonymous_bot.utils;
 
 public class BlueStringUtils {
 
-    private static String runtimePassword = "";
+    private static String runtimePassword = "default";
 
     /**
      * returns the initial message after running the bot.

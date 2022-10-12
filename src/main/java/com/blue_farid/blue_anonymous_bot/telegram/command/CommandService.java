@@ -38,6 +38,21 @@ public class CommandService {
 
     private final InlineHelpKeyBoard helpKeyBoard;
 
+    @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
+            ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL})
+    @SneakyThrows
+    public void cancel(RequestDto requestDto) {
+        if (requestDto.value().getText().equals(CommandConstant.CANCEL)) {
+            log.info(requestDto.client().getClientInfo());
+            clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(requestDto.client().getId());
+            sendMessage.setText(Objects.requireNonNull(env.getProperty("cancel")));
+            sendMessage.setReplyMarkup(bot.getMainMenu());
+            bot.execute(sendMessage);
+        }
+    }
+
     @SneakyThrows
     @Response(value = CommandConstant.START)
     public void start(RequestDto requestDto) {
@@ -287,19 +302,6 @@ public class CommandService {
         clientService.setContactMessageId(client, 0);
         clientService.setContact(client, 0);
         clientService.setClientState(client, ClientState.NORMAL);
-    }
-
-    @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
-            ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL})
-    @SneakyThrows
-    public void cancel(RequestDto requestDto) {
-        log.info(requestDto.client().getClientInfo());
-        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("cancel")));
-        sendMessage.setReplyMarkup(bot.getMainMenu());
-        bot.execute(sendMessage);
     }
 
     @Response(value = CommandConstant.SPECIFIC_CONNECTION)
