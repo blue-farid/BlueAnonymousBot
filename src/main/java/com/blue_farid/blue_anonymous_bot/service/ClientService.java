@@ -128,7 +128,7 @@ public class ClientService {
      * @return the client
      */
     public Client getClientByDeepLink(String deepLink) {
-        return repository.findByDeepLink(deepLink);
+        return repository.findByDeepLinkIgnoreCase(deepLink);
     }
 
     /**
