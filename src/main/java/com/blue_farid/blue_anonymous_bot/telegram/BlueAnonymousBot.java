@@ -109,7 +109,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                     text = text.concat(callBack[i] + " ");
                 message.setText(text);
             }
-            client = new Client(update.getCallbackQuery().getFrom());
+            client = clientService.getClientById(update.getCallbackQuery().getFrom().getId());
         }
 
         boolean flag = true;
