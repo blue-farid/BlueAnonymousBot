@@ -103,6 +103,20 @@ public class CommandService {
     }
 
     @SneakyThrows
+    @Response(value = CommandConstant.BLOCK)
+    public void block(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        String[] texts = requestDto.value().getText().split(" ");
+        Client contact = clientService.getClientById(Long.parseLong(texts[0]));
+        if (contact.isAdmin()) {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setText(requestDto.client().getId() + " tries to block you!");
+            sendMessage.setChatId(contact.getId());
+            bot.execute(sendMessage);
+        }
+    }
+
+    @SneakyThrows
     @Response(value = CommandConstant.ANONYMOUS_TO_GROUP)
     public void anonymousToGroup(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
@@ -316,10 +330,7 @@ public class CommandService {
         if (clientService.getContact(client).isAdmin()) {
             SendMessage adminSendMessage = new SendMessage();
             adminSendMessage.setChatId(contactChatId);
-            adminSendMessage.setText("Sender:" + "\n" +
-                    "username: " + client.getUsername()
-                    + "\nfirstname: " + client.getFirstname()
-                    + "\nlastname: " + client.getLastname());
+            adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
             bot.execute(adminSendMessage);
         }
         sendMessage.setChatId(String.valueOf(client.getId()));

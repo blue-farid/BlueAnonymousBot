@@ -22,4 +22,6 @@ public class CommandConstant {
     public static final String BACK_HELP_MAIN_MENU = "backToHelpMainMenu";
     public static final String ADMIN_CONNECT = "adminConnect";
 
+    public static final String BLOCK = "block";
+
 }
