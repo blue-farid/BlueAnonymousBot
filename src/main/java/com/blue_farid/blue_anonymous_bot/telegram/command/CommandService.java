@@ -310,7 +310,7 @@ public class CommandService {
             throw new IllegalStateException();
         }
         log.info(requestDto.client().getClientInfo());
-        fileUtils.monitorSendMessageToContact(getClass().getSimpleName(),
+        fileUtils.monitorSendMessageToContact("SendMessage",
                 monitor, client);
 
         if (clientService.getContact(client).isAdmin()) {
