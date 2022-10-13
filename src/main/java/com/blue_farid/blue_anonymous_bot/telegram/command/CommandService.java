@@ -10,6 +10,7 @@ import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
 import com.blue_farid.blue_anonymous_bot.utils.CommonUtils;
+import com.blue_farid.blue_anonymous_bot.utils.FileUtils;
 import com.blue_farid.blue_anonymous_bot.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -38,6 +39,8 @@ public class CommandService {
     private final RandomUtils randomUtils;
 
     private final InlineHelpKeyBoard helpKeyBoard;
+
+    private final FileUtils fileUtils;
 
     @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
             ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL})
@@ -196,6 +199,7 @@ public class CommandService {
         sendMessage.setText(Objects.requireNonNull(env.getProperty("new_anonymous_message")));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
+        String monitor = "";
         if (message == null) {
             clientService.setClientState(client, ClientState.NORMAL);
             return;
@@ -206,6 +210,7 @@ public class CommandService {
                     "contactId: {" + contactChatId + "}"
             ));
             String text = message.getText();
+            monitor = text;
             SendMessage contactSendMessage = new SendMessage();
             contactSendMessage.setChatId(contactChatId);
             contactSendMessage.setText(text);
@@ -225,6 +230,7 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("message: {Sticker}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
+            monitor = "Sticker";
             InputFile sticker = new InputFile(message.getSticker().getFileId());
             SendSticker contactSendSticker = new SendSticker(contactChatId, sticker);
             contactSendSticker.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
@@ -234,6 +240,7 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("message: {Voice}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
+            monitor = "Voice";
             InputFile voice = new InputFile(message.getVoice().getFileId());
             SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
             contactSendVoice.setCaption(message.getCaption());
@@ -245,6 +252,7 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("message: {Document}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
+            monitor = "Document";
             InputFile document = new InputFile(message.getDocument().getFileId());
             SendDocument contactSendDocument = new SendDocument(contactChatId, document);
             contactSendDocument.setCaption(message.getCaption());
@@ -256,6 +264,7 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("message: {Photo}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
+            monitor = "Photo";
             InputFile photo = new InputFile(message.getPhoto().get(0).getFileId());
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
@@ -267,6 +276,7 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("message: {Video}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
+            monitor = "Video";
             InputFile video = new InputFile(message.getVideo().getFileId());
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
@@ -278,6 +288,7 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("message: {Audio}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
+            monitor = "Audio";
             InputFile audio = new InputFile(message.getAudio().getFileId());
             SendAudio contactSendAudio = new SendAudio(contactChatId, audio);
             contactSendAudio.setCaption(message.getCaption());
@@ -289,6 +300,7 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("message: {Video Message}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
+            monitor = "Video Message";
             InputFile videoNote = new InputFile(message.getVideoNote().getFileId());
             SendVideoNote contactSendVideoNote = new SendVideoNote(contactChatId, videoNote);
             contactSendVideoNote.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
@@ -298,6 +310,8 @@ public class CommandService {
             throw new IllegalStateException();
         }
         log.info(requestDto.client().getClientInfo());
+        fileUtils.monitorSendMessageToContact(getClass().getSimpleName(),
+                monitor, client);
 
         if (clientService.getContact(client).isAdmin()) {
             SendMessage adminSendMessage = new SendMessage();
