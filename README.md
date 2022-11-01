@@ -12,7 +12,7 @@
     * open telegram
     * text @botfather and create your bot
     * note the token and the username of the bot
-  * in the resource folder, create 'bot_config.properties' file and put the two lines below:
+  * in the resource folder, create 'bot_config.properties' file and put the lines below:
       * bot.username=[the username]
       * bot.token=[the token]
       * api.password=[custom_password]
