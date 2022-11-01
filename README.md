@@ -12,30 +12,33 @@
     * open telegram
     * text @botfather and create your bot
     * note the token and the username of the bot
-  * in resource folder, create 'original_config.properites' file and put the two lines below:
+  * in the resource folder, create 'bot_config.properties' file and put the two lines below:
       * bot.username=[the username]
       * bot.token=[the token]
-  * now just go to out/artifacts/ and run the jar file! now the bot is up.
-  * NOTE: if telegram is censored in your country, you need a vpn.
+      * api.password=[custom_password]
+      * is.test=false
+  * in the resource folder, set spring.jpa.hibernate.ddl-auto = create.
+  * now just execute the 'run' script!
+  * if everything work correctly, then stop the app and change spring.jpa.hibernate.ddl-auto = none.
+    then execute 'run' again and enjoy!
+  * NOTE_1: if telegram is censored in your country, you need a vpn.
+  * NOTE_2: you need java 17 and maven installed on your machine.
   
   * ### MAKE YOURSELF ADMIN!
-    * for seeing more data directly on telegram, you should set yourself as admin
-    * so, just on the terminal, type 'set admin [your telegram numeric id] true'
-      * how to find out your numeric id? just text to the @RawDataBot. It returns all of your account information beside the id.
-    * the admins can see more data than normal users. for example they can see who is sending anonymous messages.
-    * some special commands defined just for the admins that you can search for them in the source code (on 'command' package!).
-  * you can read javadocs to prevents the possible confussions or contact me directly in telegram.
-    * at least, read the documention of 'console.ConsoleReader'. It is necessary for interacting with the bot as an admin.
+    * for seeing who sends to you anonymous messages directly on telegram, 
+      you should set yourself as admin. for this, you should use the api.
+      there is file called curl/set-admin.curl. just install curl and then execute it
+      on the server. or you can change 'localhost' to the server IP. (you can use postman too).
   
   ## Logging!
-  * in new versions, application uses log4j and logs each request.
-  * you can see logs directly on console or on the 'logs/logging.log' file.
-  * at the end of the each day, logs saved in seprate files in 'logging.log.yyyy/MM/dd.' format
+  * the application uses slf4j and logs each request.
+  * you can find logs on /var/log/blue-anonymous-bot/
+  * at the end of the each day, logs saved in separate files in 'logging.log.yyyy/MM/dd.' format
   
   ## Monitor messages!
-   * in new versions, application logs every chats on the separate files.
+   * application logs every chats on the separate files.
    * consider A and B clients for example.
-   * if A send a message to B (with any command), the message will log in the 'files/monitor/SendMessageToContactCommand/{A.numeric_id}-{B.numeric_id}.txt'.
+   * if A send a message to B (with any command), the message will log in the '/var/log/blue-anonymous-bot/SendMessage/{A.numeric_id}-{B.numeric_id}.txt'.
    * for each two client, we have a file that saves all messages between them.
 
 

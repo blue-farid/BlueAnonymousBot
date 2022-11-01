@@ -1,0 +1,1 @@
+curl --location --request PUT 'http://localhost:8080/api/blue-anonymous-bot/admin/set?id=110033940&value=true&password=default'; 
