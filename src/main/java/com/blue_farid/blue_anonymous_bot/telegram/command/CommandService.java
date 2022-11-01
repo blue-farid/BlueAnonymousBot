@@ -100,7 +100,7 @@ public class CommandService {
         clientService.setContactMessageId(requestDto.client(), Integer.parseInt(texts[1]));
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(env.getProperty("answer")));
-        sendMessage.setReplyMarkup(bot.getMainMenu());
+        sendMessage.setReplyMarkup(bot.getCancelMenu());
         sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setReplyToMessageId(requestDto.value().getMessageId());
         bot.execute(sendMessage);
