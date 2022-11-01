@@ -60,12 +60,15 @@ public class CommandService {
     @SneakyThrows
     @Response(value = CommandConstant.START)
     public void start(RequestDto requestDto) {
-        log.info(requestDto.client().getClientInfo());
         String[] commands = requestDto.value().getText().split(" ");
         SendMessage sendMessage = new SendMessage();
         if (commands.length == 2) {
             String link = getAnonymousLinkPrefix() + commands[1];
             Client contact = clientService.getClientByDeepLink(link);
+            if (contact == null)
+                throw new IllegalStateException();
+
+            MDC.put("others", CommonUtils.readyForLog("trying to message : " + contact.getId()));
             sendMessage.setChatId(requestDto.client().getId());
             if (requestDto.client().getId() == contact.getId()) {
                 sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
@@ -84,6 +87,7 @@ public class CommandService {
             sendMessage.setChatId(requestDto.client().getId());
             bot.execute(sendMessage);
         }
+        log.info(requestDto.client().getClientInfo());
     }
 
     @SneakyThrows
