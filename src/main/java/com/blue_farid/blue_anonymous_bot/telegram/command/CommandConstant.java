@@ -21,6 +21,7 @@ public class CommandConstant {
     public static final String SEND_ANONYMOUS_MESSAGE_GROUP_HELP = "helpAnonymousToGroup";
     public static final String BACK_HELP_MAIN_MENU = "backToHelpMainMenu";
     public static final String ADMIN_CONNECT = "adminConnect";
+    public static final String SET_GENDER = "/gender";
 
     public static final String BLOCK = "block";
 

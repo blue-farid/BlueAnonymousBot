@@ -7,6 +7,7 @@ import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineAMB;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineHelpKeyBoard;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
+import com.blue_farid.blue_anonymous_bot.model.Gender;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
 import com.blue_farid.blue_anonymous_bot.utils.CommonUtils;
@@ -409,12 +410,17 @@ public class CommandService {
     @SneakyThrows
     public void anonymousConnection(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
-        clientService.setClientState(requestDto.client(), ClientState.CHOOSING_CONTACT_GENDER);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_connection")));
-        sendMessage.setReplyMarkup(bot.getChooseContactGenderMenu());
-        bot.execute(sendMessage);
+        if (Objects.isNull(requestDto.client().getGender())) {
+            sendMessage.setText(Objects.requireNonNull(env.getProperty("gender.not.specified")));
+            bot.execute(sendMessage);
+        } else {
+            clientService.setClientState(requestDto.client(), ClientState.CHOOSING_CONTACT_GENDER);
+            sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_connection")));
+            sendMessage.setReplyMarkup(bot.getChooseContactGenderMenu());
+            bot.execute(sendMessage);
+        }
     }
 
     @Response(value = CommandConstant.ANONYMOUS_LINK)
@@ -435,7 +441,48 @@ public class CommandService {
     @SneakyThrows
     public void badInput(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
-        bot.execute(new SendMessage(String.valueOf(requestDto.client().getId()), Objects.requireNonNull(env.getProperty("bad_input"))));
+        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("bad_input")));
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
+    }
+
+    @Response(value = CommandConstant.SET_GENDER)
+    @SneakyThrows
+    public void gender(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.setClientState(requestDto.client(), ClientState.SETTING_GENDER);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("gender.select")));
+        sendMessage.setReplyMarkup(bot.getGenderMenu());
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = ClientState.SETTING_GENDER)
+    @SneakyThrows
+    public void setGender(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        Gender gender;
+        if (requestDto.value().getText().equals(env.getProperty("gender.male"))) {
+            gender = Gender.MALE;
+        } else if (requestDto.value().getText().equals(env.getProperty("gender.female"))) {
+            gender = Gender.FEMALE;
+        } else {
+            log.error("Unexpected Value for gender : " + requestDto.value().getText());
+            MDC.put("method", "badInput");
+            badInput(requestDto);
+            return;
+        }
+        clientService.setGender(requestDto.client(), gender);
+        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(env.getProperty("start")));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
     }
 
     private Client findWithForwarded(Message message) {

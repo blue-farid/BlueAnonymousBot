@@ -51,6 +51,9 @@ public class Client implements Serializable {
     @ToString.Exclude
     @Column(name = "TELEGRAM_USER")
     private User telegramUser;
+    @Column(name = "GENDER")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     @Transient
     @ToString.Exclude
     @Setter(AccessLevel.PRIVATE)

@@ -2,6 +2,7 @@ package com.blue_farid.blue_anonymous_bot.service;
 
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
+import com.blue_farid.blue_anonymous_bot.model.Gender;
 import com.blue_farid.blue_anonymous_bot.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,11 @@ public class ClientService {
      */
     public void setContactMessageId(Client client, Integer messageId) {
         client.setContactMessageId(messageId);
+        repository.save(client);
+    }
+
+    public void setGender(Client client, Gender gender) {
+        client.setGender(gender);
         repository.save(client);
     }
 
