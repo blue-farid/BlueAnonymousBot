@@ -76,7 +76,7 @@ public class Client implements Serializable {
 
     public String getClientInfo() {
         if (clientInfo == null) {
-            this.clientInfo = "\t- firstName: " + this.firstname + "\n" + "\t- lastName: " + this.lastname + "\n" + "\t- username: " + this.username +
+            this.clientInfo = "\t- firstName: " + this.firstname + "\n" + "\t- lastName: " + this.lastname + "\n" + "\t- username: " + "@" + this.username +
             "\n\t- id: " + id;
         }
         return clientInfo;
