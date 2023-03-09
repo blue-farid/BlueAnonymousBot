@@ -17,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -25,6 +26,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+import java.util.Locale;
 import java.util.Objects;
 
 @Service
@@ -33,7 +35,10 @@ import java.util.Objects;
 public class CommandService {
     private final ClientService clientService;
 
-    private final Environment env;
+    private final MessageSource source;
+
+    @Value("${bot.locale}")
+    private final Locale locale;
 
     private final BlueAnonymousBot bot;
 
@@ -52,7 +57,7 @@ public class CommandService {
             clientService.setClientState(requestDto.client(), ClientState.NORMAL);
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(requestDto.client().getId());
-            sendMessage.setText(Objects.requireNonNull(env.getProperty("cancel")));
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("cancel", null, locale)));
             sendMessage.setReplyMarkup(bot.getMainMenu());
             bot.execute(sendMessage);
         }
@@ -72,18 +77,18 @@ public class CommandService {
             MDC.put("others", CommonUtils.readyForLog("trying to message : " + contact.getId()));
             sendMessage.setChatId(requestDto.client().getId());
             if (requestDto.client().getId() == contact.getId()) {
-                sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
+                sendMessage.setText(Objects.requireNonNull(source.getMessage("self_anonymous", null, locale)));
                 bot.execute(sendMessage);
                 return;
             }
-            sendMessage.setText(Objects.requireNonNull(env.getProperty("start_2")).replace("?name",
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("start_2", null, locale)).replace("?name",
                     contact.getFirstname()));
             sendMessage.setReplyMarkup(bot.getCancelMenu());
             bot.execute(sendMessage);
             clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
             clientService.setContact(requestDto.client(), contact.getId());
         } else {
-            sendMessage.setText(Objects.requireNonNull(env.getProperty("start")));
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, locale)));
             sendMessage.setReplyMarkup(bot.getMainMenu());
             sendMessage.setChatId(requestDto.client().getId());
             bot.execute(sendMessage);
@@ -100,7 +105,7 @@ public class CommandService {
         clientService.setContact(requestDto.client(), Long.parseLong(texts[0]));
         clientService.setContactMessageId(requestDto.client(), Integer.parseInt(texts[1]));
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("answer")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("answer", null, locale)));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setReplyToMessageId(requestDto.value().getMessageId());
@@ -165,7 +170,7 @@ public class CommandService {
     public void help(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("help")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("help", null, locale)));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         sendMessage.setReplyMarkup(helpKeyBoard);
         sendMessage.setChatId(requestDto.client().getId());
@@ -215,7 +220,7 @@ public class CommandService {
         SendMessage sendMessage = new SendMessage();
         String contactChatId = String.valueOf(clientService.getContact(client).getId());
         sendMessage.setChatId(String.valueOf(client.getContactId()));
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("new_anonymous_message")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("new_anonymous_message", null, locale)));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
         String monitor = "";
@@ -339,7 +344,7 @@ public class CommandService {
             bot.execute(adminSendMessage);
         }
         sendMessage.setChatId(String.valueOf(client.getId()));
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("send_message_done")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("send_message_done", null, locale)));
         bot.execute(sendMessage);
         clientService.setContactMessageId(client, 0);
         clientService.setContact(client, 0);
@@ -353,7 +358,7 @@ public class CommandService {
         clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("specific_connection")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("specific_connection", null, locale)));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         bot.execute(sendMessage);
     }
@@ -367,7 +372,7 @@ public class CommandService {
         Client contact;
         contact = findWithForwarded(requestDto.value());
         if (contact == null && !isUsername(requestDto.value().getText())) {
-            sendMessage.setText(Objects.requireNonNull(env.getProperty("send_forwarded_message")));
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("send_forwarded_message", null, locale)));
             bot.execute(sendMessage);
         } else {
             if (contact == null)
@@ -375,12 +380,12 @@ public class CommandService {
         }
         if (contact != null) {
             if (contact.getId() == requestDto.client().getId()) {
-                sendMessage.setText(Objects.requireNonNull(env.getProperty("self_anonymous")));
+                sendMessage.setText(Objects.requireNonNull(source.getMessage("self_anonymous", null, locale)));
                 sendMessage.setReplyMarkup(bot.getMainMenu());
                 bot.execute(sendMessage);
                 clientService.setClientState(requestDto.client(), ClientState.NORMAL);
             } else {
-                sendMessage.setText(Objects.requireNonNull(env.getProperty("find_contact_1")).replace("?name",
+                sendMessage.setText(Objects.requireNonNull(source.getMessage("find_contact_1", null, locale)).replace("?name",
                         contact.getFirstname()));
                 bot.execute(sendMessage);
                 clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
@@ -388,7 +393,7 @@ public class CommandService {
             }
 
         } else {
-            sendMessage.setText(Objects.requireNonNull(env.getProperty("find_contact_2")));
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("find_contact_2", null, locale)));
             sendMessage.setReplyMarkup(bot.getMainMenu());
             bot.execute(sendMessage);
             clientService.setClientState(requestDto.client(), ClientState.NORMAL);
@@ -401,7 +406,7 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("choose_contact_sex")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("choose_contact_sex", null, locale)));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         bot.execute(sendMessage);
     }
@@ -413,11 +418,11 @@ public class CommandService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
         if (Objects.isNull(requestDto.client().getGender())) {
-            sendMessage.setText(Objects.requireNonNull(env.getProperty("gender.not.specified")));
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("gender.not.specified", null, locale)));
             bot.execute(sendMessage);
         } else {
             clientService.setClientState(requestDto.client(), ClientState.CHOOSING_CONTACT_GENDER);
-            sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_connection")));
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("anonymous_connection", null, locale)));
             sendMessage.setReplyMarkup(bot.getChooseContactGenderMenu());
             bot.execute(sendMessage);
         }
@@ -431,7 +436,7 @@ public class CommandService {
         if (!requestDto.client().hasDeepLink()) {
             clientService.setDeepLink(requestDto.client(), generateAnonymousLink());
         }
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("anonymous_link")).replace("?name",
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("anonymous_link", null, locale)).replace("?name",
                         requestDto.client().getFirstname())
                 .concat("\n" + requestDto.client().getDeepLink()));
         sendMessage.setChatId(requestDto.client().getId());
@@ -443,7 +448,7 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("bad_input")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("bad_input", null, locale)));
         sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
@@ -456,7 +461,7 @@ public class CommandService {
         clientService.setClientState(requestDto.client(), ClientState.SETTING_GENDER);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("gender.select")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("gender.select", null, locale)));
         sendMessage.setReplyMarkup(bot.getGenderMenu());
         bot.execute(sendMessage);
     }
@@ -466,9 +471,9 @@ public class CommandService {
     public void setGender(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         Gender gender;
-        if (requestDto.value().getText().equals(env.getProperty("gender.male"))) {
+        if (requestDto.value().getText().equals(source.getMessage("gender.male", null, locale))) {
             gender = Gender.MALE;
-        } else if (requestDto.value().getText().equals(env.getProperty("gender.female"))) {
+        } else if (requestDto.value().getText().equals(source.getMessage("gender.female", null, locale))) {
             gender = Gender.FEMALE;
         } else {
             log.error("Unexpected Value for gender : " + requestDto.value().getText());
@@ -480,7 +485,7 @@ public class CommandService {
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(env.getProperty("start")));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, locale)));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
     }
