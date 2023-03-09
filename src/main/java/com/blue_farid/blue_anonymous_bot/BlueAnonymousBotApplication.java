@@ -26,7 +26,7 @@ import org.springframework.context.annotation.PropertySources;
  */
 @SpringBootApplication
 @Slf4j
-@PropertySources({@PropertySource("classpath:messages.properties"), @PropertySource("classpath:bot_config.properties")})
+@PropertySource("classpath:bot_config.properties")
 public class BlueAnonymousBotApplication {
     /**
      * the entry point of the Application.
