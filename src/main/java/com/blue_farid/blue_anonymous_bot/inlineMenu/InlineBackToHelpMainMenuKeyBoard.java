@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * @author negar anabestani
  */
 @Component
 @RequiredArgsConstructor

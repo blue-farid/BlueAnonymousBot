@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.List;
 
 /**
- * @author Negar Anabestani
  */
 
 public abstract class Menu extends ReplyKeyboardMarkup {

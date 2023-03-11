@@ -17,7 +17,6 @@ import org.springframework.context.annotation.PropertySources;
  * SO WE WROTE OUR OWN COPY!
  *
  * @author Farid Masjedi
- * @author Negar Anabestani
  * @author Alireza Jabbari
  * @version 8.1.0
  * <p>

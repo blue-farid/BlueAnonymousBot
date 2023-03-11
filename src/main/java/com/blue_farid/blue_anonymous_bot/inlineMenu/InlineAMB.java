@@ -1,7 +1,6 @@
 package com.blue_farid.blue_anonymous_bot.inlineMenu;
 
 /**
- * @author negar anabestani
  * answer and block inline keyboard for anonymous messages
  */
 public class InlineAMB extends InlineBlueKeyBoard {

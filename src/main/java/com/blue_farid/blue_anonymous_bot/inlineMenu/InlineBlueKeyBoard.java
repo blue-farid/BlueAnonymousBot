@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * the inlineBlueKeyBoard class the other inlineMenu classes extend it
  *
- * @author Negar Anabestani
  */
 
 public class InlineBlueKeyBoard extends InlineKeyboardMarkup {
