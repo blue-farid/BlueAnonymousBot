@@ -47,10 +47,6 @@ public class Client implements Serializable {
     @NotNull
     @Column(name = "ADMIN")
     private boolean admin;
-    @NotNull
-    @ToString.Exclude
-    @Column(name = "TELEGRAM_USER")
-    private User telegramUser;
     @Column(name = "GENDER")
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -67,7 +63,6 @@ public class Client implements Serializable {
         this.lastname = user.getLastName();
         this.clientState = ClientState.NORMAL;
         this.admin = false;
-        this.telegramUser = user;
     }
 
     public boolean hasDeepLink() {
