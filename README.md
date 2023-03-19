@@ -17,6 +17,9 @@
       * bot.token=[the token]
       * api.password=[custom_password]
       * is.test=false
+      * admin.password=admin
+      * admin.username=admin
+      
   * in the resource folder, set spring.jpa.hibernate.ddl-auto = create.
   * now just execute the 'run' script!
   * if everything work correctly, then stop the app and change spring.jpa.hibernate.ddl-auto = none.
