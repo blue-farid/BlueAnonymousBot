@@ -30,8 +30,7 @@
   * ### MAKE YOURSELF ADMIN!
     * for seeing who sends to you anonymous messages directly on telegram, 
       you should set yourself as admin. for this, you should use the api.
-      there is file called curl/set-admin.curl. just install curl and then execute it
-      on the server. or you can change 'localhost' to the server IP. (you can use postman too).
+      there is file called curl/set-admin.curl. just install curl and fill the value in the file, then execute it. (you can use postman too).
   
   ## Logging!
   * the application uses slf4j and logs each request.
