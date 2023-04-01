@@ -5,9 +5,12 @@ import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineAMB;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineHelpKeyBoard;
+import com.blue_farid.blue_anonymous_bot.mapper.GenderMapper;
+import com.blue_farid.blue_anonymous_bot.model.AnonymousConnectionRequest;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.model.Gender;
+import com.blue_farid.blue_anonymous_bot.service.AnonymousConnectionRequestService;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
 import com.blue_farid.blue_anonymous_bot.utils.CommonUtils;
@@ -18,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.*;
@@ -27,7 +29,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-import java.util.Locale;
 import java.util.Objects;
 
 @Service
@@ -44,11 +45,15 @@ public class CommandService {
 
     private final RandomUtils randomUtils;
 
+    private final AnonymousConnectionRequestService anonymousConnectionRequestService;
+
+    private final GenderMapper genderMapper;
+
     private final InlineHelpKeyBoard helpKeyBoard;
 
     private final FileUtils fileUtils;
 
-    @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
+    @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
             ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL})
     @SneakyThrows
     public void cancel(RequestDto requestDto) {
@@ -85,7 +90,7 @@ public class CommandService {
                     contact.getFirstname()));
             sendMessage.setReplyMarkup(bot.getCancelMenu());
             bot.execute(sendMessage);
-            clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+            clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT);
             clientService.setContact(requestDto.client(), contact.getId());
         } else {
             sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
@@ -100,7 +105,7 @@ public class CommandService {
     @Response(value = CommandConstant.ANSWER)
     public void answer(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
-        clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+        clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT);
         String[] texts = requestDto.value().getText().split(" ");
         clientService.setContact(requestDto.client(), Long.parseLong(texts[0]));
         clientService.setContactMessageId(requestDto.client(), Integer.parseInt(texts[1]));
@@ -154,7 +159,7 @@ public class CommandService {
         sendMessage.setChatId(requestDto.client().getId());
         requestDto.client().setContactId(clientService.getClientById(Long.parseLong(requestDto.value().getText())).getId());
         sendMessage.setReplyMarkup(bot.getCancelMenu());
-        clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+        clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT);
         sendMessage.setText("OK! Send your message!");
         bot.execute(sendMessage);
     }
@@ -213,8 +218,35 @@ public class CommandService {
     }
 
     @SneakyThrows
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT)
+    public void sendMessageToSpecific(RequestDto requestDto) {
+        sendMessage(requestDto);
+        Client client = requestDto.client();
+        SendMessage sendMessage = new SendMessage();
+        if (clientService.getContact(client).isAdmin()) {
+            SendMessage adminSendMessage = new SendMessage();
+            adminSendMessage.setChatId(client.getContactId());
+            adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
+            bot.execute(adminSendMessage);
+        }
+        sendMessage.setChatId(String.valueOf(client.getId()));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("send_message_done", null, localeUtils.getLocale())));
+        bot.execute(sendMessage);
+        clientService.setContactMessageId(client, 0);
+        clientService.setContact(client, 0);
+        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+    }
+
     @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT)
-    public void sendMessage(RequestDto requestDto) {
+    @SneakyThrows
+    public void sendMessageToAnonymous(RequestDto requestDto) {
+        sendMessage(requestDto);
+        Client client = requestDto.client();
+        clientService.setContactMessageId(client, 0);
+    }
+
+    @SneakyThrows
+    private void sendMessage(RequestDto requestDto) {
         Client client = requestDto.client();
         Message message = requestDto.value();
         SendMessage sendMessage = new SendMessage();
@@ -336,19 +368,6 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         fileUtils.monitorSendMessageToContact("SendMessage",
                 monitor, client);
-
-        if (clientService.getContact(client).isAdmin()) {
-            SendMessage adminSendMessage = new SendMessage();
-            adminSendMessage.setChatId(contactChatId);
-            adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
-            bot.execute(adminSendMessage);
-        }
-        sendMessage.setChatId(String.valueOf(client.getId()));
-        sendMessage.setText(Objects.requireNonNull(source.getMessage("send_message_done", null, localeUtils.getLocale())));
-        bot.execute(sendMessage);
-        clientService.setContactMessageId(client, 0);
-        clientService.setContact(client, 0);
-        clientService.setClientState(client, ClientState.NORMAL);
     }
 
     @Response(value = CommandConstant.SPECIFIC_CONNECTION)
@@ -388,7 +407,7 @@ public class CommandService {
                 sendMessage.setText(Objects.requireNonNull(source.getMessage("find_contact_1", null, localeUtils.getLocale())).replace("?name",
                         contact.getFirstname()));
                 bot.execute(sendMessage);
-                clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+                clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT);
                 clientService.setContact(requestDto.client(), contact.getId());
             }
 
@@ -406,9 +425,25 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(source.getMessage("choose_contact_sex", null, localeUtils.getLocale())));
-        sendMessage.setReplyMarkup(bot.getCancelMenu());
-        bot.execute(sendMessage);
+        Gender selectedGender = genderMapper.persianGenderValueToGender(requestDto.value().getText());
+        AnonymousConnectionRequest anonymousConnectionRequest;
+        if (selectedGender.equals(Gender.BI))
+            anonymousConnectionRequest = anonymousConnectionRequestService.connect();
+        else
+            anonymousConnectionRequest = anonymousConnectionRequestService.connect(selectedGender);
+
+        if (Objects.isNull(anonymousConnectionRequest)) {
+            anonymousConnectionRequestService.submitRequest(requestDto.client(), selectedGender);
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("connection_pending", null, localeUtils.getLocale())));
+            sendMessage.setReplyMarkup(bot.getCancelMenu());
+            bot.execute(sendMessage);
+        } else {
+            clientService.setContact(requestDto.client(), anonymousConnectionRequest.getRequestFrom().getId());
+            clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+            sendMessage.setText(Objects.requireNonNull(source.getMessage("connected.anonymous", null, localeUtils.getLocale())));
+            sendMessage.setReplyMarkup(bot.getAnonymousChatMenu());
+            bot.execute(sendMessage);
+        }
     }
 
     @Response(value = CommandConstant.ANONYMOUS_CONNECTION)
@@ -417,6 +452,9 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
+
+        // gender not specified!
+
         if (Objects.isNull(requestDto.client().getGender())) {
             sendMessage.setText(Objects.requireNonNull(source.getMessage("gender.not.specified", null, localeUtils.getLocale())));
             bot.execute(sendMessage);
@@ -489,6 +527,40 @@ public class CommandService {
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
     }
+
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT, value = CommandConstant.CANCEL_CHAT)
+    @SneakyThrows
+    public void stopAnonymousChat(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_confirm", null, localeUtils.getLocale())));
+        sendMessage.setReplyMarkup(bot.getChatStopConfirmMenu());
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = ClientState.CONFIRM_STOP_CHAT, value = CommandConstant.CANCEL_CHAT_CONFIRM_YES)
+    @SneakyThrows
+    public void stopAnonymousChatConfirmYes(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = ClientState.CONFIRM_STOP_CHAT, value = CommandConstant.CANCEL_CHAT_CONFIRM_NO)
+    @SneakyThrows
+    public void stopAnonymousChatConfirmNo(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_not_confirm", null, localeUtils.getLocale())));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
+    }
+
 
     private Client findWithForwarded(Message message) {
         User forwardedFrom = message.getForwardFrom();

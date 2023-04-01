@@ -25,4 +25,10 @@ public class CommandConstant {
 
     public static final String BLOCK = "block";
 
+    public static final String CANCEL_CHAT = "قطع مکالمه";
+
+    public static final String CANCEL_CHAT_CONFIRM_YES = "آره گپ رو قطع کن";
+
+    public static final String CANCEL_CHAT_CONFIRM_NO = "نه ادامه میدم";
+
 }
