@@ -54,7 +54,7 @@ public class CommandService {
     private final FileUtils fileUtils;
 
     @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
-            ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL})
+            ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL, ClientState.WAITING_FOR_CONTACT})
     @SneakyThrows
     public void cancel(RequestDto requestDto) {
         if (requestDto.value().getText().equals(CommandConstant.CANCEL)) {
@@ -64,6 +64,9 @@ public class CommandService {
             sendMessage.setChatId(requestDto.client().getId());
             sendMessage.setText(Objects.requireNonNull(source.getMessage("cancel", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getMainMenu());
+            if (requestDto.client().getClientState().equals(ClientState.WAITING_FOR_CONTACT)) {
+                anonymousConnectionRequestService.deleteByRequestFromId(requestDto.client().getId());
+            }
             bot.execute(sendMessage);
         }
     }
@@ -215,6 +218,47 @@ public class CommandService {
     @Response(value = CommandConstant.BACK_HELP_MAIN_MENU)
     public void backHelpMainMenu(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
+    }
+
+
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT, value = CommandConstant.CANCEL_CHAT)
+    @SneakyThrows
+    public void stopAnonymousChat(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_confirm", null, localeUtils.getLocale())));
+        sendMessage.setReplyMarkup(bot.getChatStopConfirmMenu());
+        clientService.setClientState(requestDto.client(), ClientState.CONFIRM_STOP_CHAT);
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = ClientState.CONFIRM_STOP_CHAT, value = CommandConstant.CANCEL_CHAT_CONFIRM_YES)
+    @SneakyThrows
+    public void stopAnonymousChatConfirmYes(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        Client contact = clientService.getClientById(requestDto.client().getContactId());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
+        clientService.setClientState(contact, ClientState.NORMAL);
+        bot.execute(sendMessage);
+        sendMessage.setChatId(contact.getId());
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("close.chat.contact", null, localeUtils.getLocale())));
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = ClientState.CONFIRM_STOP_CHAT, value = CommandConstant.CANCEL_CHAT_CONFIRM_NO)
+    @SneakyThrows
+    public void stopAnonymousChatConfirmNo(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_not_confirm", null, localeUtils.getLocale())));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
+        bot.execute(sendMessage);
     }
 
     @SneakyThrows
@@ -449,15 +493,20 @@ public class CommandService {
             anonymousConnectionRequestService.submitRequest(requestDto.client(), selectedGender);
             sendMessage.setText(Objects.requireNonNull(source.getMessage("connection_pending", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getCancelMenu());
+            clientService.setClientState(requestDto.client(), ClientState.WAITING_FOR_CONTACT);
             bot.execute(sendMessage);
         } else {
             clientService.setContact(requestDto.client(), anonymousConnectionRequest.getRequestFrom().getId());
             Client contact = clientService.getContact(requestDto.client());
+            anonymousConnectionRequestService.deleteByRequestFromId(requestDto.client().getId());
+            anonymousConnectionRequestService.deleteByRequestFromId(contact.getId());
             clientService.setContact(contact, requestDto.client().getId());
             clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
             clientService.setClientState(contact, ClientState.SENDING_MESSAGE_TO_CONTACT);
             sendMessage.setText(Objects.requireNonNull(source.getMessage("connected.anonymous", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getAnonymousChatMenu());
+            bot.execute(sendMessage);
+            sendMessage.setChatId(contact.getId());
             bot.execute(sendMessage);
         }
     }
@@ -540,39 +589,6 @@ public class CommandService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
-        sendMessage.setReplyMarkup(bot.getMainMenu());
-        bot.execute(sendMessage);
-    }
-
-    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT, value = CommandConstant.CANCEL_CHAT)
-    @SneakyThrows
-    public void stopAnonymousChat(RequestDto requestDto) {
-        log.info(requestDto.client().getClientInfo());
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_confirm", null, localeUtils.getLocale())));
-        sendMessage.setReplyMarkup(bot.getChatStopConfirmMenu());
-        bot.execute(sendMessage);
-    }
-
-    @Response(acceptedStates = ClientState.CONFIRM_STOP_CHAT, value = CommandConstant.CANCEL_CHAT_CONFIRM_YES)
-    @SneakyThrows
-    public void stopAnonymousChatConfirmYes(RequestDto requestDto) {
-        log.info(requestDto.client().getClientInfo());
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
-        sendMessage.setReplyMarkup(bot.getMainMenu());
-        bot.execute(sendMessage);
-    }
-
-    @Response(acceptedStates = ClientState.CONFIRM_STOP_CHAT, value = CommandConstant.CANCEL_CHAT_CONFIRM_NO)
-    @SneakyThrows
-    public void stopAnonymousChatConfirmNo(RequestDto requestDto) {
-        log.info(requestDto.client().getClientInfo());
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
-        sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_not_confirm", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
     }

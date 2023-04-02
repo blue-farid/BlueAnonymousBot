@@ -8,8 +8,8 @@ import com.blue_farid.blue_anonymous_bot.repository.AnonymousConnectionRequestRe
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -17,12 +17,13 @@ public class AnonymousConnectionRequestService {
     private final AnonymousConnectionRequestRepository repository;
 
     public AnonymousConnectionRequest connect(Gender gender) {
-        List<AnonymousConnectionRequest> list =  repository.getAnonymousConnectionRequestByGenderOrderByCreationDate(gender);
+        List<AnonymousConnectionRequest> list =  repository.getAnonymousConnectionRequestByRequestFromGenderOrderByCreationDate(gender);
         return list.isEmpty() ? null : list.get(0);
     }
 
     public AnonymousConnectionRequest connect() {
         List<AnonymousConnectionRequest> list = repository.getAllOrderByCreationDate();
+        // sort ascending
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -31,5 +32,9 @@ public class AnonymousConnectionRequestService {
         request.setRequestFrom(from);
         request.setGender(gender);
         return repository.save(request);
+    }
+
+    public void deleteByRequestFromId(Long clientId) {
+        repository.deleteByRequestFromId(clientId);
     }
 }

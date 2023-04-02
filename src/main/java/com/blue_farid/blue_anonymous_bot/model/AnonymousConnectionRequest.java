@@ -27,6 +27,7 @@ public class AnonymousConnectionRequest {
     @JoinColumn(name = "client_id")
     private Client requestFrom;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @CreationTimestamp
