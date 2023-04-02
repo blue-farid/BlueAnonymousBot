@@ -17,6 +17,9 @@
       * bot.token=[the token]
       * api.password=[custom_password]
       * is.test=false
+      * admin.password=admin
+      * admin.username=admin
+      
   * in the resource folder, set spring.jpa.hibernate.ddl-auto = create.
   * now just execute the 'run' script!
   * if everything work correctly, then stop the app and change spring.jpa.hibernate.ddl-auto = none.
@@ -27,8 +30,7 @@
   * ### MAKE YOURSELF ADMIN!
     * for seeing who sends to you anonymous messages directly on telegram, 
       you should set yourself as admin. for this, you should use the api.
-      there is file called curl/set-admin.curl. just install curl and then execute it
-      on the server. or you can change 'localhost' to the server IP. (you can use postman too).
+      there is file called curl/set-admin.curl. just install curl and fill the value in the file, then execute it. (you can use postman too).
   
   ## Logging!
   * the application uses slf4j and logs each request.
