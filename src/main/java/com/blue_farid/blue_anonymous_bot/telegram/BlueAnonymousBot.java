@@ -3,10 +3,7 @@ package com.blue_farid.blue_anonymous_bot.telegram;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.exception.ConfigException;
-import com.blue_farid.blue_anonymous_bot.menu.CancelMenu;
-import com.blue_farid.blue_anonymous_bot.menu.ChooseContactGenderMenu;
-import com.blue_farid.blue_anonymous_bot.menu.MainMenu;
-import com.blue_farid.blue_anonymous_bot.menu.SetGenderMenu;
+import com.blue_farid.blue_anonymous_bot.menu.*;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
@@ -42,6 +39,13 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     private final MainMenu mainMenu;
     @Getter
     private final CancelMenu cancelMenu;
+
+    @Getter
+    private final AnonymousChatMenu anonymousChatMenu;
+
+    @Getter
+    private final ChatStopConfirmMenu chatStopConfirmMenu;
+
     @Getter
     private final ChooseContactGenderMenu chooseContactGenderMenu;
     @Getter
@@ -119,7 +123,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         for (Method method : CommandService.class.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Response.class)) {
                 Response response = method.getAnnotation(Response.class);
-                if ((Strings.isEmpty(response.value()) || caseValue.contains(response.value())) &&
+                if ((Strings.isEmpty(response.value()) || caseValue.equals(response.value()) ||
+                        (caseValue.contains("/") && caseValue.contains(response.value()))) &&
                         Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState()))) {
                     MDC.put("method", method.getName());
                     method.invoke(this.commandService, new RequestDto(client, message));
