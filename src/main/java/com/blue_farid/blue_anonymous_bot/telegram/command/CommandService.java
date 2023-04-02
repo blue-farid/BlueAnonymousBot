@@ -220,7 +220,8 @@ public class CommandService {
     @SneakyThrows
     @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT)
     public void sendMessageToSpecific(RequestDto requestDto) {
-        sendMessage(requestDto);
+        sendMessage(requestDto, true);
+        notifyNewMessageToContact(requestDto.client());
         Client client = requestDto.client();
         SendMessage sendMessage = new SendMessage();
         if (clientService.getContact(client).isAdmin()) {
@@ -240,21 +241,25 @@ public class CommandService {
     @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT)
     @SneakyThrows
     public void sendMessageToAnonymous(RequestDto requestDto) {
-        sendMessage(requestDto);
+        sendMessage(requestDto, false);
         Client client = requestDto.client();
         clientService.setContactMessageId(client, 0);
     }
 
     @SneakyThrows
-    private void sendMessage(RequestDto requestDto) {
-        Client client = requestDto.client();
-        Message message = requestDto.value();
+    private void notifyNewMessageToContact(Client client) {
         SendMessage sendMessage = new SendMessage();
-        String contactChatId = String.valueOf(clientService.getContact(client).getId());
         sendMessage.setChatId(String.valueOf(client.getContactId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("new_anonymous_message", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
+    }
+
+    @SneakyThrows
+    private void sendMessage(RequestDto requestDto, boolean isSpecific) {
+        Client client = requestDto.client();
+        Message message = requestDto.value();
+        String contactChatId = String.valueOf(clientService.getContact(client).getId());
         String monitor = "";
         if (message == null) {
             clientService.setClientState(client, ClientState.NORMAL);
@@ -271,7 +276,8 @@ public class CommandService {
             contactSendMessage.setChatId(contactChatId);
             contactSendMessage.setText(text);
             contactSendMessage.setEntities(message.getEntities());
-            contactSendMessage.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendMessage.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendMessage.setReplyToMessageId(client.getContactMessageId());
             try {
                 bot.execute(contactSendMessage);
@@ -289,7 +295,8 @@ public class CommandService {
             monitor = "Sticker";
             InputFile sticker = new InputFile(message.getSticker().getFileId());
             SendSticker contactSendSticker = new SendSticker(contactChatId, sticker);
-            contactSendSticker.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendSticker.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendSticker.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendSticker);
         } else if (message.hasVoice()) {
@@ -301,7 +308,8 @@ public class CommandService {
             SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
             contactSendVoice.setCaption(message.getCaption());
             contactSendVoice.setCaptionEntities(message.getCaptionEntities());
-            contactSendVoice.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendVoice.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendVoice.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVoice);
         } else if (message.hasDocument()) {
@@ -313,7 +321,8 @@ public class CommandService {
             SendDocument contactSendDocument = new SendDocument(contactChatId, document);
             contactSendDocument.setCaption(message.getCaption());
             contactSendDocument.setCaptionEntities(message.getCaptionEntities());
-            contactSendDocument.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendDocument.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendDocument);
         } else if (message.hasPhoto()) {
@@ -325,7 +334,8 @@ public class CommandService {
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
             contactSendPhoto.setCaptionEntities(message.getCaptionEntities());
-            contactSendPhoto.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendPhoto.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendPhoto.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendPhoto);
         } else if (message.hasVideo()) {
@@ -337,7 +347,8 @@ public class CommandService {
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
             contactSendVideo.setCaptionEntities(message.getCaptionEntities());
-            contactSendVideo.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendVideo.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendVideo.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVideo);
         } else if (message.hasAudio()) {
@@ -349,7 +360,8 @@ public class CommandService {
             SendAudio contactSendAudio = new SendAudio(contactChatId, audio);
             contactSendAudio.setCaption(message.getCaption());
             contactSendAudio.setCaptionEntities(message.getCaptionEntities());
-            contactSendAudio.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendAudio.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendAudio.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendAudio);
         } else if (message.hasVideoNote()) {
@@ -359,7 +371,8 @@ public class CommandService {
             monitor = "Video Message";
             InputFile videoNote = new InputFile(message.getVideoNote().getFileId());
             SendVideoNote contactSendVideoNote = new SendVideoNote(contactChatId, videoNote);
-            contactSendVideoNote.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
+            if (isSpecific)
+                contactSendVideoNote.setReplyMarkup(new InlineAMB(client.getId(), message.getMessageId()));
             contactSendVideoNote.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVideoNote);
         } else {
@@ -439,7 +452,10 @@ public class CommandService {
             bot.execute(sendMessage);
         } else {
             clientService.setContact(requestDto.client(), anonymousConnectionRequest.getRequestFrom().getId());
+            Client contact = clientService.getContact(requestDto.client());
+            clientService.setContact(contact, requestDto.client().getId());
             clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
+            clientService.setClientState(contact, ClientState.SENDING_MESSAGE_TO_CONTACT);
             sendMessage.setText(Objects.requireNonNull(source.getMessage("connected.anonymous", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getAnonymousChatMenu());
             bot.execute(sendMessage);

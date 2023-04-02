@@ -8,17 +8,22 @@ import com.blue_farid.blue_anonymous_bot.repository.AnonymousConnectionRequestRe
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class AnonymousConnectionRequestService {
     private final AnonymousConnectionRequestRepository repository;
 
     public AnonymousConnectionRequest connect(Gender gender) {
-        return repository.getAnonymousConnectionRequestByGenderOrderByCreationDateAsc(gender).get(0);
+        List<AnonymousConnectionRequest> list =  repository.getAnonymousConnectionRequestByGenderOrderByCreationDate(gender);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     public AnonymousConnectionRequest connect() {
-        return repository.getAnonymousConnectionRequestOrOrderByCreationDateAsc().get(0);
+        List<AnonymousConnectionRequest> list = repository.getAllOrderByCreationDate();
+        return list.isEmpty() ? null : list.get(0);
     }
 
     public AnonymousConnectionRequest submitRequest(Client from, Gender gender) {
