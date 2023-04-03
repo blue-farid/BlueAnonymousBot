@@ -11,18 +11,17 @@
     * open telegram
     * text @botfather and create your bot
     * note the token and the username of the bot
-  * in the resource folder, create 'bot_config.properties' file and put the lines below:
+  * in the src/main/resource folder, create 'bot_config.properties' file and put the lines below:
       * bot.username=[the username]
       * bot.token=[the token]
-      * api.password=[custom_password]
+      * test.bot.username=[OPTIONAL]
+      * test.bot.token=[OPTIONAL]
       * is.test=false
+      * bot.locale=fa_IR
       * admin.password=admin
       * admin.username=admin
       
-  * in the resource folder, set spring.jpa.hibernate.ddl-auto = create.
   * now just execute the 'run' script!
-  * if everything work correctly, then stop the app and change spring.jpa.hibernate.ddl-auto = none.
-    then execute 'run' again and enjoy!
   * NOTE_1: if telegram is censored in your country, you need a vpn.
   * NOTE_2: you need java 17 and maven installed on your machine.
   
@@ -30,6 +29,7 @@
     * for seeing who sends to you anonymous messages directly on telegram, 
       you should set yourself as admin. for this, you should use the api.
       there is file called curl/set-admin.curl. just install curl and fill the value in the file, then execute it. (you can use postman too).
+      or you can access h2 console on the application and set yourself admin directly in the database.
   
   ## Logging!
   * the application uses slf4j and logs each request.
