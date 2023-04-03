@@ -1,10 +1,9 @@
   # Blue Anonymous Bot
   ![logo](logo.png)
   ## What the hell is this?
-  * This is a Fake-Copy of a persian telegram ChatBot called 'برنامه ناشناس'
+  * This is a Open-Source copy of a persian telegram ChatBot called 'برنامه ناشناس'
   * The original idea for the robot came about when we wanted to know who was sending us anonymous messages using 'برنامه ناشناس' bot.
   * SO WE WROTE OUR OWN COPY!
-  * (the original bots: @BChatBot - @BiChatbot)
 
   ## How to use it?
   * clone the repository
