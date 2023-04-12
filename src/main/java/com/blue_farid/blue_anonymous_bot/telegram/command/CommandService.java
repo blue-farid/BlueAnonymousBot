@@ -59,7 +59,6 @@ public class CommandService {
     public void cancel(RequestDto requestDto) {
         if (requestDto.value().getText().equals(CommandConstant.CANCEL)) {
             log.info(requestDto.client().getClientInfo());
-            clientService.setClientState(requestDto.client(), ClientState.NORMAL);
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(requestDto.client().getId());
             sendMessage.setText(Objects.requireNonNull(source.getMessage("cancel", null, localeUtils.getLocale())));
@@ -67,6 +66,7 @@ public class CommandService {
             if (requestDto.client().getClientState().equals(ClientState.WAITING_FOR_CONTACT)) {
                 anonymousConnectionRequestService.deleteByRequestFromId(requestDto.client().getId());
             }
+            clientService.setClientState(requestDto.client(), ClientState.NORMAL);
             bot.execute(sendMessage);
         }
     }
