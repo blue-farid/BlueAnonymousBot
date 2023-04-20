@@ -3,6 +3,7 @@ package com.blue_farid.blue_anonymous_bot.controller.admin;
 
 import com.blue_farid.blue_anonymous_bot.dto.LoginDto;
 import com.blue_farid.blue_anonymous_bot.dto.LoginResponseDto;
+import com.blue_farid.blue_anonymous_bot.exception.LoginException;
 import com.blue_farid.blue_anonymous_bot.service.LoginAdminService;
 import com.blue_farid.blue_anonymous_bot.utils.HttpBasicTokenUtils;
 import com.blue_farid.blue_anonymous_bot.utils.PasswordUtils;
@@ -29,7 +30,7 @@ public class LoginAdminController {
     public ResponseEntity<LoginResponseDto> login(@RequestBody  LoginDto dto) {
         try {
             return ResponseEntity.ok(service.login(dto));
-        } catch (Exception e) {
+        } catch (LoginException e) {
             return ResponseEntity.status(401).body(new LoginResponseDto(null, e.getMessage()));
         }
     }
