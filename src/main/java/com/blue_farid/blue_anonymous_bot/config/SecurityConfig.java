@@ -26,10 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().disable().csrf().disable()
-                .headers().frameOptions().disable()
+                .headers()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/blue-anonymous-bot/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/blue-anonymous-bot/admin/login").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic();
     }

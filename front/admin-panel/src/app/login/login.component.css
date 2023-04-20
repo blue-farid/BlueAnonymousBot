@@ -1,0 +1,42 @@
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('../../assets/login_1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: -10px;
+}
+
+.login-button {
+  border: none;
+  outline: none;
+  margin-left: 36%;
+  color: white;
+  border-radius: 20px;
+  height: 47px;
+  width: 127px;
+  background-color: rgba(0, 60, 255, 0.47999998927116394);
+}
+
+.title {
+  font: 700 4rem/normal Poppins;
+  color: white;
+  text-align: center;
+  position: relative;
+  top: -150px;
+}
+.username-pass {
+  border: none;
+  outline: none;
+  margin-left: 20%;
+  margin-bottom: 30px;
+  text-align: center;
+  font: 700 1.25rem/normal Poppins;
+  color: rgba(255, 255, 255, 0.4000000059604645);
+  border-radius: 20px;
+  height: 69px;
+  width: 314px;
+  background-color: rgba(217, 217, 217, 0.20000000298023224);
+}

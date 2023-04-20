@@ -1,0 +1,14 @@
+<body>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <p class="title">
+        Blue Anonymous Bot <br>Admin Panel
+      </p>
+      <div>
+        <input class="username-pass" type="text" id="username" name="username" placeholder="username" formControlName="username">
+      </div>
+      <div>
+        <input class="username-pass" type="password" id="password" name="password" placeholder="password" formControlName="password">
+      </div>
+      <button class="login-button" type="submit" [disabled]="!loginForm.valid">Login</button>
+    </form>
+</body>
