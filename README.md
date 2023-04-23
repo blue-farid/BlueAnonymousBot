@@ -1,5 +1,5 @@
   # Blue Anonymous Bot
-  ![logo](logo.png)
+  ![logo](logo.jpg)
   ## What the hell is this?
   * This is a Open-Source copy of a persian telegram ChatBot called 'برنامه ناشناس'
   * The original idea for the robot came about when we wanted to know who was sending us anonymous messages using 'برنامه ناشناس' bot.
