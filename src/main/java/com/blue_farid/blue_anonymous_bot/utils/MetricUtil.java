@@ -11,7 +11,7 @@ public class MetricUtil {
 
     public MetricUtil(MeterRegistry registry) {
         totalRequests = registry.counter("requests");
-        totalSendMessages = registry.counter("sendMessages");
+        totalSendMessages = registry.counter("send_messages");
     }
 
     public void incrementTotalRequests() {
