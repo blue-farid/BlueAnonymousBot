@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/blue-anonymous-bot/admin/**").hasRole("ADMIN")
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic();
     }
