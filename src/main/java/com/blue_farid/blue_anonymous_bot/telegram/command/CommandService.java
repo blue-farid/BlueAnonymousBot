@@ -276,6 +276,7 @@ public class CommandService {
         }
         sendMessage.setChatId(String.valueOf(client.getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("send_message_done", null, localeUtils.getLocale())));
+        sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
         clientService.setContactMessageId(client, 0);
         clientService.setContact(client, 0);
