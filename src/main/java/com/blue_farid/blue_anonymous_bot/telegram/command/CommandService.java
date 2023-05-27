@@ -23,9 +23,11 @@ import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 @Service
@@ -393,8 +395,9 @@ public class CommandService {
             contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendDocument);
         } else if (message.hasPhoto()) {
+            PhotoSize photo = message.getPhoto().stream().sorted(Comparator.comparing(PhotoSize::getFileSize).reversed()).findFirst().orElse(null);
             GetFile getFile = new GetFile();
-            getFile.setFileId(message.getPhoto().get(0).getFileId());
+            getFile.setFileId(photo.getFileId());
 
             Long photoId = telegramFileRepository.save(
                     new TelegramFile().setLink(
