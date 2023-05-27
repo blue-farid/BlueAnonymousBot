@@ -21,5 +21,8 @@ public class TelegramFile {
 
     @Column
     private String link;
+
+    @Column
+    private String type;
 }
 

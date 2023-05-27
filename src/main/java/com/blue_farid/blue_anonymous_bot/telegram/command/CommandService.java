@@ -346,10 +346,21 @@ public class CommandService {
             contactSendSticker.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendSticker);
         } else if (message.hasVoice()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Voice}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getVoice().getFileId());
+
+            Long voiceId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Voice")).getId();
+
+            MDC.put("others", CommonUtils.readyForLog("message: {Voice-".concat(voiceId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
-            monitor = "Voice";
+            monitor = "Voice-".concat(voiceId.toString());
             InputFile voice = new InputFile(message.getVoice().getFileId());
             SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
             contactSendVoice.setCaption(message.getCaption());
@@ -359,10 +370,20 @@ public class CommandService {
             contactSendVoice.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVoice);
         } else if (message.hasDocument()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Document}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getDocument().getFileId());
+
+            Long documentId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Document")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Document-".concat(documentId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
-            monitor = "Document";
+            monitor = "Document-".concat(documentId.toString());
             InputFile document = new InputFile(message.getDocument().getFileId());
             SendDocument contactSendDocument = new SendDocument(contactChatId, document);
             contactSendDocument.setCaption(message.getCaption());
@@ -380,7 +401,8 @@ public class CommandService {
                             Constant.downloadFileLink.replace(
                                     "{token}", bot.getBotToken()).replace(
                                             "{filePath}", bot.execute(getFile).getFilePath()))
-                            .setClient(client)).getId();
+                            .setClient(client).
+                    setType("Photo")).getId();
 
             MDC.put("others", CommonUtils.readyForLog("message: {Photo-".concat(photoId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
@@ -397,10 +419,20 @@ public class CommandService {
             contactSendPhoto.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendPhoto);
         } else if (message.hasVideo()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Video}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getVideo().getFileId());
+
+            Long videoId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Video")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Video-".concat(videoId.toString()).concat("}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
-            ));
-            monitor = "Video";
+            )));
+            monitor = "Video-".concat(videoId.toString());
             InputFile video = new InputFile(message.getVideo().getFileId());
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
@@ -410,7 +442,17 @@ public class CommandService {
             contactSendVideo.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVideo);
         } else if (message.hasAudio()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Audio}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getAudio().getFileId());
+
+            Long audioId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Audio")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Audio-".concat(audioId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
             monitor = "Audio";
@@ -423,10 +465,20 @@ public class CommandService {
             contactSendAudio.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendAudio);
         } else if (message.hasVideoNote()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Video Message}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getVideoNote().getFileId());
+
+            Long videoNoteId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("VideoNote")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Video Message-".concat(videoNoteId.toString()).concat("}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
-            ));
-            monitor = "Video Message";
+            )));
+            monitor = "Video Message-".concat(videoNoteId.toString());
             InputFile videoNote = new InputFile(message.getVideoNote().getFileId());
             SendVideoNote contactSendVideoNote = new SendVideoNote(contactChatId, videoNote);
             if (isSpecific)
