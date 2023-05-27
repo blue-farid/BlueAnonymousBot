@@ -22,14 +22,23 @@ public class FileStreamingController {
     }
 
     @GetMapping("/chat")
-    @SneakyThrows
     public ResponseEntity<StreamingResponseBody> streamChat(
             @RequestParam String first,
             @RequestParam String second
     ) {
 
-        InputStream inputStream = new FileInputStream("/var/log/blue-anonymous-bot/SendMessage/"
-                .concat(first).concat("-").concat(second).concat(".txt"));
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream("/var/log/blue-anonymous-bot/SendMessage/"
+                    .concat(first).concat("-").concat(second).concat(".txt"));
+        } catch (FileNotFoundException e) {
+            try {
+                inputStream = new FileInputStream("/var/log/blue-anonymous-bot/SendMessage/"
+                        .concat(second).concat("-").concat(first).concat(".txt"));
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         return getStreamingResponseEntity(inputStream);
     }
 
