@@ -54,6 +54,7 @@ public class FileStreamingController {
                     writer.newLine();
                     writer.flush();
                 }
+                stream.close();
             }
         });
     }
