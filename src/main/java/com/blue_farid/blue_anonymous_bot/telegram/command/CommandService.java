@@ -2,14 +2,13 @@ package com.blue_farid.blue_anonymous_bot.telegram.command;
 
 import com.blue_farid.blue_anonymous_bot.annotation.AdminCommand;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
+import com.blue_farid.blue_anonymous_bot.config.Constant;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineAMB;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineHelpKeyBoard;
 import com.blue_farid.blue_anonymous_bot.mapper.GenderMapper;
-import com.blue_farid.blue_anonymous_bot.model.AnonymousConnectionRequest;
-import com.blue_farid.blue_anonymous_bot.model.Client;
-import com.blue_farid.blue_anonymous_bot.model.ClientState;
-import com.blue_farid.blue_anonymous_bot.model.Gender;
+import com.blue_farid.blue_anonymous_bot.model.*;
+import com.blue_farid.blue_anonymous_bot.repository.TelegramFileRepository;
 import com.blue_farid.blue_anonymous_bot.service.AnonymousConnectionRequestService;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
@@ -51,6 +50,8 @@ public class CommandService {
     private final FileUtils fileUtils;
 
     private final MetricUtil metricUtil;
+
+    private final TelegramFileRepository telegramFileRepository;
 
     @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
             ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL, ClientState.WAITING_FOR_CONTACT})
@@ -370,10 +371,19 @@ public class CommandService {
             contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendDocument);
         } else if (message.hasPhoto()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Photo}") + CommonUtils.readyForLog(
+            Long photoId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                            Constant.downloadFileLink.replace(
+                                    "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", message.getPhoto().get(0).getFilePath()))
+                            .setClient(client)).getId();
+
+            MDC.put("others", CommonUtils.readyForLog("message: {Photo-".concat(photoId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
-            monitor = "Photo";
+
+            monitor = "Photo-".concat(photoId.toString());
+
             InputFile photo = new InputFile(message.getPhoto().get(0).getFileId());
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
