@@ -7,6 +7,7 @@ import com.blue_farid.blue_anonymous_bot.menu.*;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
+import com.blue_farid.blue_anonymous_bot.utils.MetricUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -57,6 +58,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     private String botUsername;
     @Value("${bot.token}")
     private String botToken;
+
+    private final MetricUtil metricUtil;
 
     @PostConstruct
     private void init() {
@@ -139,5 +142,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             this.commandService.badInput(new RequestDto(client, message));
             MDC.clear();
         }
+
+        metricUtil.incrementTotalRequests();
     }
 }
