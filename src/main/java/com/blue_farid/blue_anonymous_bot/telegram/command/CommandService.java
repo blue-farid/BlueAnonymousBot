@@ -395,9 +395,9 @@ public class CommandService {
             contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendDocument);
         } else if (message.hasPhoto()) {
-            PhotoSize photo = message.getPhoto().stream().sorted(Comparator.comparing(PhotoSize::getFileSize).reversed()).findFirst().orElse(null);
+            PhotoSize photoSize = message.getPhoto().stream().sorted(Comparator.comparing(PhotoSize::getFileSize).reversed()).findFirst().orElse(null);
             GetFile getFile = new GetFile();
-            getFile.setFileId(photo.getFileId());
+            getFile.setFileId(photoSize.getFileId());
 
             Long photoId = telegramFileRepository.save(
                     new TelegramFile().setLink(
