@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Stream File</title>
+    <script>
+        function startStreamMainLog() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/blue-anonymous-bot/stream/log", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 2) {
+                    document.getElementById('output').innerHTML = 'Streaming...';
+                }
+                if (xhr.readyState == 3) {
+                    document.getElementById('output').innerHTML = 'Streaming...\n'.concat(xhr.responseText);
+                }
+                if (xhr.readyState == 4) {
+                    document.getElementById('output').innerHTML = document.getElementById('output').innerHTML.concat('\nStreaming completed');
+                }
+            }
+            xhr.send();
+        }
+
+        function startStreamChat() {
+            const first = document.getElementById('chat-1');
+            const second = document.getElementById('chat-2');
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/blue-anonymous-bot/stream/chat?first=".concat(first.value).concat('&second=').concat(second.value), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 2) {
+                    document.getElementById('output').innerHTML = 'Streaming...';
+                }
+                if (xhr.readyState == 3) {
+                    document.getElementById('output').innerHTML = 'Streaming...\n'.concat(xhr.responseText);
+                }
+                if (xhr.readyState == 4) {
+                    document.getElementById('output').innerHTML = document.getElementById('output').innerHTML.concat('\nStreaming completed');
+                }
+            }
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+<button onclick="startStreamMainLog()">Main Log</button>
+<div>
+    <button onclick="startStreamChat()">Chats</button>
+    <input id="chat-1"> first chat ID</input>
+    <input id="chat-2"> second chat ID</input>
+</div>
+<pre id="output"></pre>
+</body>
+</html>
