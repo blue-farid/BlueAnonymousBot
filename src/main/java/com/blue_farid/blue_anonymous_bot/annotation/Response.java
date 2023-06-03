@@ -12,5 +12,7 @@ import java.lang.annotation.Target;
 public @interface Response {
     String value() default "";
 
+    String notValue() default "";
+
     ClientState[] acceptedStates() default ClientState.NORMAL;
 }

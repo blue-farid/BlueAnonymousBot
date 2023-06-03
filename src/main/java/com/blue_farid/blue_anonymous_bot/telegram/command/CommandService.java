@@ -283,7 +283,7 @@ public class CommandService {
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
     }
 
-    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT)
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT, notValue = CommandConstant.CANCEL_CHAT)
     @SneakyThrows
     public void sendMessageToAnonymous(RequestDto requestDto) {
         sendMessage(requestDto, false);
