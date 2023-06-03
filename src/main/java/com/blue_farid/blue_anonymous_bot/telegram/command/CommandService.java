@@ -256,7 +256,7 @@ public class CommandService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(requestDto.client().getId());
         sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_not_confirm", null, localeUtils.getLocale())));
-        sendMessage.setReplyMarkup(bot.getCancelMenu());
+        sendMessage.setReplyMarkup(bot.getAnonymousChatMenu());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
         bot.execute(sendMessage);
     }
