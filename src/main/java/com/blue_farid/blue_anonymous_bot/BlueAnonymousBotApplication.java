@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * ! The BlueAnonymousBot Project !
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @Slf4j
 @PropertySource("classpath:bot_config.properties")
+@EnableJpaRepositories
 public class BlueAnonymousBotApplication {
     /**
      * the entry point of the Application.
