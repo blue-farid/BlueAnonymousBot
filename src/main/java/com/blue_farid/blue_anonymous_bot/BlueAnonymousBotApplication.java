@@ -26,7 +26,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @Slf4j
 @PropertySource("classpath:bot_config.properties")
-@EnableJpaRepositories
 public class BlueAnonymousBotApplication {
     /**
      * the entry point of the Application.
