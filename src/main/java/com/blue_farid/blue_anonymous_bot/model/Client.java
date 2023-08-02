@@ -14,10 +14,8 @@ import java.io.Serializable;
  * @author Farid Masjedi
  */
 @Entity
-@Table(name = "CLIENT")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Client implements Serializable {
     @Id
