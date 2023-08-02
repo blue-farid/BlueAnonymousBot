@@ -15,9 +15,7 @@ import javax.persistence.EntityManagerFactory;
 public class JpaConfig {
     @Bean
     public LocalEntityManagerFactoryBean entityManagerFactory() {
-        LocalEntityManagerFactoryBean factoryBean = new LocalEntityManagerFactoryBean();
-        factoryBean.setPersistenceUnitName("myapp");
-        return factoryBean;
+        return new LocalEntityManagerFactoryBean();
     }
 
     @Bean
