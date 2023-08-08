@@ -263,7 +263,7 @@ public class CommandService {
 
     @SneakyThrows
     @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, notValues = CommandConstant.CANCEL,
-            notValueRegex = "^\\d{8,13}\\s\\d{2,7}$")
+            notValueRegex = "^\\d{8,13}\\s\\d{2,7}\\s$")
     public void sendMessageToSpecific(RequestDto requestDto) {
         sendMessage(requestDto, true);
         notifyNewMessageToContact(requestDto.client());
