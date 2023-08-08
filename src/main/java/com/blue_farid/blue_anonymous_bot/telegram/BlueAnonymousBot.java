@@ -134,7 +134,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                 if ((Strings.isEmpty(response.value()) || caseValue.equals(response.value()) ||
                         (caseValue.contains("/") && caseValue.contains(response.value()))) &&
                         Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState())) &&
-                notValuesCondition)
+                !notValuesCondition)
                 {
                     MDC.put("method", method.getName());
                     method.invoke(this.commandService, new RequestDto(client, message));
