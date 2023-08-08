@@ -29,6 +29,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Component
@@ -98,6 +99,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         String caseValue;
         Message message = null;
         Client client;
+        boolean isCallBack = false;
         if (update.hasMessage()) {
             Long id = update.getMessage().getChatId();
             if (!clientService.exists(id)) {
@@ -113,6 +115,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         } else {
             String[] callBack = update.getCallbackQuery().getData().split(" ");
             caseValue = callBack[0];
+            isCallBack = true;
             if (callBack.length > 1) {
                 message = update.getCallbackQuery().getMessage();
                 String text = "";
@@ -132,7 +135,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                 for (String v : notValues) {
                     notValuesCondition = v.equals(caseValue) || notValuesCondition;
                 }
-                notValuesCondition = notValuesCondition || Pattern.matches(response.notValueRegex(), caseValue);
+                notValuesCondition = notValuesCondition || (isCallBack &&
+                        Pattern.matches(response.notValueRegex(), Objects.requireNonNull(message).getText()));
                 if ((Strings.isEmpty(response.value()) || caseValue.equals(response.value()) ||
                         (caseValue.contains("/") && caseValue.contains(response.value()))) &&
                         Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState())) &&
