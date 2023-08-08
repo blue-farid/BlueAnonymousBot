@@ -29,6 +29,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 @Component
 @RequiredArgsConstructor
@@ -129,8 +130,9 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                 String[] notValues = response.notValues();
                 boolean notValuesCondition = false;
                 for (String v : notValues) {
-                    notValuesCondition = v.equals(caseValue);
+                    notValuesCondition = v.equals(caseValue) || notValuesCondition;
                 }
+                notValuesCondition = notValuesCondition || Pattern.matches(response.notValueRegex(), caseValue);
                 if ((Strings.isEmpty(response.value()) || caseValue.equals(response.value()) ||
                         (caseValue.contains("/") && caseValue.contains(response.value()))) &&
                         Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState())) &&

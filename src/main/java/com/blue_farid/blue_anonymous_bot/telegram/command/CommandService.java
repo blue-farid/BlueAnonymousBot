@@ -262,7 +262,8 @@ public class CommandService {
     }
 
     @SneakyThrows
-    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, notValues = CommandConstant.CANCEL)
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, notValues = CommandConstant.CANCEL,
+            notValueRegex = "\\d{5, 11} \\d{1, 10}")
     public void sendMessageToSpecific(RequestDto requestDto) {
         sendMessage(requestDto, true);
         notifyNewMessageToContact(requestDto.client());

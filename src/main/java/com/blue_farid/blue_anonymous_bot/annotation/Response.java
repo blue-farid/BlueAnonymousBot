@@ -14,4 +14,5 @@ public @interface Response {
 
     ClientState[] acceptedStates() default ClientState.NORMAL;
     String[] notValues() default "";
+    String notValueRegex() default "";
 }
