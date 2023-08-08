@@ -262,7 +262,7 @@ public class CommandService {
     }
 
     @SneakyThrows
-    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT)
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, notValues = CommandConstant.CANCEL)
     public void sendMessageToSpecific(RequestDto requestDto) {
         sendMessage(requestDto, true);
         notifyNewMessageToContact(requestDto.client());
@@ -283,7 +283,7 @@ public class CommandService {
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
     }
 
-    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT, notValue = CommandConstant.CANCEL_CHAT)
+    @Response(acceptedStates = ClientState.SENDING_MESSAGE_TO_CONTACT, notValues = CommandConstant.CANCEL_CHAT)
     @SneakyThrows
     public void sendMessageToAnonymous(RequestDto requestDto) {
         sendMessage(requestDto, false);
