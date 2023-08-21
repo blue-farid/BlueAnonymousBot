@@ -8,6 +8,7 @@ import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
 import com.blue_farid.blue_anonymous_bot.utils.MetricUtil;
+import io.micrometer.core.annotation.Timed;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -95,6 +96,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
 
     @Override
     @SneakyThrows
+    @Timed(value = "update.received")
     public void onUpdateReceived(Update update) {
         String caseValue;
         Message message = null;
@@ -155,7 +157,5 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             this.commandService.badInput(new RequestDto(client, message));
             MDC.clear();
         }
-
-        metricUtil.incrementTotalRequests();
     }
 }
