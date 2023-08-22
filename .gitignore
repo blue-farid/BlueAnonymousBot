@@ -3,6 +3,5 @@
 target
 BlueAnonymousBot.iml
 files
-Dockerfile
 .dockerignore
 src/main/resources/bot_config.properties
