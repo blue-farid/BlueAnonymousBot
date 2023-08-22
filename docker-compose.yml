@@ -1,10 +1,12 @@
-version: '3'
+version: '3.8'
 services:
   app:
     image: blue_anonymous_bot:latest
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - MYSQL_HOST=db    
     ports:
       - 8080:8080
     depends_on:
