@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'blue-anonymous-bot-app'
+    metrics_path: '/actuator/metrics'
+    static_configs:
+      - targets: ['blue-anonymous-bot-app:8080']
