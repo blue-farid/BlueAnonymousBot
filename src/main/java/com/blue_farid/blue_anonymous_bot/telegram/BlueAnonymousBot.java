@@ -95,12 +95,12 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     }
 
     @Override
-    @SneakyThrows
     public void onUpdateReceived(Update update) {
         update(update);
     }
 
     @Timed(value = "update_received")
+    @SneakyThrows
     public void update(Update update) {
         String caseValue;
         Message message = null;
