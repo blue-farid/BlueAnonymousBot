@@ -7,7 +7,7 @@ import com.blue_farid.blue_anonymous_bot.menu.*;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
-import com.blue_farid.blue_anonymous_bot.utils.MetricUtil;
+import com.blue_farid.blue_anonymous_bot.utils.metric.MetricUtil;
 import io.micrometer.core.annotation.Timed;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -149,6 +149,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                         !notValuesCondition)
                 {
                     MDC.put("method", method.getName());
+                    metricUtil.increment(method.getName());
                     method.invoke(this.commandService, new RequestDto(client, message));
                     MDC.clear();
                     flag = false;
@@ -161,5 +162,6 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             this.commandService.badInput(new RequestDto(client, message));
             MDC.clear();
         }
+
     }
 }
