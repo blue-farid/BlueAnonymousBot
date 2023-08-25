@@ -428,8 +428,6 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         fileUtils.monitorSendMessageToContact("SendMessage",
                 monitor, client);
-
-        metricUtil.incrementTotalSendMessages();
     }
 
     @Response(value = CommandConstant.SPECIFIC_CONNECTION)
