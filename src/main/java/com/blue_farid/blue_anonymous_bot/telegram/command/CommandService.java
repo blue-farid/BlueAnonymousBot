@@ -50,9 +50,6 @@ public class CommandService {
     private final InlineHelpKeyBoard helpKeyBoard;
 
     private final FileUtils fileUtils;
-
-    private final MetricUtil metricUtil;
-
     @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
             ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL, ClientState.WAITING_FOR_CONTACT})
     @SneakyThrows
