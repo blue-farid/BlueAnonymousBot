@@ -149,10 +149,10 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                         !notValuesCondition)
                 {
                     MDC.put("method", method.getName());
-                    metricUtil.increment(method.getName());
                     method.invoke(this.commandService, new RequestDto(client, message));
                     MDC.clear();
                     flag = false;
+                    metricUtil.increment(method.getName());
                     break;
                 }
             }
@@ -160,6 +160,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         if (flag) {
             MDC.put("method", "badInput");
             this.commandService.badInput(new RequestDto(client, message));
+            metricUtil.increment("badInput");
             MDC.clear();
         }
 
