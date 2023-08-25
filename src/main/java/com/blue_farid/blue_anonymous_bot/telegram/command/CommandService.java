@@ -14,6 +14,7 @@ import com.blue_farid.blue_anonymous_bot.service.AnonymousConnectionRequestServi
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
 import com.blue_farid.blue_anonymous_bot.utils.*;
+import com.blue_farid.blue_anonymous_bot.utils.metric.MetricUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
