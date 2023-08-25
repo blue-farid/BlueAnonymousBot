@@ -35,9 +35,7 @@ public class TagCounter {
             return tagValue;
         }).collect(Collectors.toList());
         String valuesString = String.join("-", tagValueList);
-        if (tagValues.length != tagNames.length) {
-            throw new IllegalArgumentException("Counter tags mismatch! Expected args are " + Arrays.toString(tagNames) + ", provided tags are " + valuesString);
-        }
+
         Counter counter = counters.get(valuesString);
         if (counter == null) {
             List<Tag> tags = new ArrayList<>(tagNames.length);
