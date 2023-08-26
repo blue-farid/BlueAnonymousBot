@@ -15,7 +15,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     Client findByDeepLinkIgnoreCase(String deeplink);
 
     @Query("SELECT c FROM Client c WHERE c.createdAt > :startTime")
-    List<Client> findAllNewJoiners(Date date);
+    List<Client> findAllNewJoiners(Date startTime);
 
     @Modifying
     @Transactional
