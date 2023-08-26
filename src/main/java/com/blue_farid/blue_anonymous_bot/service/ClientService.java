@@ -7,6 +7,7 @@ import com.blue_farid.blue_anonymous_bot.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -100,6 +101,7 @@ public class ClientService {
 
     /**
      * add client
+     *
      * @param client the client
      */
     public void addClient(Client client) {
@@ -110,8 +112,15 @@ public class ClientService {
         repository.updateFirstnameAndLastnameAndTelegramUserAndUsername(client);
     }
 
+    public List<Client> getAllNewJoiners() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, -24);
+        return repository.findAllNewJoiners(calendar.getTime());
+    }
+
     /**
      * returns client by id
+     *
      * @param id the id
      * @return the client
      */
@@ -121,6 +130,7 @@ public class ClientService {
 
     /**
      * retrun the client by username
+     *
      * @param username the username
      * @return the client
      */
@@ -130,6 +140,7 @@ public class ClientService {
 
     /**
      * return the client by deeplink
+     *
      * @param deepLink the deeplink
      * @return the client
      */
@@ -139,6 +150,7 @@ public class ClientService {
 
     /**
      * return the counts of client
+     *
      * @return the count
      */
     public long getClientsCount() {

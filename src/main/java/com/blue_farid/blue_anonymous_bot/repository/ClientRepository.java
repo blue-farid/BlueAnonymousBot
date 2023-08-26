@@ -6,10 +6,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
+
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Client findByUsername(String username);
 
     Client findByDeepLinkIgnoreCase(String deeplink);
+
+    @Query("SELECT c FROM Client c WHERE c.createdAt > :startTime")
+    List<Client> findAllNewJoiners(Date date);
 
     @Modifying
     @Transactional
