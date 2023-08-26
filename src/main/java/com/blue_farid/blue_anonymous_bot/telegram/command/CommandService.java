@@ -2,30 +2,35 @@ package com.blue_farid.blue_anonymous_bot.telegram.command;
 
 import com.blue_farid.blue_anonymous_bot.annotation.AdminCommand;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
+import com.blue_farid.blue_anonymous_bot.config.Constant;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineAMB;
 import com.blue_farid.blue_anonymous_bot.inlineMenu.InlineHelpKeyBoard;
 import com.blue_farid.blue_anonymous_bot.mapper.GenderMapper;
-import com.blue_farid.blue_anonymous_bot.model.AnonymousConnectionRequest;
-import com.blue_farid.blue_anonymous_bot.model.Client;
-import com.blue_farid.blue_anonymous_bot.model.ClientState;
-import com.blue_farid.blue_anonymous_bot.model.Gender;
+import com.blue_farid.blue_anonymous_bot.model.*;
+import com.blue_farid.blue_anonymous_bot.repository.TelegramFileRepository;
 import com.blue_farid.blue_anonymous_bot.service.AnonymousConnectionRequestService;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
-import com.blue_farid.blue_anonymous_bot.utils.*;
+import com.blue_farid.blue_anonymous_bot.utils.CommonUtils;
+import com.blue_farid.blue_anonymous_bot.utils.FileUtils;
+import com.blue_farid.blue_anonymous_bot.utils.LocaleUtils;
+import com.blue_farid.blue_anonymous_bot.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 @Service
@@ -50,7 +55,7 @@ public class CommandService {
 
     private final FileUtils fileUtils;
 
-    private final MetricUtil metricUtil;
+    private final TelegramFileRepository telegramFileRepository;
 
     @Response(value = CommandConstant.CANCEL, acceptedStates = {ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT, ClientState.ADMIN_SENDING_CONTACT_ID,
             ClientState.SENDING_CONTACT_INFO, ClientState.CHOOSING_CONTACT_GENDER, ClientState.NORMAL, ClientState.WAITING_FOR_CONTACT})
@@ -59,7 +64,7 @@ public class CommandService {
         if (requestDto.value().getText().equals(CommandConstant.CANCEL)) {
             log.info(requestDto.client().getClientInfo());
             SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(requestDto.client().getId());
+            sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
             sendMessage.setText(Objects.requireNonNull(source.getMessage("cancel", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getMainMenu());
             if (requestDto.client().getClientState().equals(ClientState.WAITING_FOR_CONTACT)) {
@@ -82,7 +87,7 @@ public class CommandService {
                 throw new IllegalStateException();
 
             MDC.put("others", CommonUtils.readyForLog("trying to message : " + contact.getId()));
-            sendMessage.setChatId(requestDto.client().getId());
+            sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
             if (requestDto.client().getId() == contact.getId()) {
                 sendMessage.setText(Objects.requireNonNull(source.getMessage("self_anonymous", null, localeUtils.getLocale())));
                 bot.execute(sendMessage);
@@ -97,7 +102,7 @@ public class CommandService {
         } else {
             sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getMainMenu());
-            sendMessage.setChatId(requestDto.client().getId());
+            sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
             bot.execute(sendMessage);
         }
         log.info(requestDto.client().getClientInfo());
@@ -114,7 +119,7 @@ public class CommandService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(source.getMessage("answer", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setReplyToMessageId(requestDto.value().getMessageId());
         bot.execute(sendMessage);
     }
@@ -128,7 +133,7 @@ public class CommandService {
         if (contact.isAdmin()) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setText(requestDto.client().getId() + " tries to block you!");
-            sendMessage.setChatId(contact.getId());
+            sendMessage.setChatId(String.valueOf(contact.getId()));
             bot.execute(sendMessage);
         }
     }
@@ -147,7 +152,7 @@ public class CommandService {
         clientService.setClientState(requestDto.client(), ClientState.ADMIN_SENDING_CONTACT_INFO);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("OK!, now send the contact ID!");
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         bot.execute(sendMessage);
     }
@@ -158,7 +163,7 @@ public class CommandService {
     public void adminFindContact(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         requestDto.client().setContactId(clientService.getClientById(Long.parseLong(requestDto.value().getText())).getId());
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT);
@@ -180,7 +185,7 @@ public class CommandService {
         sendMessage.setText(Objects.requireNonNull(source.getMessage("help", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         sendMessage.setReplyMarkup(helpKeyBoard);
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         bot.execute(sendMessage);
     }
 
@@ -225,7 +230,7 @@ public class CommandService {
     public void stopAnonymousChat(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_confirm", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getChatStopConfirmMenu());
         clientService.setClientState(requestDto.client(), ClientState.CONFIRM_STOP_CHAT);
@@ -238,13 +243,13 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         Client contact = clientService.getClientById(requestDto.client().getContactId());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
         clientService.setClientState(contact, ClientState.NORMAL);
         bot.execute(sendMessage);
-        sendMessage.setChatId(contact.getId());
+        sendMessage.setChatId(String.valueOf(contact.getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("close.chat.contact", null, localeUtils.getLocale())));
         bot.execute(sendMessage);
     }
@@ -254,7 +259,7 @@ public class CommandService {
     public void stopAnonymousChatConfirmNo(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("stop_chat_not_confirm", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getAnonymousChatMenu());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_CONTACT);
@@ -271,7 +276,7 @@ public class CommandService {
         SendMessage sendMessage = new SendMessage();
         if (clientService.getContact(client).isAdmin()) {
             SendMessage adminSendMessage = new SendMessage();
-            adminSendMessage.setChatId(client.getContactId());
+            adminSendMessage.setChatId(String.valueOf(client.getContactId()));
             adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
             bot.execute(adminSendMessage);
         }
@@ -346,10 +351,21 @@ public class CommandService {
             contactSendSticker.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendSticker);
         } else if (message.hasVoice()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Voice}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getVoice().getFileId());
+
+            Long voiceId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Voice")).getId();
+
+            MDC.put("others", CommonUtils.readyForLog("message: {Voice-".concat(voiceId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
-            monitor = "Voice";
+            monitor = "Voice-".concat(voiceId.toString());
             InputFile voice = new InputFile(message.getVoice().getFileId());
             SendVoice contactSendVoice = new SendVoice(contactChatId, voice);
             contactSendVoice.setCaption(message.getCaption());
@@ -359,10 +375,20 @@ public class CommandService {
             contactSendVoice.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVoice);
         } else if (message.hasDocument()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Document}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getDocument().getFileId());
+
+            Long documentId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Document")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Document-".concat(documentId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
-            monitor = "Document";
+            monitor = "Document-".concat(documentId.toString());
             InputFile document = new InputFile(message.getDocument().getFileId());
             SendDocument contactSendDocument = new SendDocument(contactChatId, document);
             contactSendDocument.setCaption(message.getCaption());
@@ -372,10 +398,24 @@ public class CommandService {
             contactSendDocument.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendDocument);
         } else if (message.hasPhoto()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Photo}") + CommonUtils.readyForLog(
+            PhotoSize photoSize = message.getPhoto().stream().sorted(Comparator.comparing(PhotoSize::getFileSize).reversed()).findFirst().orElse(null);
+            GetFile getFile = new GetFile();
+            getFile.setFileId(photoSize.getFileId());
+
+            Long photoId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                            Constant.downloadFileLink.replace(
+                                    "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                    setType("Photo")).getId();
+
+            MDC.put("others", CommonUtils.readyForLog("message: {Photo-".concat(photoId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
-            monitor = "Photo";
+
+            monitor = "Photo-".concat(photoId.toString());
+
             InputFile photo = new InputFile(message.getPhoto().get(0).getFileId());
             SendPhoto contactSendPhoto = new SendPhoto(contactChatId, photo);
             contactSendPhoto.setCaption(message.getCaption());
@@ -385,10 +425,20 @@ public class CommandService {
             contactSendPhoto.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendPhoto);
         } else if (message.hasVideo()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Video}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getVideo().getFileId());
+
+            Long videoId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Video")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Video-".concat(videoId.toString()).concat("}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
-            ));
-            monitor = "Video";
+            )));
+            monitor = "Video-".concat(videoId.toString());
             InputFile video = new InputFile(message.getVideo().getFileId());
             SendVideo contactSendVideo = new SendVideo(contactChatId, video);
             contactSendVideo.setCaption(message.getCaption());
@@ -398,7 +448,17 @@ public class CommandService {
             contactSendVideo.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendVideo);
         } else if (message.hasAudio()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Audio}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getAudio().getFileId());
+
+            Long audioId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("Audio")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Audio-".concat(audioId.toString()).concat("}")) + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
             ));
             monitor = "Audio";
@@ -411,10 +471,20 @@ public class CommandService {
             contactSendAudio.setReplyToMessageId(client.getContactMessageId());
             bot.execute(contactSendAudio);
         } else if (message.hasVideoNote()) {
-            MDC.put("others", CommonUtils.readyForLog("message: {Video Message}") + CommonUtils.readyForLog(
+            GetFile getFile = new GetFile();
+            getFile.setFileId(message.getVideoNote().getFileId());
+
+            Long videoNoteId = telegramFileRepository.save(
+                    new TelegramFile().setLink(
+                                    Constant.downloadFileLink.replace(
+                                            "{token}", bot.getBotToken()).replace(
+                                            "{filePath}", bot.execute(getFile).getFilePath()))
+                            .setClient(client).
+                            setType("VideoNote")).getId();
+            MDC.put("others", CommonUtils.readyForLog("message: {Video Message-".concat(videoNoteId.toString()).concat("}") + CommonUtils.readyForLog(
                     "contactId: {" + contactChatId + "}"
-            ));
-            monitor = "Video Message";
+            )));
+            monitor = "Video Message-".concat(videoNoteId.toString());
             InputFile videoNote = new InputFile(message.getVideoNote().getFileId());
             SendVideoNote contactSendVideoNote = new SendVideoNote(contactChatId, videoNote);
             if (isSpecific)
@@ -427,8 +497,6 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         fileUtils.monitorSendMessageToContact("SendMessage",
                 monitor, client);
-
-        metricUtil.incrementTotalSendMessages();
     }
 
     @Response(value = CommandConstant.SPECIFIC_CONNECTION)
@@ -437,7 +505,7 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.SENDING_CONTACT_INFO);
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("specific_connection", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getCancelMenu());
         bot.execute(sendMessage);
@@ -448,7 +516,7 @@ public class CommandService {
     public void findContact(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         Client contact;
         contact = findWithForwarded(requestDto.value());
         if (contact == null && !isUsername(requestDto.value().getText())) {
@@ -485,7 +553,7 @@ public class CommandService {
     public void chooseContactGender(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         Gender selectedGender = genderMapper.persianGenderValueToGender(requestDto.value().getText());
         AnonymousConnectionRequest anonymousConnectionRequest;
         if (selectedGender.equals(Gender.BI))
@@ -510,7 +578,7 @@ public class CommandService {
             sendMessage.setText(Objects.requireNonNull(source.getMessage("connected.anonymous", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getAnonymousChatMenu());
             bot.execute(sendMessage);
-            sendMessage.setChatId(contact.getId());
+            sendMessage.setChatId(String.valueOf(contact.getId()));
             bot.execute(sendMessage);
         }
     }
@@ -520,7 +588,7 @@ public class CommandService {
     public void anonymousConnection(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
 
         // gender not specified!
 
@@ -546,7 +614,7 @@ public class CommandService {
         sendMessage.setText(Objects.requireNonNull(source.getMessage("anonymous_link", null, localeUtils.getLocale())).replace("?name",
                         requestDto.client().getFirstname())
                 .concat("\n" + requestDto.client().getDeepLink()));
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         bot.execute(sendMessage);
     }
 
@@ -556,7 +624,7 @@ public class CommandService {
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(Objects.requireNonNull(source.getMessage("bad_input", null, localeUtils.getLocale())));
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);
     }
@@ -567,7 +635,7 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.SETTING_GENDER);
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("gender.select", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getGenderMenu());
         bot.execute(sendMessage);
@@ -591,7 +659,7 @@ public class CommandService {
         clientService.setGender(requestDto.client(), gender);
         clientService.setClientState(requestDto.client(), ClientState.NORMAL);
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(requestDto.client().getId());
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
         sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getMainMenu());
         bot.execute(sendMessage);

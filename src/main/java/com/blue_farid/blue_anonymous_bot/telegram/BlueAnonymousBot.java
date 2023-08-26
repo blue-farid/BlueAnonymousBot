@@ -7,7 +7,7 @@ import com.blue_farid.blue_anonymous_bot.menu.*;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.command.CommandService;
-import com.blue_farid.blue_anonymous_bot.utils.MetricUtil;
+import com.blue_farid.blue_anonymous_bot.utils.metric.MetricUtil;
 import io.micrometer.core.annotation.Timed;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -95,9 +95,13 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     }
 
     @Override
-    @SneakyThrows
-    @Timed(value = "update.received")
     public void onUpdateReceived(Update update) {
+        update(update);
+    }
+
+    @Timed(value = "update_received")
+    @SneakyThrows
+    public void update(Update update) {
         String caseValue;
         Message message = null;
         Client client;
@@ -142,12 +146,13 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
                 if ((Strings.isEmpty(response.value()) || caseValue.equals(response.value()) ||
                         (caseValue.contains("/") && caseValue.contains(response.value()))) &&
                         Arrays.stream(response.acceptedStates()).anyMatch(state -> state.equals(client.getClientState())) &&
-                !notValuesCondition)
+                        !notValuesCondition)
                 {
                     MDC.put("method", method.getName());
                     method.invoke(this.commandService, new RequestDto(client, message));
                     MDC.clear();
                     flag = false;
+                    metricUtil.increment(method.getName());
                     break;
                 }
             }
@@ -155,7 +160,9 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         if (flag) {
             MDC.put("method", "badInput");
             this.commandService.badInput(new RequestDto(client, message));
+            metricUtil.increment("badInput");
             MDC.clear();
         }
+
     }
 }
