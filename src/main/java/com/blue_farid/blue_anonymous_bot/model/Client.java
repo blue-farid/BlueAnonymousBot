@@ -2,11 +2,15 @@ package com.blue_farid.blue_anonymous_bot.model;
 
 import lombok.*;
 import org.apache.logging.log4j.util.Strings;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * The Client class
@@ -52,6 +56,10 @@ public class Client implements Serializable {
     @ToString.Exclude
     @Setter(AccessLevel.PRIVATE)
     private String clientInfo;
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private Date lastModifiedAt;
 
 
     public Client(User user) {
@@ -70,7 +78,7 @@ public class Client implements Serializable {
     public String getClientInfo() {
         if (clientInfo == null) {
             this.clientInfo = "\t- firstName: " + this.firstname + "\n" + "\t- lastName: " + this.lastname + "\n" + "\t- username: " + "@" + this.username +
-            "\n\t- id: " + id;
+                    "\n\t- id: " + id;
         }
         return clientInfo;
     }
