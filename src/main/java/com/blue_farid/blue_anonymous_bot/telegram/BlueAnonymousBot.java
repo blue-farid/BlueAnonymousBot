@@ -11,6 +11,7 @@ import com.blue_farid.blue_anonymous_bot.utils.metric.MetricUtil;
 import io.micrometer.core.annotation.Timed;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -95,13 +97,8 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public void onUpdateReceived(Update update) {
-        update(update);
-    }
-
-    @Timed(value = "update_received")
     @SneakyThrows
-    public void update(Update update) {
+    public void onUpdateReceived(Update update) {
         String caseValue;
         Message message = null;
         Client client;
@@ -163,6 +160,6 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
             metricUtil.increment("badInput");
             MDC.clear();
         }
-
     }
+
 }
