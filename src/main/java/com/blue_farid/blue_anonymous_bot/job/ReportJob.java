@@ -3,6 +3,8 @@ package com.blue_farid.blue_anonymous_bot.job;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
+import com.blue_farid.blue_anonymous_bot.utils.metric.MetricUtil;
+import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -19,21 +21,20 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class ReportJob {
 
     private final BlueAnonymousBot bot;
     private final ClientService clientService;
+    private final MetricUtil metricUtil;
 
     @Value("${admin.chatId}")
     private String chatId;
 
-    public ReportJob(BlueAnonymousBot bot, ClientService clientService) {
-        this.bot = bot;
-        this.clientService = clientService;
-    }
-
     @Scheduled(cron = "0 0 5 * * ?")
     public void dailyReport() {
+        metricUtil.incrementJob("daily_report", "total");
+
         List<Client> clientList = clientService.getAllNewJoiners();
 
         // Generate PDF report
@@ -77,10 +78,13 @@ public class ReportJob {
         try {
             bot.execute(sendDocument);
         } catch (TelegramApiException e) {
+            metricUtil.incrementJob("daily_report", "failed");
             e.printStackTrace();
         }
 
         // Delete the temporary file
         tempFile.delete();
+
+        metricUtil.incrementJob("daily_report", "success");
     }
 }
