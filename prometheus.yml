@@ -3,6 +3,6 @@ global:
 
 scrape_configs:
   - job_name: 'blue-anonymous-bot-app'
-    metrics_path: '/actuator/metrics'
+    metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['blue-anonymous-bot-app:8080']
+      - targets: ['app:8080']
