@@ -33,7 +33,7 @@ public class ReportJob {
     private String chatId;
 
     @Async
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 0 9 * * ?")
     public void dailyReport() {
         metricUtil.incrementJob("daily_report", "total");
 
