@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
@@ -31,7 +32,8 @@ public class ReportJob {
     @Value("${admin.chatId}")
     private String chatId;
 
-    @Scheduled(cron = "0 0 5 * * ?")
+    @Async
+    @Scheduled(cron = "0 0 1 * * ?")
     public void dailyReport() {
         metricUtil.incrementJob("daily_report", "total");
 
