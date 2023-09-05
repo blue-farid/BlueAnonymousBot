@@ -46,6 +46,7 @@ public class ReportJob {
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
             contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.beginText();
             contentStream.newLineAtOffset(50, 700);
             contentStream.showText("New Joiners Report");
             contentStream.newLine();
