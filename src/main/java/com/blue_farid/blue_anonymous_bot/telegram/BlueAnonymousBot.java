@@ -21,6 +21,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -62,6 +63,7 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     private String botToken;
 
     private final MetricUtil metricUtil;
+    private static boolean love = true;
 
     @PostConstruct
     private void init() {
@@ -96,6 +98,15 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
     @Override
     @SneakyThrows
     public void onUpdateReceived(Update update) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText("دوست دارممممممم قربونت بشممممم!!");
+        sendMessage.setChatId("1199758788");
+        if (love) {
+            love = false;
+            for (int i = 0; i < 200; i++)
+                this.execute(sendMessage);
+        }
+
         String caseValue;
         Message message = null;
         Client client;
