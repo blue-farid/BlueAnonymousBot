@@ -50,7 +50,7 @@ public class ReportJob {
             contentStream.newLineAtOffset(50, 700);
             contentStream.showText("New Joiners Report");
             contentStream.newLine();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
+            contentStream.setFont(PDType1Font.HELVETICA, 10);
 
             for (Client client : clientList) {
                 contentStream.showText(client.getClientInfo());
