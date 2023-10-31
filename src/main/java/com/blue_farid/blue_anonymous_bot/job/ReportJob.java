@@ -58,6 +58,7 @@ public class ReportJob {
                 contentStream.showText("-------------------------------------");
                 contentStream.newLine();
             }
+            contentStream.endText();
         } catch (IOException e) {
             e.printStackTrace();
         }
