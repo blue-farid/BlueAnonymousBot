@@ -1,6 +1,7 @@
 package com.blue_farid.blue_anonymous_bot.job;
 
 import com.blue_farid.blue_anonymous_bot.model.Client;
+import com.blue_farid.blue_anonymous_bot.model.Role;
 import com.blue_farid.blue_anonymous_bot.service.ClientService;
 import com.blue_farid.blue_anonymous_bot.telegram.BlueAnonymousBot;
 import com.blue_farid.blue_anonymous_bot.utils.metric.MetricUtil;
@@ -9,7 +10,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -28,9 +28,6 @@ public class ReportJob {
     private final BlueAnonymousBot bot;
     private final ClientService clientService;
     private final MetricUtil metricUtil;
-
-    @Value("${admin.chatId}")
-    private String chatId;
 
     @Async
     @Scheduled(cron = "0 0 9 * * ?")
@@ -75,16 +72,18 @@ public class ReportJob {
 
         InputFile inputFile = new InputFile(tempFile);
 
-        // Send the PDF report via the Telegram bot using SendDocument
-        SendDocument sendDocument = new SendDocument();
-        sendDocument.setChatId(chatId);
-        sendDocument.setDocument(inputFile);
-        try {
-            bot.execute(sendDocument);
-        } catch (TelegramApiException e) {
-            metricUtil.incrementJob("daily_report", "failed");
-            e.printStackTrace();
-        }
+        clientService.getClientByRole(new Role().setValue("ROLE_REPORT")).forEach(c -> {
+            // Send the PDF report via the Telegram bot using SendDocument
+            SendDocument sendDocument = new SendDocument();
+            sendDocument.setChatId(c.getId());
+            sendDocument.setDocument(inputFile);
+            try {
+                bot.execute(sendDocument);
+            } catch (TelegramApiException e) {
+                metricUtil.incrementJob("daily_report", "failed");
+                e.printStackTrace();
+            }
+        });
 
         // Delete the temporary file
         tempFile.delete();

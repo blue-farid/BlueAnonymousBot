@@ -4,13 +4,13 @@ import lombok.*;
 import org.apache.logging.log4j.util.Strings;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The Client class
@@ -46,9 +46,10 @@ public class Client implements Serializable {
     @Column(name = "CONTACT_MESSAGE")
     @ToString.Exclude
     private Integer contactMessageId;
-    @NotNull
-    @Column(name = "ADMIN")
-    private boolean admin;
+
+    @JoinColumn
+    @OneToMany
+    private List<Role> roles;
     @Column(name = "GENDER")
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -68,7 +69,6 @@ public class Client implements Serializable {
         this.firstname = user.getFirstName();
         this.lastname = user.getLastName();
         this.clientState = ClientState.NORMAL;
-        this.admin = false;
     }
 
     public boolean hasDeepLink() {
@@ -81,6 +81,10 @@ public class Client implements Serializable {
                     "\n\t- id: " + id;
         }
         return clientInfo;
+    }
+
+    public boolean hasRole(Role role) {
+        return this.roles.contains(role);
     }
 }
 
