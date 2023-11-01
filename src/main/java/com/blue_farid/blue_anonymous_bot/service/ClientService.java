@@ -3,6 +3,7 @@ package com.blue_farid.blue_anonymous_bot.service;
 import com.blue_farid.blue_anonymous_bot.model.Client;
 import com.blue_farid.blue_anonymous_bot.model.ClientState;
 import com.blue_farid.blue_anonymous_bot.model.Gender;
+import com.blue_farid.blue_anonymous_bot.model.Role;
 import com.blue_farid.blue_anonymous_bot.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,17 +28,6 @@ public class ClientService {
      */
     public void setDeepLink(Client client, String deepLink) {
         client.setDeepLink(deepLink);
-        repository.save(client);
-    }
-
-    /**
-     * Sets admin.
-     *
-     * @param client the client
-     * @param admin  the admin
-     */
-    public void setAdmin(Client client, boolean admin) {
-        client.setAdmin(admin);
         repository.save(client);
     }
 
@@ -159,5 +149,9 @@ public class ClientService {
 
     public boolean exists(Long id) {
         return repository.existsById(id);
+    }
+
+    public List<Client> getClientByRole(Role role) {
+        return repository.findByRolesContains(role);
     }
 }

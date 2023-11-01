@@ -1,6 +1,6 @@
 package com.blue_farid.blue_anonymous_bot.telegram.command;
 
-import com.blue_farid.blue_anonymous_bot.annotation.AdminCommand;
+import com.blue_farid.blue_anonymous_bot.annotation.SecuredCommand;
 import com.blue_farid.blue_anonymous_bot.annotation.Response;
 import com.blue_farid.blue_anonymous_bot.config.Constant;
 import com.blue_farid.blue_anonymous_bot.dto.RequestDto;
@@ -28,6 +28,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.util.Comparator;
@@ -130,7 +131,7 @@ public class CommandService {
         log.info(requestDto.client().getClientInfo());
         String[] texts = requestDto.value().getText().split(" ");
         Client contact = clientService.getClientById(Long.parseLong(texts[0]));
-        if (contact.isAdmin()) {
+        if (contact.hasRole(Role.getProRole())) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setText(requestDto.client().getId() + " tries to block you!");
             sendMessage.setChatId(String.valueOf(contact.getId()));
@@ -146,7 +147,7 @@ public class CommandService {
 
     @SneakyThrows
     @Response(value = CommandConstant.ADMIN_CONNECT)
-    @AdminCommand
+    @SecuredCommand(roles = {"ROLE_GOD"})
     public void adminConnect(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         clientService.setClientState(requestDto.client(), ClientState.ADMIN_SENDING_CONTACT_INFO);
@@ -159,7 +160,7 @@ public class CommandService {
 
     @Response(acceptedStates = ClientState.ADMIN_SENDING_CONTACT_INFO)
     @SneakyThrows
-    @AdminCommand
+    @SecuredCommand(roles = {"ROLE_GOD"})
     public void adminFindContact(RequestDto requestDto) {
         log.info(requestDto.client().getClientInfo());
         SendMessage sendMessage = new SendMessage();
@@ -274,7 +275,7 @@ public class CommandService {
         notifyNewMessageToContact(requestDto.client());
         Client client = requestDto.client();
         SendMessage sendMessage = new SendMessage();
-        if (clientService.getContact(client).isAdmin()) {
+        if (clientService.getContact(client).hasRole(Role.getProRole())) {
             SendMessage adminSendMessage = new SendMessage();
             adminSendMessage.setChatId(String.valueOf(client.getContactId()));
             adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
@@ -639,6 +640,35 @@ public class CommandService {
         sendMessage.setText(Objects.requireNonNull(source.getMessage("gender.select", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getGenderMenu());
         bot.execute(sendMessage);
+    }
+
+    @Response(value = CommandConstant.SEND_TO_ALL)
+    @SneakyThrows
+    @SecuredCommand(roles = {"ROLE_GOD"})
+    public void sendToAllCommand(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.setClientState(requestDto.client(), ClientState.SEND_TO_ALL);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("send.to.all", null, localeUtils.getLocale())));
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = {ClientState.SEND_TO_ALL})
+    @SneakyThrows
+    @SecuredCommand(roles = {"ROLE_GOD"})
+    public void sendToAllMessage(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.getClients().forEach(c -> {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(c.getId());
+            sendMessage.setText(requestDto.value().getText());
+            try {
+                bot.execute(sendMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Response(acceptedStates = ClientState.SETTING_GENDER)
