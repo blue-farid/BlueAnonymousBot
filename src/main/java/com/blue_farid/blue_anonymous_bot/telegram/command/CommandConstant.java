@@ -30,5 +30,6 @@ public class CommandConstant {
     public static final String CANCEL_CHAT_CONFIRM_YES = "آره گپ رو قطع کن";
 
     public static final String CANCEL_CHAT_CONFIRM_NO = "نه ادامه میدم";
+    public static final String SEND_TO_ALL = "sendToAll";
 
 }

@@ -28,6 +28,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.util.Comparator;
@@ -639,6 +640,35 @@ public class CommandService {
         sendMessage.setText(Objects.requireNonNull(source.getMessage("gender.select", null, localeUtils.getLocale())));
         sendMessage.setReplyMarkup(bot.getGenderMenu());
         bot.execute(sendMessage);
+    }
+
+    @Response(value = CommandConstant.SEND_TO_ALL)
+    @SneakyThrows
+    @SecuredCommand(roles = {"ROLE_GOD"})
+    public void sendToAllCommand(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.setClientState(requestDto.client(), ClientState.SEND_TO_ALL);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
+        sendMessage.setText(Objects.requireNonNull(source.getMessage("send.to.all", null, localeUtils.getLocale())));
+        bot.execute(sendMessage);
+    }
+
+    @Response(acceptedStates = {ClientState.SEND_TO_ALL})
+    @SneakyThrows
+    @SecuredCommand(roles = {"ROLE_GOD"})
+    public void sendToAllMessage(RequestDto requestDto) {
+        log.info(requestDto.client().getClientInfo());
+        clientService.getClients().forEach(c -> {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(c.getId());
+            sendMessage.setText(requestDto.value().getText());
+            try {
+                bot.execute(sendMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Response(acceptedStates = ClientState.SETTING_GENDER)
