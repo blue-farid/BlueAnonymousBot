@@ -666,7 +666,7 @@ public class CommandService {
             try {
                 bot.execute(sendMessage);
             } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
+                // pass
             }
         });
     }
