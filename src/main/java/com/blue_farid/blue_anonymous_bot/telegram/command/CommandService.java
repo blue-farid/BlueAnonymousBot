@@ -669,6 +669,7 @@ public class CommandService {
                 // pass
             }
         });
+        clientService.setClientState(requestDto.client(), ClientState.NORMAL);
     }
 
     @Response(acceptedStates = ClientState.SETTING_GENDER)
