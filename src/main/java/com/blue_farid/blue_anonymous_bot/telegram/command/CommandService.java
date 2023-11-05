@@ -581,6 +581,21 @@ public class CommandService {
             bot.execute(sendMessage);
             sendMessage.setChatId(String.valueOf(contact.getId()));
             bot.execute(sendMessage);
+
+            if (contact.hasRole(Role.getProRole())) {
+                SendMessage adminSendMessage = new SendMessage();
+                adminSendMessage.setChatId(String.valueOf(contact.getId()));
+                adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
+                bot.execute(adminSendMessage);
+            }
+
+            if (requestDto.client().hasRole(Role.getProRole())) {
+                SendMessage adminSendMessage = new SendMessage();
+                adminSendMessage.setChatId(String.valueOf(requestDto.client().getId()));
+                adminSendMessage.setText("Sender:" + "\n" + contact.getClientInfo());
+                bot.execute(adminSendMessage);
+            }
+
         }
     }
 
