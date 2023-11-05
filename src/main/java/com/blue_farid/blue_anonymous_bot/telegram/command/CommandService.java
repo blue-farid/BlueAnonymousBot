@@ -560,7 +560,7 @@ public class CommandService {
         if (selectedGender.equals(Gender.BI))
             anonymousConnectionRequest = anonymousConnectionRequestService.connect(requestDto.client());
         else
-            anonymousConnectionRequest = anonymousConnectionRequestService.connect(requestDto.client().getId(), selectedGender);
+            anonymousConnectionRequest = anonymousConnectionRequestService.connect(requestDto.client().getId(), selectedGender, requestDto.client().getGender());
 
         if (Objects.isNull(anonymousConnectionRequest)) {
             anonymousConnectionRequestService.submitRequest(requestDto.client(), selectedGender);
