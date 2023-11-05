@@ -16,8 +16,8 @@ import java.util.List;
 public class AnonymousConnectionRequestService {
     private final AnonymousConnectionRequestRepository repository;
 
-    public AnonymousConnectionRequest connect(Long clientId, Gender gender) {
-        List<AnonymousConnectionRequest> list =  repository.getAnonymousConnectionRequestByRequestFromGenderOrderByCreationDate(clientId, gender);
+    public AnonymousConnectionRequest connect(Long clientId, Gender selectedGender, Gender gender) {
+        List<AnonymousConnectionRequest> list =  repository.getAnonymousConnectionRequestByRequestFromGenderOrderByCreationDate(clientId, selectedGender, gender);
         return list.isEmpty() ? null : list.get(0);
     }
 
