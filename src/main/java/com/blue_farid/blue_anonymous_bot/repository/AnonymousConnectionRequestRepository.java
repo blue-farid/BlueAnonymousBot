@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface AnonymousConnectionRequestRepository extends JpaRepository<AnonymousConnectionRequest, Long> {
 
-    @Query(value = "select a from AnonymousConnectionRequest a where a.requestFrom.gender = :gender and a.requestFrom.id != :clientId order by a.creationDate")
-    List<AnonymousConnectionRequest> getAnonymousConnectionRequestByRequestFromGenderOrderByCreationDate(Long clientId, Gender gender);
+    @Query(value = "select a from AnonymousConnectionRequest a where a.requestFrom.gender = :selectedGender and a.requestFrom.id != :clientId and a.gender = :gender order by a.creationDate")
+    List<AnonymousConnectionRequest> getAnonymousConnectionRequestByRequestFromGenderOrderByCreationDate(Long clientId, Gender selectedGender, Gender gender);
 
     @Query(value = "select a from AnonymousConnectionRequest a where a.requestFrom.id != :clientId order by a.creationDate")
     List<AnonymousConnectionRequest> getAllOrderByCreationDate(Long clientId);
