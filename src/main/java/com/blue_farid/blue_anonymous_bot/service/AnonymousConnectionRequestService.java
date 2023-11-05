@@ -21,10 +21,12 @@ public class AnonymousConnectionRequestService {
         return list.isEmpty() ? null : list.get(0);
     }
 
-    public AnonymousConnectionRequest connect(Long clientId) {
-        List<AnonymousConnectionRequest> list = repository.getAllOrderByCreationDate(clientId);
+    public AnonymousConnectionRequest connect(Client client) {
+        List<AnonymousConnectionRequest> list = repository.getAllOrderByCreationDate(client.getId());
         // sort ascending
-        return list.isEmpty() ? null : list.get(0);
+        return list.isEmpty() ? null : list.stream().filter(a ->
+                a.getGender().equals(Gender.BI) || a.getGender().equals(client.getGender()))
+                .findFirst().orElse(null);
     }
 
     public AnonymousConnectionRequest submitRequest(Client from, Gender gender) {

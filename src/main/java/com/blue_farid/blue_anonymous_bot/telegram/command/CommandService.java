@@ -558,7 +558,7 @@ public class CommandService {
         Gender selectedGender = genderMapper.persianGenderValueToGender(requestDto.value().getText());
         AnonymousConnectionRequest anonymousConnectionRequest;
         if (selectedGender.equals(Gender.BI))
-            anonymousConnectionRequest = anonymousConnectionRequestService.connect(requestDto.client().getId());
+            anonymousConnectionRequest = anonymousConnectionRequestService.connect(requestDto.client());
         else
             anonymousConnectionRequest = anonymousConnectionRequestService.connect(requestDto.client().getId(), selectedGender);
 
