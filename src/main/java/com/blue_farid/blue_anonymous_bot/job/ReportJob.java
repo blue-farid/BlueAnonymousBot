@@ -30,7 +30,7 @@ public class ReportJob {
     private final MetricUtil metricUtil;
 
     @Async
-    @Scheduled(cron = "0 0 9 * * ?")
+    @Scheduled(cron = "0 0 7 * * ?")
     public void dailyReport() {
         metricUtil.incrementJob("daily_report", "total");
 
@@ -42,12 +42,12 @@ public class ReportJob {
         document.addPage(page);
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
             contentStream.beginText();
             contentStream.newLineAtOffset(50, 700);
             contentStream.showText("New Joiners Report");
             contentStream.newLine();
-            contentStream.setFont(PDType1Font.HELVETICA, 10);
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
 
             for (Client client : clientList) {
                 contentStream.showText(client.getClientInfo());
