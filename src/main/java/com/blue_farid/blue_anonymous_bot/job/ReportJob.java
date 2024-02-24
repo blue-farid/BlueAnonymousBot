@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -30,63 +31,35 @@ public class ReportJob {
     private final MetricUtil metricUtil;
 
     @Async
-    @Scheduled(cron = "0 15 7 * * ?")
+    @Scheduled(cron = "0 30 7 * * ?")
     public void dailyReport() {
         metricUtil.incrementJob("daily_report", "total");
 
         List<Client> clientList = clientService.getAllNewJoiners();
 
-        // Generate PDF report
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
+        StringBuilder stringBuilder = new StringBuilder();
 
-        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-            contentStream.beginText();
-            contentStream.newLineAtOffset(50, 700);
-            contentStream.showText("New Joiners Report");
-            contentStream.newLine();
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
-
-            for (Client client : clientList) {
-                contentStream.showText(client.getClientInfo().replace("\t", "    "));
-                contentStream.newLine();
-                contentStream.showText("-------------------------------------");
-                contentStream.newLine();
-            }
-            contentStream.endText();
-        } catch (IOException e) {
-            e.printStackTrace();
+        stringBuilder.append("New Joiners Report");
+        stringBuilder.append("\n");
+        for (Client client : clientList) {
+            stringBuilder.append(client.getClientInfo());
+            stringBuilder.append("\n");
+            stringBuilder.append("-------------------------------------");
+            stringBuilder.append("\n");
         }
-
-        File tempFile;
-        try {
-            tempFile = File.createTempFile("report", ".pdf");
-            document.save(tempFile);
-            document.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        InputFile inputFile = new InputFile(tempFile);
 
         clientService.getClientByRole(new Role().setValue("ROLE_REPORT")).forEach(c -> {
-            // Send the PDF report via the Telegram bot using SendDocument
-            SendDocument sendDocument = new SendDocument();
-            sendDocument.setChatId(c.getId());
-            sendDocument.setDocument(inputFile);
+            // Send report via the Telegram bot using SendDocument
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(c.getId());
+            sendMessage.setText(stringBuilder.toString());
             try {
-                bot.execute(sendDocument);
+                bot.execute(sendMessage);
             } catch (TelegramApiException e) {
                 metricUtil.incrementJob("daily_report", "failed");
                 e.printStackTrace();
             }
         });
-
-        // Delete the temporary file
-        tempFile.delete();
 
         metricUtil.incrementJob("daily_report", "success");
     }
