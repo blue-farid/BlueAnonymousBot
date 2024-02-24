@@ -30,7 +30,7 @@ public class ReportJob {
     private final MetricUtil metricUtil;
 
     @Async
-    @Scheduled(cron = "0 0 7 * * ?")
+    @Scheduled(cron = "0 15 7 * * ?")
     public void dailyReport() {
         metricUtil.incrementJob("daily_report", "total");
 
@@ -50,7 +50,7 @@ public class ReportJob {
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
 
             for (Client client : clientList) {
-                contentStream.showText(client.getClientInfo());
+                contentStream.showText(client.getClientInfo().replace("\t", "    "));
                 contentStream.newLine();
                 contentStream.showText("-------------------------------------");
                 contentStream.newLine();
