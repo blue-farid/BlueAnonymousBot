@@ -31,7 +31,7 @@ public class ReportJob {
     private final MetricUtil metricUtil;
 
     @Async
-    @Scheduled(cron = "0 30 7 * * ?")
+    @Scheduled(cron = "0 0 16 * * ?")
     public void dailyReport() {
         metricUtil.incrementJob("daily_report", "total");
 
@@ -48,7 +48,8 @@ public class ReportJob {
             stringBuilder.append("\n");
         }
 
-        clientService.getClientByRole(new Role().setValue("ROLE_REPORT")).forEach(c -> {
+        List<Client> clients = clientService.getClientByRole(new Role().setValue("ROLE_REPORT"));
+        clients.forEach(c -> {
             // Send report via the Telegram bot using SendDocument
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(c.getId());
