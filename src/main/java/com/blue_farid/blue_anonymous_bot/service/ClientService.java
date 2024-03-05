@@ -154,4 +154,8 @@ public class ClientService {
     public List<Client> getClientByRole(Role role) {
         return repository.findByRolesContains(role);
     }
+
+    public List<Client> getAllClientOrderByJoinedAt() {
+        return repository.findAllOrderByCreatedAtDesc();
+    }
 }
