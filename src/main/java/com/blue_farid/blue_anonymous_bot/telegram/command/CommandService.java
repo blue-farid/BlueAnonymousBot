@@ -87,6 +87,11 @@ public class CommandService {
             if (contact == null)
                 throw new IllegalStateException();
 
+            if (requestDto.client().isNewJoiner()) {
+                requestDto.client().setJoinMethod(JoinMethod.DEEP_LINK);
+                requestDto.client().setJoinFrom(contact.getDeepLink());
+            }
+
             MDC.put("others", CommonUtils.readyForLog("trying to message : " + contact.getId()));
             sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
             if (requestDto.client().getId() == contact.getId()) {
@@ -101,12 +106,15 @@ public class CommandService {
             clientService.setClientState(requestDto.client(), ClientState.SENDING_MESSAGE_TO_SPECIFIC_CONTACT);
             clientService.setContact(requestDto.client(), contact.getId());
         } else {
+            if (requestDto.client().isNewJoiner())
+                requestDto.client().setJoinMethod(JoinMethod.SIMPLE);
             sendMessage.setText(Objects.requireNonNull(source.getMessage("start", null, localeUtils.getLocale())));
             sendMessage.setReplyMarkup(bot.getMainMenu());
             sendMessage.setChatId(String.valueOf(requestDto.client().getId()));
             bot.execute(sendMessage);
         }
         log.info(requestDto.client().getClientInfo());
+        clientService.updateClient(requestDto.client());
     }
 
     @SneakyThrows

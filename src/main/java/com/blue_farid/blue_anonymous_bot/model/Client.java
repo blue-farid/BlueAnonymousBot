@@ -1,6 +1,7 @@
 package com.blue_farid.blue_anonymous_bot.model;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.apache.logging.log4j.util.Strings;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,6 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Accessors(chain = true)
 public class Client implements Serializable {
     @Id
     @NotNull
@@ -61,6 +63,9 @@ public class Client implements Serializable {
     private Date createdAt;
     @UpdateTimestamp
     private Date lastModifiedAt;
+    private boolean newJoiner;
+    private JoinMethod joinMethod;
+    private String joinFrom;
 
 
     public Client(User user) {

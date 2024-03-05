@@ -103,9 +103,9 @@ public class BlueAnonymousBot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             Long id = update.getMessage().getChatId();
             if (!clientService.exists(id)) {
-                clientService.addClient(new Client(update.getMessage().getFrom()));
+                clientService.addClient(new Client(update.getMessage().getFrom()).setNewJoiner(true));
             } else {
-                clientService.updateClient(new Client(update.getMessage().getFrom()));
+                clientService.updateClient(new Client(update.getMessage().getFrom()).setNewJoiner(false));
             }
             caseValue = update.getMessage().getText();
             if (caseValue == null)
