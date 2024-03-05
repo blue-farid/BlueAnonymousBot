@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Client List</title>
+    <!-- Add your CSS links here -->
+</head>
+<body>
+<h2>Client List</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+        <th>Joined At</th>
+        <th>Gender</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="client" type="com.blue_farid.blue_anonymous_bot.model.Client"*/-->
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}">1</td>
+        <td th:text="${client.firstname}">Client first name</td>
+        <td th:text="${client.lastname}">Client last name</td>
+        <td th:text="'https://t.me/' + ${client.username}">Client username</td>
+        <td th:text="${client.createdAt}">Client joined at</td>
+        <td th:text="${client.gender}">Client gender</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
