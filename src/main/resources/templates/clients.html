@@ -15,6 +15,8 @@
         <th>Username</th>
         <th>Joined At</th>
         <th>Gender</th>
+        <th>Join Method</th>
+        <th>Join From</th>
     </tr>
     </thead>
     <tbody>
@@ -26,6 +28,8 @@
         <td th:href="'https://t.me/' + ${client.username}">Client username</td>
         <td th:text="${client.createdAt}">Client joined at</td>
         <td th:text="${client.gender}">Client gender</td>
+        <td th:text="${client.joinMethod}">Client join method</td>
+        <td th:text="${client.joinFrom}">Client join from</td>
     </tr>
     </tbody>
 </table>
