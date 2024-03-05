@@ -23,7 +23,7 @@
         <td th:text="${client.id}">1</td>
         <td th:text="${client.firstname}">Client first name</td>
         <td th:text="${client.lastname}">Client last name</td>
-        <td th:href="'https://t.me/' + ${client.username}">Client username</td>
+        <td th:text="'https://t.me/' + ${client.username}">Client username</td>
         <td th:text="${client.createdAt}">Client joined at</td>
         <td th:text="${client.gender}">Client gender</td>
     </tr>
