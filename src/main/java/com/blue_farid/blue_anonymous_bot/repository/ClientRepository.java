@@ -25,4 +25,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     void updateFirstnameAndLastnameAndTelegramUserAndUsername(Client client);
 
     List<Client> findByRolesContains(Role role);
+
+    @Query("SELECT c FROM Client c ORDER BY c.createdAt DESC")
+    List<Client> findAllOrderByCreatedAtDesc();
 }

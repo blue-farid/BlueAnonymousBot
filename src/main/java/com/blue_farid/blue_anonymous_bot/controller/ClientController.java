@@ -12,8 +12,8 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/admin/clients")
-    public String listEntities(Model model) {
-        model.addAttribute("clients", clientService.getClients());
+    public String listClients(Model model) {
+        model.addAttribute("clients", clientService.getAllClientOrderByJoinedAt());
         return "clients";
     }
 }
