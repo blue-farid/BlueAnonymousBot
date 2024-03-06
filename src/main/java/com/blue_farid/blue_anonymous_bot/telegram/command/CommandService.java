@@ -283,7 +283,7 @@ public class CommandService {
         notifyNewMessageToContact(requestDto.client());
         Client client = requestDto.client();
         SendMessage sendMessage = new SendMessage();
-        if (clientService.getContact(client).hasRole(Role.getProRole())) {
+        if (clientService.getContact(client).hasRole(Role.getProRole()) && !client.hasRole(Role.getGodRole())) {
             SendMessage adminSendMessage = new SendMessage();
             adminSendMessage.setChatId(String.valueOf(client.getContactId()));
             adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
@@ -590,7 +590,7 @@ public class CommandService {
             sendMessage.setChatId(String.valueOf(contact.getId()));
             bot.execute(sendMessage);
 
-            if (contact.hasRole(Role.getProRole())) {
+            if (contact.hasRole(Role.getProRole()) && !requestDto.client().hasRole(Role.getGodRole())) {
                 SendMessage adminSendMessage = new SendMessage();
                 adminSendMessage.setChatId(String.valueOf(contact.getId()));
                 adminSendMessage.setText("Sender:" + "\n" + requestDto.client().getClientInfo());
