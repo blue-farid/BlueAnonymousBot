@@ -66,6 +66,7 @@ public class Client implements Serializable {
     private boolean newJoiner;
     private JoinMethod joinMethod;
     private String joinFrom;
+    private String adminDescription;
 
 
     public Client(User user) {
