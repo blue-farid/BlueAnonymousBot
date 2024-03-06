@@ -148,7 +148,7 @@ public class ClientService {
     }
 
     public boolean exists(Long id) {
-        return repository.existsById(id);
+        return repository.isExist(id);
     }
 
     public List<Client> getClientByRole(Role role) {
