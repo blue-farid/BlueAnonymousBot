@@ -28,6 +28,4 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query("SELECT c FROM Client c ORDER BY c.createdAt DESC")
     List<Client> findAllOrderByCreatedAtDesc();
-    @Query("SELECT TRUE FROM Client c WHERE c.id = :id")
-    boolean isExist(Long id);
 }
